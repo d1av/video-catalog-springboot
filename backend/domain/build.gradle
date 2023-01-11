@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+}
+
+group 'com.catalog.domain'
+version '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(project(":domain"))
+    implementation(project(":application"))
+    implementation(project(":infrastructure"))
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testImplementation project(path: ':application')
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
