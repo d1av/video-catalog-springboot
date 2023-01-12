@@ -1,9 +1,9 @@
 package com.catalog.domain.category;
 
+import com.catalog.domain.exceptions.DomainException;
+import com.catalog.domain.validation.handler.ThrowsValidationHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static java.util.regex.Grapheme.T;
 
 public class CategoryTest {
 
@@ -42,9 +42,9 @@ public class CategoryTest {
                         expectedDescription,
                         expectedIsActive);
         final var actualException = Assertions.assertThrows(DomainException.class,
-                () -> actualCategory.validate());
+                () -> actualCategory.validate(new ThrowsValidationHandler()));
 
-        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().length());
-        Assertions.assertEquals(expectedErrorMessage, actualException.getError().get(0));
+        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().get(0));
     }
 }

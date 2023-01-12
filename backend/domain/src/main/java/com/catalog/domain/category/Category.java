@@ -2,6 +2,7 @@ package com.catalog.domain.category;
 
 import com.catalog.domain.AggregateRoot;
 import com.catalog.domain.Identifier;
+import com.catalog.domain.validation.ValidationHandler;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -31,6 +32,14 @@ public class Category extends AggregateRoot<CategoryID> {
         final var now = Instant.now();
         return new Category(id, aName, aDescription, isActive, now, now, now);
 
+    }
+
+    public Category(CategoryID categoryID) {
+        super(categoryID);
+    }
+
+    public void validate(ValidationHandler handler) {
+        new CategoryValidator(this, handler).validate();
     }
 
     public CategoryID getId() {
