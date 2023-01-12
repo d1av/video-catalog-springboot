@@ -6,7 +6,7 @@ public class NoStackTraceException extends RuntimeException {
         super(message, null);
     }
 
-    public NoStackTraceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public NoStackTraceException(String message, Throwable cause) {
         super(message, cause, true, false);
     }
 
