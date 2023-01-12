@@ -1,10 +1,13 @@
 package com.catalog.domain.category;
 
+import com.catalog.domain.AggregateRoot;
+import com.catalog.domain.Identifier;
+
 import java.time.Instant;
 import java.util.UUID;
 
-public class Category {
-    private String id;
+public class Category extends AggregateRoot<CategoryID> {
+    private CategoryID id;
     private String name;
     private String description;
     private boolean active;
@@ -12,34 +15,29 @@ public class Category {
     private Instant updatedAt;
     private Instant deletedAt;
 
-    public Category(String id,
-                    String name,
-                    String description,
-                    boolean active,
-                    Instant createdAt,
-                    Instant updatedAt,
-                    Instant deletedAt) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.active = active;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
+    public Category(CategoryID anId, String aName, String aDescription, boolean isActive, Instant aCreatedAt, Instant aUpdatedAt, Instant aDeletedAt) {
+        super(anId);
+        this.id = anId;
+        this.name = aName;
+        this.description = aDescription;
+        this.active = isActive;
+        this.createdAt = aCreatedAt;
+        this.updatedAt = aUpdatedAt;
+        this.deletedAt = aDeletedAt;
     }
 
     public static Category newCategory(final String aName, final String aDescription, final boolean isActive) {
-        final var id = UUID.randomUUID().toString();
+        final var id = CategoryID.unique();
         final var now = Instant.now();
         return new Category(id, aName, aDescription, isActive, now, now, now);
 
     }
 
-    public String getId() {
+    public CategoryID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(CategoryID id) {
         this.id = id;
     }
 

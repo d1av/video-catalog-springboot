@@ -1,3 +1,5 @@
+package com.catalog.domain;
+
 import java.util.Objects;
 
 public abstract class Entity<ID extends Identifier> {
