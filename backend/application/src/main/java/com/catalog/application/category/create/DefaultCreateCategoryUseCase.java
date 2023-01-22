@@ -35,7 +35,7 @@ public class DefaultCreateCategoryUseCase extends CreateCategoryUseCase {
         return API.Try(() -> this.categoryGateway.create(aCategory))
                 .toEither()
                 .bimap(Notification::create, CreateCategoryOutput::from);
-        //   .map(CreateCategoryOutput::from)
-        //   .mapLeft(Notification::create);
+//           .map(CreateCategoryOutput::from)
+//          .mapLeft(Notification::create);
     }
 }

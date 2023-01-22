@@ -164,7 +164,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenAValidActiveCategory_whenDeactivate_thenReturnInactivate() {
+    public void givenAValidActiveCategory_whenDeactivate_thenReturnInactivate() throws InterruptedException {
         final String expectedName = "Filmes";
         final var expectedIsActive = false;
         final var initialIsActive = true;
@@ -183,6 +183,8 @@ public class CategoryTest {
         Assertions.assertTrue(aCategory.isActive());
         Assertions.assertNull(aCategory.getDeletedAt());
 
+
+        Thread.sleep(2400);
         final var actualCategory = aCategory.deactivate();
 
         Assertions.assertEquals(expectedName, actualCategory.getName());

@@ -1,6 +1,6 @@
 package com.catalog.application;
 
-public abstract class UnitUseCases<IN> {
+public abstract class UnitUseCase<IN> {
 
     public abstract void execute(IN onIn);
 
