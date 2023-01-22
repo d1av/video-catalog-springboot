@@ -1,4 +1,4 @@
-package com.catalog.application.category;
+package com.catalog.application.category.create;
 
 import com.catalog.application.category.create.CreateCategoryCommand;
 import com.catalog.application.category.create.DefaultCreateCategoryUseCase;
