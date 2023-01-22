@@ -7,4 +7,5 @@ public record CategorySearchQuery(
         String sort,
         String direction
 ) {
+
 }
