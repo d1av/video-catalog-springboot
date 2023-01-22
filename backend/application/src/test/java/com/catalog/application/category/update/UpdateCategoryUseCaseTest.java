@@ -43,7 +43,7 @@ public class UpdateCategoryUseCaseTest {
         );
 
         Mockito.when(categoryGateway.findById(Mockito.eq(expectedId)))
-                .thenReturn(Optional.of(aCategory));
+                .thenReturn(Optional.of(Category.with(aCategory)));
 
         Mockito.when(categoryGateway.update(Mockito.any()))
                 .thenAnswer(AdditionalAnswers.returnsFirstArg());
