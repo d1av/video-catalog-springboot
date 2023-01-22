@@ -33,7 +33,7 @@ public class CategoryTest {
         final String expectedName = null;
         final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = true;
-        final var expectedErrorMessage = "Error[message='name' should not be null]";
+        final var expectedErrorMessage = "message='name' should not be null";
         final var expectedErrorCount = 1;
 
         final var actualCategory =
@@ -53,7 +53,7 @@ public class CategoryTest {
         final String expectedName = "  ";
         final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = true;
-        final var expectedErrorMessage = "Error[message='name' should not be empty]";
+        final var expectedErrorMessage = "'name' should not be empty";
         final var expectedErrorCount = 1;
 
         final var actualCategory =
@@ -234,7 +234,7 @@ public class CategoryTest {
         final String expectedName = null;
         final var expectedDescription = "A categoria mais assistida";
         final var expectedIsActive = true;
-        final var expectedErrorMessage = "Name should not be null";
+        final var expectedErrorMessage = "'name' should not be null";
         final var expectedErrorCount = 1;
 
         final var actualCategory = Category.newCategory(expectedName, expectedDescription, expectedIsActive);
@@ -252,18 +252,18 @@ public class CategoryTest {
         final var expectedIsActive = true;
 
         final var aCategory =
-                Category.newCategory("Film", "A categoria", expectedIsActive);
+                Category.newCategory("Film", "A categoria", false);
 
 
         final var createdAt = aCategory.getCreatedAt();
         final var updatedAt = aCategory.getUpdatedAt();
 
-        final var actualCategory = aCategory.update(expectedName, expectedDescription, expectedIsActive);
+        final Category actualCategory = aCategory.update(expectedName, expectedDescription, expectedIsActive);
 
         Assertions.assertDoesNotThrow(() -> aCategory.validate(new ThrowsValidationHandler()));
         Assertions.assertEquals(expectedName, actualCategory.getName());
-        Assertions.assertEquals(expectedDescription, actualCategory.getName());
-        Assertions.assertEquals(expectedIsActive, actualCategory.IsActive());
+        Assertions.assertEquals(expectedDescription, actualCategory.getDescription());
+        Assertions.assertEquals(expectedIsActive, actualCategory.isActive());
         Assertions.assertEquals(createdAt, actualCategory.getCreatedAt());
         Assertions.assertTrue(actualCategory.getUpdatedAt().isAfter(updatedAt));
         Assertions.assertNull(actualCategory.getDeletedAt());

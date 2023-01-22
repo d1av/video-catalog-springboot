@@ -43,8 +43,8 @@ public class Category extends AggregateRoot<CategoryID> {
     }
 
     public Category activate() {
-        this.deletedAt = Instant.now();
-        this.active = false;
+        this.deletedAt = null;
+        this.active = true;
         this.updatedAt = Instant.now();
         return this;
     }
