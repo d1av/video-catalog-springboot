@@ -55,7 +55,7 @@ public class UpdateCategoryUseCaseTest {
 
         Mockito.verify(categoryGateway,
                         Mockito.times(1))
-                .findById(ArgumentMatchers.eq(expectedId));]
+                .findById(ArgumentMatchers.eq(expectedId));
 
         Mockito.verify(categoryGateway,
                         Mockito.times(1))
