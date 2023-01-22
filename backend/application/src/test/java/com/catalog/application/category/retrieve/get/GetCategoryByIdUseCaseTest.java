@@ -1,4 +1,4 @@
-package com.catalog.application.category.retrieve;
+package com.catalog.application.category.retrieve.get;
 
 import com.catalog.application.category.create.DefaultCreateCategoryUseCase;
 import com.catalog.domain.category.Category;
@@ -78,7 +78,7 @@ public class GetCategoryByIdUseCaseTest {
                 .thenThrow(new IllegalStateException(expectedErrorMessage));
 
         final var actualException = Assertions.assertThrows(
-                DomainException.class,
+                IllegalStateException.class,
                 () -> useCase.execute(expectedId.getValue())
         );
 
