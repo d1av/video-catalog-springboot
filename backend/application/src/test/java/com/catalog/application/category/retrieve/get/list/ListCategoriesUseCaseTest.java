@@ -79,11 +79,9 @@ public class ListCategoriesUseCaseTest {
         final var expectedSort = "createdAt";
         final var expectedDirection = "asc";
 
-
         final var aQuery = new CategorySearchQuery(
                 expectedPage, expectedPerPage,
                 expectedTerms, expectedSort, expectedDirection);
-
 
         final var expectedPagination =
                 new Pagination<>(expectedPage, expectedPerPage, categories.size(), categories);
