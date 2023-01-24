@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/adm_videos?useSSL=true&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+server:
+  port: 8080
+  undertow:
+    threads:
+      worker: 64
+      io: 4

@@ -1,0 +1,17 @@
+server:
+  port: 8080
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/ess,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+  undertow:
+    threads:
+      worker: 64
+      io: 4
+
+spring:
+  datasource:
+    url: jdbc:mysql://${mysql.url}/${mysql.schema}?useSSL=true&serverTimezone=UTC
+    username: ${mysql.username}
+    password: ${mysql.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
