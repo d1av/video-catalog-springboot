@@ -27,6 +27,9 @@ public class CategoryJpaEntity {
     @Column(name = "deleted_at", columnDefinition = "DATETIME(6)")
     private Instant deletedAt;
 
+    public CategoryJpaEntity() {
+    }
+
     public CategoryJpaEntity(final String id,
                              final String name,
                              final String description,
