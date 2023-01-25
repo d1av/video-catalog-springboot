@@ -1,8 +1,19 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.flywaydb:flyway-mysql:9.12.0'
+    }
+}
+
+
 plugins {
     id 'java'
     id 'application'
     id 'org.springframework.boot' version '3.0.1'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.flywaydb.flyway' version '9.12.0'
 }
 
 group 'com.catalog.infrastructure'
@@ -37,6 +48,12 @@ dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.2'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.2'
 
+}
+
+flyway{
+    url = System.getenv('FLYWAY_DB') ?: 'jdbc:mysql://localhost:3306/adm_videos'
+    user = System.getenv('FLYWAY_USER') ?: 'root'
+    password = System.getenv('FLYWAY_PASS') ?: 'root'
 }
 
 test {

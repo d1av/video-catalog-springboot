@@ -1,0 +1,1 @@
+DROP TABLE category(id BINARY(16) PRIMARY KEY);
