@@ -5,7 +5,6 @@ import com.catalog.domain.category.CategoryGateway;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.category.CategorySearchQuery;
 import com.catalog.domain.pagination.Pagination;
-import com.catalog.infrastructure.utils.SpecificationUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -23,7 +22,6 @@ public class CategoryMySQLGateway implements CategoryGateway {
     public CategoryMySQLGateway(CategoryRepository repository) {
         this.repository = repository;
     }
-
 
     @Override
     public Category create(Category aCategory) {

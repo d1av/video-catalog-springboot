@@ -1,11 +1,9 @@
-package com.catalog.infrastructure.category;
+package com.catalog.infrastructure.category.persistence;
 
+import com.catalog.MySQLGatewayTest;
 import com.catalog.domain.category.Category;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.category.CategorySearchQuery;
-import com.catalog.infrastructure.category.persistence.CategoryJpaEntity;
-import com.catalog.infrastructure.category.persistence.CategoryMySQLGateway;
-import com.catalog.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

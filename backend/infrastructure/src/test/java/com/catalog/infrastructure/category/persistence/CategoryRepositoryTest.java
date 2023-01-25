@@ -1,11 +1,10 @@
 package com.catalog.infrastructure.category.persistence;
 
 import com.catalog.domain.category.Category;
-import com.catalog.infrastructure.category.MySQLGatewayTest;
+import com.catalog.MySQLGatewayTest;
 import org.hibernate.PropertyValueException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
