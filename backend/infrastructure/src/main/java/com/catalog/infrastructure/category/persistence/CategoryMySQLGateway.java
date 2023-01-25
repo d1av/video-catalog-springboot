@@ -12,9 +12,16 @@ import java.util.Optional;
 @Service
 public class CategoryMySQLGateway implements CategoryGateway {
 
+    private final CategoryRepository repository;
+
+    public CategoryMySQLGateway(CategoryRepository repository) {
+        this.repository = repository;
+    }
+
+
     @Override
     public Category create(Category aCategory) {
-        return null;
+        return this.repository.save(CategoryJpaEntity.from(aCategory)).toAggregate();
     }
 
     @Override

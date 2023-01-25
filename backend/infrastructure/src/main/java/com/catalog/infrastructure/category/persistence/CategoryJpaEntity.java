@@ -58,18 +58,17 @@ public class CategoryJpaEntity {
         );
     }
 
-   public Category toAggregate(Category aCategory){
+    public Category toAggregate() {
         return Category.with(
                 CategoryID.from(getId()),
-                aCategory.getName(),
-                aCategory.getDescription(),
-                aCategory.isActive(),
-                aCategory.getCreatedAt(),
-                aCategory.getUpdatedAt(),
-                aCategory.getDeletedAt()
-
+                getName(),
+                getDescription(),
+                isActive(),
+                getCreatedAt(),
+                getUpdatedAt(),
+                getDeletedAt()
         );
-   }
+    }
 
     public static Category with(
             final CategoryID anId,
