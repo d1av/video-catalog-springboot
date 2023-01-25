@@ -48,7 +48,7 @@ public class GetCategoryByIdUseCaseTest {
         Assertions.assertEquals(aCategory.getCreatedAt(), actualCategory.createdAt());
         Assertions.assertEquals(aCategory.getUpdatedAt(), actualCategory.updatedAt());
         Assertions.assertEquals(aCategory.getDeletedAt(), actualCategory.deletedAt());
-        //   Assertions.assertEquals(CategoryOutput.from(aCategory), actualCategory);
+      // Assertions.assertEquals(CategoryOutput.from(aCategory), actualCategory);
 
 
     }
