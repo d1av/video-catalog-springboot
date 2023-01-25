@@ -15,3 +15,19 @@ spring:
     username: ${mysql.username}
     password: ${mysql.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      auto-commit: false
+      connection-timeout: 250 # é feito em miliseconds. O ideal é manter baixo para estorar timeout
+      max-lifetime: 600000 #tempo adviso que uso conexão pode ficar aberto (19mins) - security
+      maximum-pool-size: 20 #numero até o max 20 conexões com o banco de dados. O ideal é manter baixo
+      minimum-idle: 10
+      pool-name: master
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      #"[hibernate.dialect]": org.hibernate.dialect.MySQL5InnoDBDialect
+      "[hibernate.generate.statistics]": false
+      "[hibernate.connection.provider_disables_autocommit]": true
