@@ -160,8 +160,13 @@ public class CategoryMySQLGatewayTest {
 
         Assertions.assertEquals(0, categoryRepository.count());
 
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(filmes));
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(series));
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(documentario));
+
         final var query = new CategorySearchQuery(0, 1, "", "name", "asc");
         final var actualResult = categoryGateway.findAll(query);
+
 
         Assertions.assertEquals(expectedPage, actualResult.currentPage());
         Assertions.assertEquals(expectedPerPage, actualResult.perPage());
@@ -174,6 +179,7 @@ public class CategoryMySQLGatewayTest {
     public void givenEmptyCategoriesTable_whenCallsFindAll_shouldReturnEmptyPage() {
         final var expectedPage = 0;
         final var expectedPerPage = 1;
+        final var expectedPerPageSize = 0;
         final var expectedTotal = 0;
 
         Assertions.assertEquals(0, categoryRepository.count());
@@ -184,7 +190,7 @@ public class CategoryMySQLGatewayTest {
         Assertions.assertEquals(expectedPage, actualResult.currentPage());
         Assertions.assertEquals(expectedPerPage, actualResult.perPage());
         Assertions.assertEquals(expectedTotal, actualResult.total());
-        Assertions.assertEquals(expectedPerPage, actualResult.items().size());
+        Assertions.assertEquals(expectedPerPageSize, actualResult.items().size());
     }
 
     @Test
@@ -199,6 +205,9 @@ public class CategoryMySQLGatewayTest {
 
         Assertions.assertEquals(0, categoryRepository.count());
 
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(filmes));
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(series));
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(documentario));
 
         //page 0
         var query = new CategorySearchQuery(0, 1, "", "name", "asc");
@@ -211,7 +220,7 @@ public class CategoryMySQLGatewayTest {
         Assertions.assertEquals(documentario.getId(), actualResult.items().get(0).getId());
 
         //page 1
-        expectedPage=1;
+        expectedPage = 1;
         query = new CategorySearchQuery(1, 1, "", "name", "asc");
         actualResult = categoryGateway.findAll(query);
 
@@ -222,7 +231,7 @@ public class CategoryMySQLGatewayTest {
         Assertions.assertEquals(filmes.getId(), actualResult.items().get(0).getId());
 
         //page 2
-        expectedPage=2;
+        expectedPage = 2;
         query = new CategorySearchQuery(2, 1, "", "name", "asc");
         actualResult = categoryGateway.findAll(query);
 
@@ -245,6 +254,10 @@ public class CategoryMySQLGatewayTest {
 
         Assertions.assertEquals(0, categoryRepository.count());
 
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(filmes));
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(series));
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(documentario));
+
         final var query = new CategorySearchQuery(0, 1, "doc", "name", "asc");
         final var actualResult = categoryGateway.findAll(query);
 
@@ -266,6 +279,10 @@ public class CategoryMySQLGatewayTest {
         final var documentario = Category.newCategory("Documentários", "A categoria menos assistida", true);
 
         Assertions.assertEquals(0, categoryRepository.count());
+
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(filmes));
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(series));
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(documentario));
 
         final var query = new CategorySearchQuery(0, 1, "mais assistida", "name", "asc");
         final var actualResult = categoryGateway.findAll(query);
