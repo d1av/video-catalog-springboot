@@ -3,10 +3,13 @@ package com.catalog.infrastructure.api.controllers;
 import com.catalog.application.category.create.CreateCategoryCommand;
 import com.catalog.application.category.create.CreateCategoryOutput;
 import com.catalog.application.category.create.CreateCategoryUseCase;
+import com.catalog.application.category.retrieve.get.GetCategoryByIdUseCase;
 import com.catalog.domain.pagination.Pagination;
 import com.catalog.domain.validation.handler.Notification;
 import com.catalog.infrastructure.api.CategoryAPI;
+import com.catalog.infrastructure.category.models.CategoryApiOutput;
 import com.catalog.infrastructure.category.models.CreateCategoryApiInput;
+import com.catalog.infrastructure.category.presenters.CategoryApiPresenter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,9 +21,13 @@ import java.util.function.Function;
 public class CategoryController implements CategoryAPI {
 
     private final CreateCategoryUseCase createCategoryUseCase;
+    private final GetCategoryByIdUseCase getCategoryByIdUseCase;
 
-    public CategoryController(CreateCategoryUseCase createCategoryUseCase) {
+    public CategoryController(
+            final CreateCategoryUseCase createCategoryUseCase,
+            final GetCategoryByIdUseCase getCategoryByIdUseCase) {
         this.createCategoryUseCase = Objects.requireNonNull(createCategoryUseCase);
+        this.getCategoryByIdUseCase = getCategoryByIdUseCase;
     }
 
     @Override
@@ -37,11 +44,16 @@ public class CategoryController implements CategoryAPI {
                 ResponseEntity.created(URI.create("/categories/" + output.id())).body(output);
 
         return this.createCategoryUseCase.execute(aCommand)
-                .fold(onError,onSuccess);
+                .fold(onError, onSuccess);
     }
 
     @Override
     public Pagination<?> listCategories(String search, int page, int perPage, String sort, String direction) {
         return null;
+    }
+
+    @Override
+    public CategoryApiOutput getById(String id) {
+        return CategoryApiPresenter.present(this.getCategoryByIdUseCase.execute(id));
     }
 }
