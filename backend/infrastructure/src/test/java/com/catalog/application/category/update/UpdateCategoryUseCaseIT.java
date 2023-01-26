@@ -4,6 +4,7 @@ import com.catalog.IntegrationTest;
 import com.catalog.domain.category.Category;
 import com.catalog.domain.category.CategoryGateway;
 import com.catalog.domain.exceptions.DomainException;
+import com.catalog.domain.exceptions.NotFoundException;
 import com.catalog.infrastructure.category.persistence.CategoryJpaEntity;
 import com.catalog.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
@@ -85,12 +86,10 @@ public class UpdateCategoryUseCaseIT {
                 UpdateCategoryCommand
                         .with(expectedId.getValue(), expectedName, expectedDescription, expectedIsActive);
         final var notification = Assertions
-                .assertThrows(DomainException.class, () -> useCase.execute(aCommand).getLeft());
+                .assertThrows(NotFoundException.class, () -> useCase.execute(aCommand).getLeft());
         Assertions.assertThrows(DataIntegrityViolationException.class, () -> save(aCategory));
 
-
-        Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
-        Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
+        Assertions.assertEquals(expectedErrorMessage, notification.getMessage());
         Mockito.verify(categoryGateway,
                 Mockito.times(0)).create(any());
     }
@@ -199,9 +198,9 @@ public class UpdateCategoryUseCaseIT {
         );
 
         final var actualException =
-                Assertions.assertThrows(DomainException.class, () -> useCase.execute(aCommand));
+                Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(aCommand));
 
-        Assertions.assertEquals(expectedErrorMessage, actualException.firstError().message());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
     }
 
     private void save(Category... aCategory) {
