@@ -11,15 +11,19 @@ import com.catalog.application.category.retrieve.list.ListCategoriesUseCase;
 import com.catalog.application.category.update.DefaultUpdateCategoryUseCase;
 import com.catalog.application.category.update.UpdateCategoryUseCase;
 import com.catalog.domain.category.CategoryGateway;
+import com.catalog.infrastructure.category.persistence.CategoryRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CategoryUseCaseConfig {
     private final CategoryGateway categoryGateway;
+    private final CategoryRepository categoryRepository;
 
-    public CategoryUseCaseConfig(CategoryGateway categoryGateway) {
+    public CategoryUseCaseConfig(CategoryGateway categoryGateway,
+                                 CategoryRepository categoryRepository) {
         this.categoryGateway = categoryGateway;
+        this.categoryRepository = categoryRepository;
     }
 
     @Bean
