@@ -12,18 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Objects;
 
 import static io.vavr.API.Right;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ControllerTest(controllers = CategoryAPI.class)
 public class CategoryAPITest {
@@ -47,14 +48,16 @@ public class CategoryAPITest {
                 .thenReturn(Right(CreateCategoryOutput.from(CategoryID.from("123"))));
 
         final var request = MockMvcRequestBuilders.post("/categories")
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(this.mapper.writeValueAsString(aInput));
+
         this.mvc.perform(request)
                 .andDo(print())
-                .andExpectAll(
-                        status().isCreated(),
-                        header().string("Locaton", "/categories/123")
-                );
+                .andExpectAll(status().isCreated())
+                .andExpect(header().string("Location", "/categories/123"))
+                .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.id", equalTo("123")));
+
 
         verify(createCategoryUseCase, times(1))
                 .execute(argThat(cmd ->
