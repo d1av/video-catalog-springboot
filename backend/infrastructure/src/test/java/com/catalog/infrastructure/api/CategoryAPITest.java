@@ -8,6 +8,7 @@ import com.catalog.application.category.retrieve.get.GetCategoryByIdUseCase;
 import com.catalog.domain.category.Category;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.exceptions.DomainException;
+import com.catalog.domain.exceptions.NotFoundException;
 import com.catalog.domain.validation.Error;
 import com.catalog.domain.validation.handler.Notification;
 import com.catalog.infrastructure.category.models.CreateCategoryApiInput;
@@ -175,7 +176,7 @@ public class CategoryAPITest {
                 .thenReturn(CategoryOutput.from(aCategory));
 
         // when
-        final var request = MockMvcRequestBuilders.get("/categories/{id}" , expectedId)
+        final var request = MockMvcRequestBuilders.get("/categories/{id}", expectedId)
                 .contentType(MediaType.APPLICATION_JSON_VALUE);
 
         final var response = this.mvc.perform(request)
@@ -199,23 +200,19 @@ public class CategoryAPITest {
     public void givenInvalidId_whenCallsGetCategory_shouldReturnNotFound() throws Exception {
         // given
         final var expectedErrorMessage = "Category with ID 123 was not found";
-        final var expectedId = CategoryID.from("123").getValue();
+        final var expectedId = CategoryID.from("123");
         // when
         Mockito.when(getCategoryByIdUseCase.execute(any()))
-                .thenThrow(DomainException.with(
-                        new Error("Category with ID %s was not found".formatted(expectedId))
-                 ));
+                .thenThrow(NotFoundException.with(Category.class, expectedId));
 
-        final var request = MockMvcRequestBuilders.get("/categories/{id}", expectedId)
+        final var request = MockMvcRequestBuilders.get("/categories/{id}", expectedId.getValue())
                 .contentType(MediaType.APPLICATION_JSON_VALUE);
 
         final var response = this.mvc.perform(request)
                 .andDo(print());
         //then
-        response.andExpect(status().isNotFound()
-                )
-                .andExpect(jsonPath("$.errors", hasSize(1)))
-                .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)));
+        response.andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)));
 
     }
 
