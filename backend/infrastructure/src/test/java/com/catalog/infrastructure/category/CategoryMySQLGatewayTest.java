@@ -1,9 +1,11 @@
-package com.catalog.infrastructure.category.persistence;
+package com.catalog.infrastructure.category;
 
 import com.catalog.MySQLGatewayTest;
 import com.catalog.domain.category.Category;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.category.CategorySearchQuery;
+import com.catalog.infrastructure.category.persistence.CategoryJpaEntity;
+import com.catalog.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ public class CategoryMySQLGatewayTest {
     private CategoryMySQLGateway categoryGateway;
     @Autowired
     private CategoryRepository categoryRepository;
+
 
     @Test
     public void givenAValidCategory_whenCallsCreate_shouldReturnNewCategory() {

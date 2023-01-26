@@ -1,4 +1,4 @@
-package com.catalog.infrastructure.category.persistence;
+package com.catalog.infrastructure.category;
 
 import com.catalog.domain.category.Category;
 import com.catalog.domain.category.CategoryGateway;

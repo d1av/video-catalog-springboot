@@ -5,8 +5,12 @@ import com.catalog.MySQLGatewayTest;
 import org.hibernate.PropertyValueException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+
+import static org.mockito.ArgumentMatchers.eq;
 
 @MySQLGatewayTest
 public class CategoryRepositoryTest {
@@ -24,11 +28,11 @@ public class CategoryRepositoryTest {
         final var anEntity = CategoryJpaEntity.from(aCategory);
         anEntity.setName(null);
 
-        final var actualException = Assertions.assertThrows(
-                DataIntegrityViolationException.class, () -> categoryRepository.save(anEntity));
+        final var actualException =
+                Assertions.assertThrows(DataIntegrityViolationException.class, () -> categoryRepository.save(anEntity));
 
-        final var actualCause = Assertions.assertInstanceOf(
-                PropertyValueException.class, actualException.getCause());
+        final var actualCause =
+                Assertions.assertInstanceOf(PropertyValueException.class, actualException.getCause());
 
         Assertions.assertEquals(expectedPropertyName, actualCause.getPropertyName());
         Assertions.assertEquals(expectedMessage, actualCause.getMessage());
