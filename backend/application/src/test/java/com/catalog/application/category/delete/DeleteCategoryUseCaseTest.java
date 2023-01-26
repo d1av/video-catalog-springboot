@@ -58,14 +58,14 @@ public class DeleteCategoryUseCaseTest {
         final var aCategory = Category.newCategory("Filmes", "A categoria mais assistida", true);
         final var expectedId = aCategory.getId();
 
-        Mockito.doNothing().when(categoryGateway)
+        Mockito.doThrow(new IllegalArgumentException()).when(categoryGateway)
                 .deleteById(Mockito.eq(expectedId));
 
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> useCase.execute(expectedId.getValue()));
 
         Mockito.verify(categoryGateway,
-                        Mockito.times(0))
+                        Mockito.times(1))
                 .deleteById(expectedId);
 
     }

@@ -74,7 +74,7 @@ public class CreateCategoryUseCaseTest {
         final var notification = Assertions.assertThrows(DomainException.class, () -> useCase.execute(aCommand).getLeft());
 
         Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
-        Assertions.assertEquals(expectedErrorMessage, notification.getFirstError().message());
+        Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
 
         Mockito.verify(categoryGateway, times(0)).create(any());
     }

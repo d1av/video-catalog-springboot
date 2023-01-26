@@ -24,7 +24,7 @@ public class DomainException extends NoStackTraceException {
         return errors;
     }
 
-    public Error getFirstError() {
+    public Error firstError() {
         return errors.get(0);
     }
 }

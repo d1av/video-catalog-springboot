@@ -69,7 +69,7 @@ public class CreateCategoryUseCaseIT {
         final var notification = Assertions.assertThrows(DomainException.class, () -> useCase.execute(aCommand).getLeft());
 
         Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
-        Assertions.assertEquals(expectedErrorMessage, notification.getFirstError().message());
+        Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
 
         Assertions.assertEquals(0, categoryRepository.count());
 
