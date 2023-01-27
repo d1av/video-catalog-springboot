@@ -349,8 +349,7 @@ public class CategoryAPITest {
         final var response = this.mvc.perform(request)
                 .andDo(print());
         // then
-        response.andExpect(status().isNoContent())
-                .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE));
+        response.andExpect(status().isNoContent());
 
         verify(deleteCategoryUseCase, times(1)).execute(eq(expectedId));
 

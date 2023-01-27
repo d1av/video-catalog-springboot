@@ -3,6 +3,7 @@ package com.catalog.infrastructure.api.controllers;
 import com.catalog.application.category.create.CreateCategoryCommand;
 import com.catalog.application.category.create.CreateCategoryOutput;
 import com.catalog.application.category.create.CreateCategoryUseCase;
+import com.catalog.application.category.delete.DeleteCategoryUseCase;
 import com.catalog.application.category.retrieve.get.GetCategoryByIdUseCase;
 import com.catalog.application.category.update.UpdateCategoryCommand;
 import com.catalog.application.category.update.UpdateCategoryOutput;
@@ -27,14 +28,17 @@ public class CategoryController implements CategoryAPI {
     private final CreateCategoryUseCase createCategoryUseCase;
     private final GetCategoryByIdUseCase getCategoryByIdUseCase;
     private final UpdateCategoryUseCase updateCategoryUseCase;
+    private final DeleteCategoryUseCase deleteCategoryUseCase;
 
     public CategoryController(
             final CreateCategoryUseCase createCategoryUseCase,
             final GetCategoryByIdUseCase getCategoryByIdUseCase,
-            final UpdateCategoryUseCase updateCategoryUseCase) {
+            final UpdateCategoryUseCase updateCategoryUseCase,
+            final DeleteCategoryUseCase deleteCategoryUseCase) {
         this.createCategoryUseCase = Objects.requireNonNull(createCategoryUseCase);
         this.getCategoryByIdUseCase = getCategoryByIdUseCase;
         this.updateCategoryUseCase = updateCategoryUseCase;
+        this.deleteCategoryUseCase = deleteCategoryUseCase;
     }
 
     @Override
@@ -79,5 +83,10 @@ public class CategoryController implements CategoryAPI {
 
         return this.updateCategoryUseCase.execute(aCommand)
                 .fold(onError, onSuccess);
+    }
+
+    @Override
+    public void deleteById(String anId) {
+        this.deleteCategoryUseCase.execute(anId);
     }
 }
