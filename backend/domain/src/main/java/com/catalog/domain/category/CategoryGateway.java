@@ -1,5 +1,6 @@
 package com.catalog.domain.category;
 
+import com.catalog.domain.pagination.SearchQuery;
 import com.catalog.domain.pagination.Pagination;
 
 import java.util.Optional;
@@ -13,5 +14,5 @@ public interface CategoryGateway {
 
     Category update(Category aCategory);
 
-    Pagination<Category> findAll(CategorySearchQuery aQuery);
+    Pagination<Category> findAll(SearchQuery aQuery);
 }

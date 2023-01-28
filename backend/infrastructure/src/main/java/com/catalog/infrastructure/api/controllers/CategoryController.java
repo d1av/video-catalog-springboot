@@ -9,7 +9,7 @@ import com.catalog.application.category.retrieve.list.ListCategoriesUseCase;
 import com.catalog.application.category.update.UpdateCategoryCommand;
 import com.catalog.application.category.update.UpdateCategoryOutput;
 import com.catalog.application.category.update.UpdateCategoryUseCase;
-import com.catalog.domain.category.CategorySearchQuery;
+import com.catalog.domain.pagination.SearchQuery;
 import com.catalog.domain.pagination.Pagination;
 import com.catalog.domain.validation.handler.Notification;
 import com.catalog.infrastructure.api.CategoryAPI;
@@ -71,7 +71,7 @@ public class CategoryController implements CategoryAPI {
             int perPage,
             String sort,
             String direction) {
-        return listCategoriesUseCase.execute(new CategorySearchQuery(
+        return listCategoriesUseCase.execute(new SearchQuery(
                 page, perPage, search, sort, direction
         ))
                 .map(CategoryApiPresenter::present);

@@ -1,6 +1,6 @@
-package com.catalog.domain.category;
+package com.catalog.domain.pagination;
 
-public record CategorySearchQuery(
+public record SearchQuery(
         int page,
         int perPage,
         String terms,

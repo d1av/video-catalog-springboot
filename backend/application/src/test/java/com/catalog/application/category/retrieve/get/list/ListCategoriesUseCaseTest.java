@@ -4,7 +4,7 @@ import com.catalog.application.category.retrieve.list.CategoryListOutput;
 import com.catalog.application.category.retrieve.list.DefaultListCategoriesUseCase;
 import com.catalog.domain.category.Category;
 import com.catalog.domain.category.CategoryGateway;
-import com.catalog.domain.category.CategorySearchQuery;
+import com.catalog.domain.pagination.SearchQuery;
 import com.catalog.domain.pagination.Pagination;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +45,7 @@ public class ListCategoriesUseCaseTest {
         final var expectedDirection = "asc";
 
 
-        final var aQuery = new CategorySearchQuery(
+        final var aQuery = new SearchQuery(
                 expectedPage, expectedPerPage,
                 expectedTerms, expectedSort, expectedDirection);
 
@@ -80,7 +80,7 @@ public class ListCategoriesUseCaseTest {
         final var expectedDirection = "asc";
 
 
-        final var aQuery = new CategorySearchQuery(
+        final var aQuery = new SearchQuery(
                 expectedPage, expectedPerPage,
                 expectedTerms, expectedSort, expectedDirection);
 
@@ -114,7 +114,7 @@ public class ListCategoriesUseCaseTest {
         final var expectedErrorMessage = "Gateway error";
 
 
-        final var aQuery = new CategorySearchQuery(
+        final var aQuery = new SearchQuery(
                 expectedPage, expectedPerPage,
                 expectedTerms, expectedSort, expectedDirection);
 
