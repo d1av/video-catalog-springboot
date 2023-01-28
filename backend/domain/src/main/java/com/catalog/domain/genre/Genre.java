@@ -9,6 +9,7 @@ import com.catalog.domain.validation.handler.Notification;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Genre extends AggregateRoot<GenreID> {
@@ -89,7 +90,7 @@ public class Genre extends AggregateRoot<GenreID> {
         else deactivate();
 
         this.name = aName;
-        this.categories = new ArrayList<>(categories);
+        this.categories = new ArrayList<>(categories != null ? categories : Collections.emptyList());
         this.updatedAt = InstantUtils.now();
         selfValidate();
         return this;
