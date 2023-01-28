@@ -14,13 +14,13 @@ public class GenreTest {
         final var expectedCategories = 0;
 
 
-        final var actualGenre = Genre.newGente(expectedName, expectedIsActive);
+        final var actualGenre = Genre.newGenre(expectedName, expectedIsActive);
 
         Assertions.assertNotNull(actualGenre);
         Assertions.assertNotNull(actualGenre.getId());
         Assertions.assertEquals(expectedName, actualGenre.getName());
         Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
-        Assertions.assertEquals(expectedCategories, actualGenre.getCategories().size);
+        Assertions.assertEquals(expectedCategories, actualGenre.getCategories().size());
         Assertions.assertNotNull(actualGenre.getCreatedAt());
         Assertions.assertNotNull(actualGenre.getUpdatedAt());
         Assertions.assertNull(actualGenre.getDeletedAt());
@@ -34,7 +34,7 @@ public class GenreTest {
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'name' should not be null";
 
-        final var actualGenre = Genre.newGente(expectedName, expectedIsActive);
+        final var actualGenre = Genre.newGenre(expectedName, expectedIsActive);
 
         final var actualException = Assertions.assertThrows(DomainException.class, () -> {
             actualGenre.validate(new ThrowsValidationHandler());
@@ -52,7 +52,7 @@ public class GenreTest {
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'name' should not be null";
 
-        final var actualGenre = Genre.newGente(expectedName, expectedIsActive);
+        final var actualGenre = Genre.newGenre(expectedName, expectedIsActive);
 
         final var actualException = Assertions.assertThrows(DomainException.class, () -> {
             actualGenre.validate(new ThrowsValidationHandler());
@@ -75,7 +75,7 @@ public class GenreTest {
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'name' must be between 1 and 255 characters";
 
-        final var actualGenre = Genre.newGente(expectedName, expectedIsActive);
+        final var actualGenre = Genre.newGenre(expectedName, expectedIsActive);
 
         final var actualException = Assertions.assertThrows(DomainException.class, () -> {
             actualGenre.validate(new ThrowsValidationHandler());
