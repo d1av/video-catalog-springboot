@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GenreTest {
@@ -250,8 +251,10 @@ public class GenreTest {
 
         final var actualGenre = Genre.newGenre("Ronaldo", false);
 
-        final var acualCreatedAt = actualGenre.getCreatedAt();
-        final var acualUpdatedAt = actualGenre.getUpdatedAt();
+        final var actualCreatedAt = actualGenre.getCreatedAt();
+        final var actualUpdatedAt = actualGenre.getUpdatedAt();
+        Thread.sleep(100);
+        actualGenre.update(expectedName, expectedIsActive, Collections.emptyList());
 
         actualGenre.addCategory(seriesID);
         actualGenre.addCategory(moviesID);
@@ -260,8 +263,8 @@ public class GenreTest {
         Assertions.assertEquals(expectedName, actualGenre.getName());
         Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
         Assertions.assertEquals(expectedCategories, actualGenre.getCategories());
-        Assertions.assertEquals(acualCreatedAt, actualGenre.getCreatedAt());
-        Assertions.assertTrue(acualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
+        Assertions.assertEquals(actualCreatedAt, actualGenre.getCreatedAt());
+        Assertions.assertTrue(actualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
         Assertions.assertNull(actualGenre.getDeletedAt());
     }
 
@@ -275,12 +278,12 @@ public class GenreTest {
         final List<CategoryID> expectedCategories = List.of(moviesID); // only remain movie id
 
         final var actualGenre = Genre.newGenre("Ronaldo", expectedIsActive);
-        actualGenre.update(expectedName, expectedIsActive, List.of(seriesID, moviesID)); // go 2 elements
-
-        Assertions.assertEquals(2, actualGenre.getCategories().size());
-
         final var actualCreatedAt = actualGenre.getCreatedAt();
         final var actualUpdatedAt = actualGenre.getUpdatedAt();
+        Thread.sleep(100);
+
+        actualGenre.update(expectedName, expectedIsActive, List.of(seriesID, moviesID)); // go 2 elements
+        Assertions.assertEquals(2, actualGenre.getCategories().size());
 
         actualGenre.removeCategory(seriesID);
 
@@ -303,11 +306,12 @@ public class GenreTest {
         final List<CategoryID> expectedCategories = List.of(moviesID, seriesID);
 
         final var actualGenre = Genre.newGenre("Ronaldo", false);
+        final var actualCreatedAt = actualGenre.getCreatedAt();
+        final var actualUpdatedAt = actualGenre.getUpdatedAt();
+        Thread.sleep(100);
 
-        actualGenre.update(expectedName,expectedIsActive,expectedCategories);
+        actualGenre.update(expectedName, expectedIsActive, expectedCategories);
 
-        final var acualCreatedAt = actualGenre.getCreatedAt();
-        final var acualUpdatedAt = actualGenre.getUpdatedAt();
 
         actualGenre.removeCategory(null);
 
@@ -315,8 +319,8 @@ public class GenreTest {
         Assertions.assertEquals(expectedName, actualGenre.getName());
         Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
         Assertions.assertEquals(expectedCategories, actualGenre.getCategories());
-        Assertions.assertEquals(acualCreatedAt, actualGenre.getCreatedAt());
-        Assertions.assertTrue(acualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
+        Assertions.assertEquals(actualCreatedAt, actualGenre.getCreatedAt());
+        Assertions.assertTrue(actualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
         Assertions.assertNull(actualGenre.getDeletedAt());
     }
 }
