@@ -381,7 +381,7 @@ public class CategoryAPITest {
                 .thenReturn(new Pagination<>(expectedPage, expectedPerPage, expectedTotal, expectedItems));
 
         // when
-        final var request = MockMvcRequestBuilders.get("/categories/")
+        final var request = MockMvcRequestBuilders.get("/categories")
                 .queryParam("page", String.valueOf(expectedPage))
                 .queryParam("perPage", String.valueOf(expectedPerPage))
                 .queryParam("sort", expectedSort)

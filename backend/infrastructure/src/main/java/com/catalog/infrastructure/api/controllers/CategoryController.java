@@ -5,9 +5,11 @@ import com.catalog.application.category.create.CreateCategoryOutput;
 import com.catalog.application.category.create.CreateCategoryUseCase;
 import com.catalog.application.category.delete.DeleteCategoryUseCase;
 import com.catalog.application.category.retrieve.get.GetCategoryByIdUseCase;
+import com.catalog.application.category.retrieve.list.ListCategoriesUseCase;
 import com.catalog.application.category.update.UpdateCategoryCommand;
 import com.catalog.application.category.update.UpdateCategoryOutput;
 import com.catalog.application.category.update.UpdateCategoryUseCase;
+import com.catalog.domain.category.CategorySearchQuery;
 import com.catalog.domain.pagination.Pagination;
 import com.catalog.domain.validation.handler.Notification;
 import com.catalog.infrastructure.api.CategoryAPI;
@@ -29,16 +31,19 @@ public class CategoryController implements CategoryAPI {
     private final GetCategoryByIdUseCase getCategoryByIdUseCase;
     private final UpdateCategoryUseCase updateCategoryUseCase;
     private final DeleteCategoryUseCase deleteCategoryUseCase;
+    private final ListCategoriesUseCase listCategoriesUseCase;
 
     public CategoryController(
             final CreateCategoryUseCase createCategoryUseCase,
             final GetCategoryByIdUseCase getCategoryByIdUseCase,
             final UpdateCategoryUseCase updateCategoryUseCase,
-            final DeleteCategoryUseCase deleteCategoryUseCase) {
+            final DeleteCategoryUseCase deleteCategoryUseCase,
+            final ListCategoriesUseCase listCategoriesUseCase) {
         this.createCategoryUseCase = Objects.requireNonNull(createCategoryUseCase);
         this.getCategoryByIdUseCase = getCategoryByIdUseCase;
         this.updateCategoryUseCase = updateCategoryUseCase;
         this.deleteCategoryUseCase = deleteCategoryUseCase;
+        this.listCategoriesUseCase = listCategoriesUseCase;
     }
 
     @Override
@@ -59,8 +64,15 @@ public class CategoryController implements CategoryAPI {
     }
 
     @Override
-    public Pagination<?> listCategories(String search, int page, int perPage, String sort, String direction) {
-        return null;
+    public Pagination<?> listCategories(
+            String search,
+            int page,
+            int perPage,
+            String sort,
+            String direction) {
+        return listCategoriesUseCase.execute(new CategorySearchQuery(
+                page,perPage,search,sort,direction
+        ));
     }
 
     @Override
