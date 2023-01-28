@@ -2,7 +2,9 @@ package com.catalog.domain.genre;
 
 import com.catalog.domain.AggregateRoot;
 import com.catalog.domain.category.CategoryID;
+import com.catalog.domain.exceptions.NotificationException;
 import com.catalog.domain.validation.ValidationHandler;
+import com.catalog.domain.validation.handler.Notification;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -32,6 +34,13 @@ public class Genre extends AggregateRoot<GenreID> {
         this.createdAt = aCreatedAt;
         this.updatedAt = aUpdatedAt;
         this.deletedAt = aDeletedAt;
+
+        final var notification = Notification.create();
+        validate(notification);
+
+        if(notification.hasError()){
+            throw new NotificationException("Failed to validate Aggregate Genre",notification);
+        }
     }
 
     public static Genre newGenre(final String aName, final boolean isActive) {
@@ -82,7 +91,7 @@ public class Genre extends AggregateRoot<GenreID> {
 
     @Override
     public void validate(final ValidationHandler handler) {
-
+        new GenreValidator(this, handler).validate();
     }
 
     public String getName() {
