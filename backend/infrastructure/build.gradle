@@ -53,6 +53,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.2'
 
+    // test container
+    testImplementation('org.testcontainers:testcontainers:1.17.5')
+    testImplementation('org.testcontainers:mysql:1.17.6')
+    testImplementation('org.testcontainers:junit-jupiter:1.17.6')
+
 }
 
 flyway {

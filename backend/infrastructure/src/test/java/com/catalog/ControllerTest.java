@@ -1,7 +1,6 @@
 package com.catalog;
 
 import com.catalog.infrastructure.configuration.ObjectMapperConfig;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
@@ -12,7 +11,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-@ActiveProfiles("test")
+@ActiveProfiles("test-integration")
 @WebMvcTest
 @Import(ObjectMapperConfig.class)
 public @interface ControllerTest {
