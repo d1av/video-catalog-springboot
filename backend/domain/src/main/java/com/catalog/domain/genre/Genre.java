@@ -3,6 +3,7 @@ package com.catalog.domain.genre;
 import com.catalog.domain.AggregateRoot;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.exceptions.NotificationException;
+import com.catalog.domain.utils.InstantUtils;
 import com.catalog.domain.validation.ValidationHandler;
 import com.catalog.domain.validation.handler.Notification;
 
@@ -38,14 +39,14 @@ public class Genre extends AggregateRoot<GenreID> {
         final var notification = Notification.create();
         validate(notification);
 
-        if(notification.hasError()){
-            throw new NotificationException("Failed to validate Aggregate Genre",notification);
+        if (notification.hasError()) {
+            throw new NotificationException("Failed to validate Aggregate Genre", notification);
         }
     }
 
     public static Genre newGenre(final String aName, final boolean isActive) {
         final var anId = GenreID.unique();
-        final var now = Instant.now();
+        final var now = InstantUtils.now();
         final var deletedAt = isActive ? null : now;
         return new Genre(
                 anId,
@@ -121,5 +122,19 @@ public class Genre extends AggregateRoot<GenreID> {
 
     public GenreID getId() {
         return super.id;
+    }
+
+    public void deactivate() {
+        if (getDeletedAt() == null) {
+            this.deletedAt = InstantUtils.now();
+        }
+        this.active = false;
+        this.updatedAt = InstantUtils.now();
+    }
+
+    public void activate() {
+        this.deletedAt = null;
+        this.active = true;
+        this.updatedAt = InstantUtils.now();
     }
 }

@@ -78,6 +78,7 @@ public class GenreTest {
         Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().get(0).message());
     }
 
+    @Test
     public void givenAActiveGenre_whenCallDeactivate_shouldReceivedOK() {
         final var expectedName = "Ação";
         final var expectedIsActive = false;
@@ -105,22 +106,24 @@ public class GenreTest {
         Assertions.assertNotNull(actualGenre.getDeletedAt());
     }
 
-    public void givenAInactiveGenre_whenCallActivate_shouldReceivedOK() {
+    @Test
+    public void givenAInactiveGenre_whenCallActivate_shouldReceivedOK() throws InterruptedException {
         final var expectedName = "Ação";
         final var expectedIsActive = true;
         final var expectedCategories = 0;
 
-        final var actualGenre = Genre.newGenre(expectedName, true);
+        final var actualGenre = Genre.newGenre(expectedName, false);
 
-        Assertions.assertTrue(actualGenre.isActive());
+        Assertions.assertFalse(actualGenre.isActive());
         Assertions.assertNotNull(actualGenre.getDeletedAt());
         Assertions.assertNotNull(actualGenre.getCreatedAt());
 
         final var acualCreatedAt = actualGenre.getCreatedAt();
         final var acualUpdatedAt = actualGenre.getUpdatedAt();
 
-        actualGenre.activate();
+        Thread.sleep(50);
 
+        actualGenre.activate();
 
         Assertions.assertNotNull(actualGenre);
         Assertions.assertNotNull(actualGenre.getId());
