@@ -36,12 +36,7 @@ public class Genre extends AggregateRoot<GenreID> {
         this.updatedAt = aUpdatedAt;
         this.deletedAt = aDeletedAt;
 
-        final var notification = Notification.create();
-        validate(notification);
-
-        if (notification.hasError()) {
-            throw new NotificationException("Failed to validate Aggregate Genre", notification);
-        }
+        selfValidate();
     }
 
     public static Genre newGenre(final String aName, final boolean isActive) {
@@ -89,6 +84,31 @@ public class Genre extends AggregateRoot<GenreID> {
         );
     }
 
+    public Genre update(String aName, boolean isActive, List<CategoryID> categories) {
+        if (isActive) activate();
+        else deactivate();
+
+        this.name = aName;
+        this.categories = new ArrayList<>(categories);
+        this.updatedAt = InstantUtils.now();
+        selfValidate();
+        return this;
+    }
+
+    public void deactivate() {
+        if (getDeletedAt() == null) {
+            this.deletedAt = InstantUtils.now();
+        }
+        this.active = false;
+        this.updatedAt = InstantUtils.now();
+    }
+
+    public void activate() {
+        this.deletedAt = null;
+        this.active = true;
+        this.updatedAt = InstantUtils.now();
+    }
+
 
     @Override
     public void validate(final ValidationHandler handler) {
@@ -119,22 +139,16 @@ public class Genre extends AggregateRoot<GenreID> {
         return deletedAt;
     }
 
-
     public GenreID getId() {
         return super.id;
     }
 
-    public void deactivate() {
-        if (getDeletedAt() == null) {
-            this.deletedAt = InstantUtils.now();
-        }
-        this.active = false;
-        this.updatedAt = InstantUtils.now();
-    }
+    private void selfValidate() {
+        final var notification = Notification.create();
+        validate(notification);
 
-    public void activate() {
-        this.deletedAt = null;
-        this.active = true;
-        this.updatedAt = InstantUtils.now();
+        if (notification.hasError()) {
+            throw new NotificationException("Failed to validate Aggregate Genre", notification);
+        }
     }
 }

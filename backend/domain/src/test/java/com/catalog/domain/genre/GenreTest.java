@@ -194,7 +194,7 @@ public class GenreTest {
         Assertions.assertEquals(expectedCategories, actualGenre.getCategories());
         Assertions.assertEquals(acualCreatedAt, actualGenre.getCreatedAt());
         Assertions.assertTrue(acualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
-        Assertions.assertNull(actualGenre.getDeletedAt());
+        Assertions.assertNotNull(actualGenre.getDeletedAt());
     }
     @Test
     public void givenAValidGenre_whenCallUpdateWithNullName_shouldReceiveNotificationException() throws InterruptedException {
@@ -202,7 +202,7 @@ public class GenreTest {
         final var expectedIsActive = false;
         final var expectedCategories = List.of(CategoryID.from("123"));
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'name' must be between 1 and 255 characters";
+        final var expectedErrorMessage = "'name' should not be null";
 
         final var actualGenre = Genre.newGenre("Ronaldo", true);
 
