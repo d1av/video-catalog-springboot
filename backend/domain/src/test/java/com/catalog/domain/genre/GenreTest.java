@@ -77,4 +77,59 @@ public class GenreTest {
         Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
         Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().get(0).message());
     }
+
+    public void givenAActiveGenre_whenCallDeactivate_shouldReceivedOK() {
+        final var expectedName = "Ação";
+        final var expectedIsActive = false;
+        final var expectedCategories = 0;
+
+        final var actualGenre = Genre.newGenre(expectedName, true);
+
+        Assertions.assertTrue(actualGenre.isActive());
+        Assertions.assertNull(actualGenre.getDeletedAt());
+
+        final var acualCreatedAt = actualGenre.getCreatedAt();
+        final var acualUpdatedAt = actualGenre.getUpdatedAt();
+
+        actualGenre.deactivate();
+
+        Assertions.assertNotNull(actualGenre);
+        Assertions.assertNotNull(actualGenre.getId());
+        Assertions.assertEquals(expectedName, actualGenre.getName());
+        Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
+        Assertions.assertEquals(expectedCategories, actualGenre.getCategories().size());
+        Assertions.assertEquals(acualCreatedAt, actualGenre.getCreatedAt());
+        Assertions.assertTrue(acualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
+        Assertions.assertNotNull(actualGenre.getCreatedAt());
+        Assertions.assertNotNull(actualGenre.getUpdatedAt());
+        Assertions.assertNotNull(actualGenre.getDeletedAt());
+    }
+
+    public void givenAInactiveGenre_whenCallActivate_shouldReceivedOK() {
+        final var expectedName = "Ação";
+        final var expectedIsActive = true;
+        final var expectedCategories = 0;
+
+        final var actualGenre = Genre.newGenre(expectedName, true);
+
+        Assertions.assertTrue(actualGenre.isActive());
+        Assertions.assertNotNull(actualGenre.getDeletedAt());
+        Assertions.assertNotNull(actualGenre.getCreatedAt());
+
+        final var acualCreatedAt = actualGenre.getCreatedAt();
+        final var acualUpdatedAt = actualGenre.getUpdatedAt();
+
+        actualGenre.activate();
+
+
+        Assertions.assertNotNull(actualGenre);
+        Assertions.assertNotNull(actualGenre.getId());
+        Assertions.assertEquals(expectedName, actualGenre.getName());
+        Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
+        Assertions.assertEquals(expectedCategories, actualGenre.getCategories().size());
+        Assertions.assertEquals(acualCreatedAt, actualGenre.getCreatedAt());
+        Assertions.assertTrue(acualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
+        Assertions.assertNotNull(actualGenre.getUpdatedAt());
+        Assertions.assertNull(actualGenre.getDeletedAt());
+    }
 }
