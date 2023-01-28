@@ -1,6 +1,7 @@
 package com.catalog.domain.genre;
 
 import com.catalog.domain.AggregateRoot;
+import com.catalog.domain.category.Category;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.exceptions.NotificationException;
 import com.catalog.domain.utils.InstantUtils;
@@ -161,11 +162,20 @@ public class Genre extends AggregateRoot<GenreID> {
         return this;
     }
 
+
     public Genre removeCategory(CategoryID aCategoryID) {
         if (aCategoryID == null) return this;
 
         this.categories.remove(aCategoryID);
         this.updatedAt = InstantUtils.now();
         return this;
+    }
+
+    public void addCategories(List<CategoryID> aCategories) {
+        if (aCategories == null) return;
+        if (aCategories.size()==0) return;
+
+        this.categories.addAll(aCategories);
+        this.updatedAt = InstantUtils.now();
     }
 }
