@@ -5,15 +5,30 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 
-import java.io.IOException;
-import java.time.Instant;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JacksonTest
-public class UpdateCategoryRequestTest {
+class CreateCategoryRequestTest {
     @Autowired
-    private JacksonTester<UpdateCategoryRequest> json;
+    private JacksonTester<CreateCategoryRequest> json;
+
+
+    @Test
+    public void testMarshall() throws Exception {
+        final var expectedName = "Filmes";
+        final var expectedDescription = "A categoria mais assistida";
+        final var expectedIsActive = false;
+
+        final var request =
+                new CreateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
+
+        final var actualJson = this.json.write(request);
+
+        assertThat(actualJson)
+                .hasJsonPathValue("$.name", expectedName)
+                .hasJsonPathValue("$.description", expectedDescription)
+                .hasJsonPathValue("$.is_active", expectedIsActive);
+    }
 
     @Test
     public void testUnmarshal() throws Exception {
