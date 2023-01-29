@@ -33,8 +33,8 @@ public class DefaultCreateGenreUseCase extends CreateGenreUseCase {
 
         final var notification = Notification.create();
         notification.append(validateCategories(categories));
-        notification.validate(() -> Genre.newGenre(aName, isActive));
         final var aGenre = Genre.newGenre(aName, isActive);
+        notification.validate(() -> aGenre);
 
         if (notification.hasError()) {
             throw new NotificationException("Could not create Aggregate Genre", notification);
@@ -60,7 +60,7 @@ public class DefaultCreateGenreUseCase extends CreateGenreUseCase {
                     .collect(Collectors.joining(", "));
 
             notification.append(
-                    new Error("Some categories could not be found %s".formatted(missingIdsMessage)));
+                    new Error("Some categories could not be found: %s".formatted(missingIdsMessage)));
         }
         return notification;
     }

@@ -171,11 +171,13 @@ public class Genre extends AggregateRoot<GenreID> {
         return this;
     }
 
-    public void addCategories(List<CategoryID> aCategories) {
-        if (aCategories == null) return;
-        if (aCategories.size()==0) return;
+    public Genre addCategories(List<CategoryID> aCategories) {
+        if (aCategories == null) return this;
+        if (aCategories.size() == 0) return this;
 
         this.categories.addAll(aCategories);
         this.updatedAt = InstantUtils.now();
+
+        return this;
     }
 }
