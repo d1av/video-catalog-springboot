@@ -1,6 +1,5 @@
 package com.catalog.application.genre.update;
 
-import com.catalog.application.genre.create.DefaultCreateGenreUseCase;
 import com.catalog.domain.category.CategoryGateway;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.genre.Genre;
@@ -8,6 +7,7 @@ import com.catalog.domain.genre.GenreGateway;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -17,14 +17,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static java.util.List.of;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UpdateGenreUseCase {
+public class UpdateGenreUseCaseTest {
     @InjectMocks
     private DefaultUpdateGenreUseCase useCase;
     @Mock
@@ -47,14 +46,14 @@ public class UpdateGenreUseCase {
                 expectedId.getValue(),
                 expectedName,
                 expectedIsActive,
-                expectedCategories
+                asString(expectedCategories)
         );
 
         when(genreGateway.findById(any()))
                 .thenReturn(Optional.of(Genre.with(aGenre)));
 
         when(genreGateway.update(any()))
-                .thenAnswer(returnsFirstArgs());
+                .thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         // when
         Thread.sleep(100);
@@ -75,6 +74,12 @@ public class UpdateGenreUseCase {
                         && aGenre.getUpdatedAt().isBefore(aUpdatedGenre.getUpdatedAt())
                         && Objects.isNull(aUpdatedGenre.getDeletedAt())
         ));
+    }
+
+    private List<String> asString(final List<CategoryID> ids) {
+        return ids.stream()
+                .map(CategoryID::getValue)
+                .toList();
     }
 
 }
