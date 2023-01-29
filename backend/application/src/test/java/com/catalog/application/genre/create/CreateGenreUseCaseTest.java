@@ -1,6 +1,8 @@
 package com.catalog.application.genre.create;
 
+import com.catalog.application.UseCaseTest;
 import com.catalog.application.category.create.DefaultCreateCategoryUseCase;
+import com.catalog.domain.category.CategoryGateway;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.genre.GenreGateway;
 import org.junit.jupiter.api.Assertions;
@@ -19,12 +21,19 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CreateGenreUseCaseTest {
+public class CreateGenreUseCaseTest extends UseCaseTest {
     @InjectMocks
     private DefaultCreateGenreUseCase useCase;
 
     @Mock
     private GenreGateway genreGateway;
+    @Mock
+    private CategoryGateway categoryGateway;
+
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway, genreGateway);
+    }
 
     @Test
     public void givenAValidCommand_whenCallsCreateGenre_shouldReturnGenreId() {
