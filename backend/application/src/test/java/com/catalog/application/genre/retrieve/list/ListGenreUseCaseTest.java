@@ -65,8 +65,8 @@ public class ListGenreUseCaseTest extends UseCaseTest {
 
         // then
         Assertions.assertEquals(expectedPage, actualOutput.currentPage());
-        Assertions.assertEquals(expectedPerPage, actualOutput.petPage());
-        Assertions.assertEquals(expectedTotal, actualOutput.totalItems());
+        Assertions.assertEquals(expectedPerPage, actualOutput.perPage());
+        Assertions.assertEquals(expectedTotal, actualOutput.total());
         Assertions.assertEquals(expectedItems, actualOutput.items());
 
         Mockito.verify(genreGateway, times(1)).findAll(eq(aQuery));
@@ -85,7 +85,7 @@ public class ListGenreUseCaseTest extends UseCaseTest {
         final var expectedDirection = "asc";
         final var expectedTotal = 0;
 
-        final var expectedItems = List.<GereListOutput>of();
+        final var expectedItems = List.<GenreListOutput>of();
 
         final var expectedPagination = new Pagination<>(
                 expectedPage, expectedPerPage, expectedTotal, genres
@@ -102,8 +102,8 @@ public class ListGenreUseCaseTest extends UseCaseTest {
 
         // then
         Assertions.assertEquals(expectedPage, actualOutput.currentPage());
-        Assertions.assertEquals(expectedPerPage, actualOutput.petPage());
-        Assertions.assertEquals(expectedTotal, actualOutput.totalItems());
+        Assertions.assertEquals(expectedPerPage, actualOutput.perPage());
+        Assertions.assertEquals(expectedTotal, actualOutput.total());
         Assertions.assertEquals(expectedItems, actualOutput.items());
 
         Mockito.verify(genreGateway, times(1)).findAll(eq(aQuery));
@@ -111,7 +111,7 @@ public class ListGenreUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenAValidQuery_whenCallsListGenreAndResultIsEmpty_shouldReturnGenres() {
+    public void givenAValidQuery_whenCallsListGenreAndGatewayThrowsRandomError_shouldReturnException() {
         // given
         final var genres = List.<Genre>of();
 
