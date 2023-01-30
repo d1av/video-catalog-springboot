@@ -1,5 +1,6 @@
 package com.catalog.application.category.update;
 
+import com.catalog.application.UseCaseTest;
 import com.catalog.application.category.create.CreateCategoryCommand;
 import com.catalog.domain.category.Category;
 import com.catalog.domain.category.CategoryGateway;
@@ -13,13 +14,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.eq;
 
 @ExtendWith(MockitoExtension.class)
-public class UpdateCategoryUseCaseTest {
+public class UpdateCategoryUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultUpdateCategoryUseCase useCase;
@@ -30,6 +32,11 @@ public class UpdateCategoryUseCaseTest {
     @BeforeEach
     void cleanUp() {
         Mockito.reset(categoryGateway);
+    }
+
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway);
     }
 
     // 1. Teste do caminho feliz

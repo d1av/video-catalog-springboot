@@ -1,5 +1,6 @@
 package com.catalog.application.category.create;
 
+import com.catalog.application.UseCaseTest;
 import com.catalog.domain.category.CategoryGateway;
 import com.catalog.domain.exceptions.DomainException;
 import org.junit.jupiter.api.Assertions;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Objects;
 
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -19,13 +21,18 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CreateCategoryUseCaseTest {
+public class CreateCategoryUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultCreateCategoryUseCase useCase;
 
     @Mock
     private CategoryGateway categoryGateway;
+
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway);
+    }
 
     // 1. Teste do caminho feliz
     // 2. Teste passando uma propriedade inválida (name)

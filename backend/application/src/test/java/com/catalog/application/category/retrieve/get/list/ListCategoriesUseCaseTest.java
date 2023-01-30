@@ -1,5 +1,6 @@
 package com.catalog.application.category.retrieve.get.list;
 
+import com.catalog.application.UseCaseTest;
 import com.catalog.application.category.retrieve.list.CategoryListOutput;
 import com.catalog.application.category.retrieve.list.DefaultListCategoriesUseCase;
 import com.catalog.domain.category.Category;
@@ -20,13 +21,18 @@ import java.util.List;
 
 
 @ExtendWith(MockitoExtension.class)
-public class ListCategoriesUseCaseTest {
+public class ListCategoriesUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultListCategoriesUseCase useCase;
 
     @Mock
     private CategoryGateway categoryGateway;
+
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway);
+    }
 
     @BeforeEach
     void cleanUp() {

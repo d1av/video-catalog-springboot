@@ -1,5 +1,6 @@
 package com.catalog.application.genre.update;
 
+import com.catalog.application.UseCaseTest;
 import com.catalog.domain.category.CategoryGateway;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.exceptions.NotificationException;
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UpdateGenreUseCaseTest {
+public class UpdateGenreUseCaseTest extends UseCaseTest {
     @InjectMocks
     private DefaultUpdateGenreUseCase useCase;
     @Mock
@@ -31,6 +32,10 @@ public class UpdateGenreUseCaseTest {
     @Mock
     private GenreGateway genreGateway;
 
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway, genreGateway);
+    }
 
     @Test
     public void givenAValidCommand_whenCallsUpdateGenre_shouldReturnGenreId() throws InterruptedException {
@@ -269,5 +274,6 @@ public class UpdateGenreUseCaseTest {
                 .map(CategoryID::getValue)
                 .toList();
     }
+
 
 }

@@ -1,5 +1,6 @@
 package com.catalog.application.category.retrieve.get;
 
+import com.catalog.application.UseCaseTest;
 import com.catalog.application.category.create.DefaultCreateCategoryUseCase;
 import com.catalog.domain.category.Category;
 import com.catalog.domain.category.CategoryGateway;
@@ -14,10 +15,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
-@ExtendWith(MockitoExtension.class)
-public class GetCategoryByIdUseCaseTest {
+public class GetCategoryByIdUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultGetCategoryByIdUseCase useCase;
@@ -28,6 +29,10 @@ public class GetCategoryByIdUseCaseTest {
         Mockito.reset(categoryGateway);
     }
 
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway);
+    }
     @Test
     public void givenAValidId_whenCallsGetCategory_shouldReturnCategory() {
         final var expectedName = "Filmes";
