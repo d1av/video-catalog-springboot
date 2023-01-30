@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
 
-@Entity
+@Entity(name = "Category")
 @Table(name = "category")
 public class CategoryJpaEntity {
     @Id

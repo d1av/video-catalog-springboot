@@ -160,20 +160,20 @@ public class UpdateCategoryUseCaseTest extends UseCaseTest {
                         Mockito.times(1))
                 .findById(eq(expectedId));
 
-//        Mockito.verify(categoryGateway,
-//                        Mockito.times(0))
-//                .update(ArgumentMatchers.argThat(
-//                        aUpdatedCategory ->
-//                        {
-//                            return Objects.equals(expectedName, aUpdatedCategory.getName())
-//                                    && Objects.equals(expectedDescription, aUpdatedCategory.getDescription())
-//                                    && Objects.equals(expectedIsActive, aUpdatedCategory.isActive())
-//                                    && Objects.equals(expectedId, aUpdatedCategory.getId())
-//                                    && Objects.equals(aCategory.getCreatedAt(), aUpdatedCategory.getCreatedAt())
-//                                    && aCategory.getCreatedAt().isBefore(aUpdatedCategory.getUpdatedAt())
-//                                    && Objects.nonNull(aUpdatedCategory.getDeletedAt());
-//                        }
-//                ));
+        Mockito.verify(categoryGateway,
+                        Mockito.times(0))
+                .update(ArgumentMatchers.argThat(
+                        aUpdatedCategory ->
+                        {
+                            return Objects.equals(expectedName, aUpdatedCategory.getName())
+                                    && Objects.equals(expectedDescription, aUpdatedCategory.getDescription())
+                                    && Objects.equals(expectedIsActive, aUpdatedCategory.isActive())
+                                    && Objects.equals(expectedId, aUpdatedCategory.getId())
+                                    && Objects.equals(aCategory.getCreatedAt(), aUpdatedCategory.getCreatedAt())
+                                    && aCategory.getCreatedAt().isBefore(aUpdatedCategory.getUpdatedAt())
+                                    && Objects.nonNull(aUpdatedCategory.getDeletedAt());
+                        }
+                ));
 
     }
 

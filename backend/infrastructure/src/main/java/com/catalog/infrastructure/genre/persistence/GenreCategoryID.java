@@ -3,14 +3,11 @@ package com.catalog.infrastructure.genre.persistence;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class GenreCategoryID implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -5268344312768836572L;
     @Column(name = "genre_id", nullable = false)
     private String genreId;
     @Column(name = "category_id", nullable = false)
