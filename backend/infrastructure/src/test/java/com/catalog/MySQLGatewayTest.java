@@ -14,6 +14,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @ActiveProfiles("test-integration")
+//@ActiveProfiles("development")
 @ComponentScan(
         basePackages = "com.catalog",
         includeFilters = {

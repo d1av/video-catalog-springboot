@@ -5,10 +5,8 @@ import com.catalog.domain.genre.GenreGateway;
 import com.catalog.domain.genre.GenreID;
 import com.catalog.domain.pagination.Pagination;
 import com.catalog.domain.pagination.SearchQuery;
-import com.catalog.domain.utils.InstantUtils;
 import com.catalog.infrastructure.genre.persistence.GenreJpaEntity;
 import com.catalog.infrastructure.genre.persistence.GenreRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -29,7 +27,9 @@ public class GenreMySQLGateway implements GenreGateway {
 
     @Override
     public void deleteById(GenreID anId) {
-
+        if (this.genreRepository.findById(anId.getValue()).isPresent()) {
+            this.genreRepository.deleteById(anId.getValue());
+        }
     }
 
     @Override
@@ -48,6 +48,6 @@ public class GenreMySQLGateway implements GenreGateway {
     }
 
     private Genre save(final Genre aGenre) {
-        return this.genreRepository.saveAndFlush(GenreJpaEntity.from(aGenre)).toAggregate();
+        return this.genreRepository.save(GenreJpaEntity.from(aGenre)).toAggregate();
     }
 }

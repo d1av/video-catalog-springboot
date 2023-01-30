@@ -6,6 +6,7 @@ import com.catalog.domain.genre.GenreID;
 import com.catalog.domain.utils.InstantUtils;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "genres")
-public class GenreJpaEntity {
+public class GenreJpaEntity implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
     private String id;
@@ -25,9 +26,9 @@ public class GenreJpaEntity {
     private Set<GenreCategoryJpaEntity> categories;
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant createdAt;
-    @Column(name = "updated_at", columnDefinition = "DATETIME(6)")
+    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant updatedAt;
-    @Column(name = "deleted_at", nullable = false, columnDefinition = "DATETIME(6)")
+    @Column(name = "deleted_at", columnDefinition = "DATETIME(6)")
     private Instant deletedAt;
 
     public GenreJpaEntity() {
@@ -46,8 +47,8 @@ public class GenreJpaEntity {
         this.active = isActive;
         this.categories = new HashSet<>();
         this.createdAt = createdAt;
-        this.deletedAt = updatedAt;
-        this.updatedAt = deletedAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
     }
 
     public static GenreJpaEntity from(final Genre aGenre) {
@@ -56,11 +57,19 @@ public class GenreJpaEntity {
                 aGenre.getName(),
                 aGenre.isActive(),
                 aGenre.getCreatedAt(),
-                aGenre.getUpdatedAt() != null ? aGenre.getUpdatedAt() : InstantUtils.now(),
+                aGenre.getUpdatedAt(),
                 aGenre.getDeletedAt()
         );
-
         aGenre.getCategories().forEach(anEntity::addCategory);
+
+        final var aGenreUpdated = aGenre.getUpdatedAt();
+        final var isItActive = aGenre.isActive();
+
+        if (isItActive) {
+            anEntity.setDeletedAt(null);
+        }
+
+        anEntity.setUpdatedAt(aGenreUpdated == null ? InstantUtils.now() : aGenreUpdated);
 
         return anEntity;
     }
@@ -70,12 +79,13 @@ public class GenreJpaEntity {
                 GenreID.from(getId()),
                 getName(),
                 isActive(),
-                getCategoryIDs(),
+                getCategoriesIDs(),
                 getCreatedAt(),
                 getUpdatedAt(),
-                getDeletedAt()
+                isActive() ? null : getDeletedAt()
         );
     }
+
 
     private void addCategory(final CategoryID anId) {
         this.categories.add(GenreCategoryJpaEntity.from(this, anId));
@@ -85,7 +95,7 @@ public class GenreJpaEntity {
         this.categories.add(GenreCategoryJpaEntity.from(this, anId));
     }
 
-    public List<CategoryID> getCategoryIDs() {
+    public List<CategoryID> getCategoriesIDs() {
         return getCategories().stream()
                 .map(x -> CategoryID.from(x.getId().getCategoryId()))
                 .toList();

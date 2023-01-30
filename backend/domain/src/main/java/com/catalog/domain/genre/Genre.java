@@ -80,7 +80,7 @@ public class Genre extends AggregateRoot<GenreID> {
         return new Genre(
                 aGenre.id,
                 aGenre.name,
-                aGenre.isActive(),
+                aGenre.active,
                 new ArrayList<>(aGenre.categories),
                 aGenre.createdAt,
                 aGenre.updatedAt,
