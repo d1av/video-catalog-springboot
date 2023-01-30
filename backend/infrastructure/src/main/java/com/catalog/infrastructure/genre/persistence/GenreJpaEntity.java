@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -68,15 +69,12 @@ public class GenreJpaEntity {
                 GenreID.from(getId()),
                 getName(),
                 isActive(),
-                getCategories().stream()
-                        .map(x -> CategoryID.from(x.getId().getCategoryId()))
-                        .toList(),
+                getCategoryIDs(),
                 getCreatedAt(),
                 getUpdatedAt(),
                 getDeletedAt()
         );
     }
-
 
     private void addCategory(final CategoryID anId) {
         this.categories.add(GenreCategoryJpaEntity.from(this, anId));
@@ -86,6 +84,11 @@ public class GenreJpaEntity {
         this.categories.add(GenreCategoryJpaEntity.from(this, anId));
     }
 
+    public List<CategoryID> getCategoryIDs() {
+        return getCategories().stream()
+                .map(x -> CategoryID.from(x.getId().getCategoryId()))
+                .toList();
+    }
     public String getId() {
         return id;
     }
