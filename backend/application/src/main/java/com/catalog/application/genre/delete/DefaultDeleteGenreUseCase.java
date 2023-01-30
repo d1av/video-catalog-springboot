@@ -1,4 +1,4 @@
-package com.catalog.application.delete;
+package com.catalog.application.genre.delete;
 
 import com.catalog.domain.genre.GenreGateway;
 import com.catalog.domain.genre.GenreID;

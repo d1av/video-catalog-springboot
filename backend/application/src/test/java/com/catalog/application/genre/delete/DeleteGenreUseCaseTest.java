@@ -1,7 +1,6 @@
 package com.catalog.application.genre.delete;
 
 import com.catalog.application.UseCaseTest;
-import com.catalog.application.delete.DefaultDeleteGenreUseCase;
 import com.catalog.domain.genre.Genre;
 import com.catalog.domain.genre.GenreGateway;
 import com.catalog.domain.genre.GenreID;
