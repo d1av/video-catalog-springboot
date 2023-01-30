@@ -49,7 +49,7 @@ public class DefaultCreateGenreUseCase extends CreateGenreUseCase {
         final var notification = Notification.create();
         if (ids == null || ids.isEmpty()) return notification;
 
-        final var retrievedIds = categoryGateway.existsById(ids);
+        final var retrievedIds = categoryGateway.existsByIds(ids);
 
         if (ids.size() != retrievedIds.size()) {
             final var missingIds = new ArrayList<>(ids);

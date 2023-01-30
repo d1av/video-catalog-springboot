@@ -81,7 +81,7 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
         final var aCommand = CreateGenreCommand
                 .with(expectName, expectIsActive, asString(expectedCategories));
 
-        when(categoryGateway.existsById(any()))
+        when(categoryGateway.existsByIds(any()))
                 .thenReturn(expectedCategories);
 
         when(genreGateway.create(any()))
@@ -94,7 +94,7 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
         Assertions.assertNotNull(actualOutput);
         Assertions.assertNotNull(actualOutput.id());
 
-        Mockito.verify(categoryGateway, times(1)).existsById(expectedCategories);
+        Mockito.verify(categoryGateway, times(1)).existsByIds(expectedCategories);
 
         Mockito.verify(genreGateway, times(1))
                 .create(Mockito.argThat(aGenre ->
@@ -130,7 +130,7 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
         Assertions.assertEquals(expectedErrorMessage, actualException.firstError().message());
         Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
 
-        Mockito.verify(categoryGateway, times(0)).existsById(any());
+        Mockito.verify(categoryGateway, times(0)).existsByIds(any());
         Mockito.verify(genreGateway, times(0)).create(any());
     }
 
@@ -156,7 +156,7 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
         Assertions.assertEquals(expectedErrorMessage, actualException.firstError().message());
         Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
 
-        Mockito.verify(categoryGateway, times(0)).existsById(any());
+        Mockito.verify(categoryGateway, times(0)).existsByIds(any());
         Mockito.verify(genreGateway, times(0)).create(any());
     }
 
@@ -173,7 +173,7 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
         final var expectedErrorMessage = "Some categories could not be found: 456, 789";
         final var expectedErrorCount = 1;
 
-        when(categoryGateway.existsById(any()))
+        when(categoryGateway.existsByIds(any()))
                 .thenReturn(List.of(series));
 
         final var aCommand = CreateGenreCommand
@@ -189,7 +189,7 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
         Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
 
 
-        Mockito.verify(categoryGateway, times(1)).existsById(expectedCategories);
+        Mockito.verify(categoryGateway, times(1)).existsByIds(expectedCategories);
         Mockito.verify(genreGateway, times(0)).create(any());
 
 
@@ -209,7 +209,7 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
         final var expectedErrorMessageTwo = "'name' should not be empty";
         final var expectedErrorCount = 1;
 
-        when(categoryGateway.existsById(any()))
+        when(categoryGateway.existsByIds(any()))
                 .thenReturn(List.of(series));
 
         final var aCommand = CreateGenreCommand
@@ -226,7 +226,7 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
         Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
 
 
-        Mockito.verify(categoryGateway, times(1)).existsById(expectedCategories);
+        Mockito.verify(categoryGateway, times(1)).existsByIds(expectedCategories);
         Mockito.verify(genreGateway, times(0)).create(any());
 
 
@@ -246,7 +246,7 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
         final var expectedErrorMessageTwo = "'name' should not be empty";
         final var expectedErrorCount = 1;
 
-        when(categoryGateway.existsById(any()))
+        when(categoryGateway.existsByIds(any()))
                 .thenReturn(List.of(series));
 
         final var aCommand = CreateGenreCommand
@@ -263,7 +263,7 @@ public class CreateGenreUseCaseTest extends UseCaseTest {
         Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
 
 
-        Mockito.verify(categoryGateway, times(1)).existsById(expectedCategories);
+        Mockito.verify(categoryGateway, times(1)).existsByIds(expectedCategories);
         Mockito.verify(genreGateway, times(0)).create(any());
 
 

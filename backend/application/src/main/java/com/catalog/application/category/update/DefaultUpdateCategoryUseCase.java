@@ -46,7 +46,7 @@ public class DefaultUpdateCategoryUseCase extends UpdateCategoryUseCase {
     }
 
 
-    private static Supplier<NotFoundException> notFound(final CategoryID anId) {
+    private static Supplier<DomainException> notFound(final CategoryID anId) {
         return () -> NotFoundException.with(Category.class, anId);
     }
 }
