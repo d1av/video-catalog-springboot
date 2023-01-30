@@ -1,4 +1,10 @@
 package com.catalog.application.genre.retrieve.get;
 
-public class GetGenreByIdUseCase {
+import com.catalog.application.UseCase;
+
+public class GetGenreByIdUseCase extends UseCase<String, GenreOutput> {
+    @Override
+    public GenreOutput execute(String onIn) {
+        return null;
+    }
 }
