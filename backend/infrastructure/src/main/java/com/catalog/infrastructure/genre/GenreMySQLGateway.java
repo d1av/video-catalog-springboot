@@ -5,14 +5,16 @@ import com.catalog.domain.genre.GenreGateway;
 import com.catalog.domain.genre.GenreID;
 import com.catalog.domain.pagination.Pagination;
 import com.catalog.domain.pagination.SearchQuery;
+import com.catalog.domain.utils.InstantUtils;
 import com.catalog.infrastructure.genre.persistence.GenreJpaEntity;
 import com.catalog.infrastructure.genre.persistence.GenreRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
 
-@Component
+@Service
 public class GenreMySQLGateway implements GenreGateway {
     private final GenreRepository genreRepository;
 
@@ -36,8 +38,8 @@ public class GenreMySQLGateway implements GenreGateway {
     }
 
     @Override
-    public Genre update(Genre aGenre) {
-        return null;
+    public Genre update(final Genre aGenre) {
+        return save(aGenre);
     }
 
     @Override
@@ -46,7 +48,6 @@ public class GenreMySQLGateway implements GenreGateway {
     }
 
     private Genre save(final Genre aGenre) {
-        return this.genreRepository.save(GenreJpaEntity.from(aGenre))
-                .toAggregate();
+        return this.genreRepository.saveAndFlush(GenreJpaEntity.from(aGenre)).toAggregate();
     }
 }

@@ -50,7 +50,9 @@ public class Genre extends AggregateRoot<GenreID> {
                 aName,
                 isActive,
                 new ArrayList<>(),
-                now, now, deletedAt
+                now,
+                now,
+                deletedAt
         );
     }
 
@@ -179,5 +181,29 @@ public class Genre extends AggregateRoot<GenreID> {
         this.updatedAt = InstantUtils.now();
 
         return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setCategories(List<CategoryID> categories) {
+        this.categories = categories;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setDeletedAt(Instant deletedAt) {
+        this.deletedAt = deletedAt;
     }
 }

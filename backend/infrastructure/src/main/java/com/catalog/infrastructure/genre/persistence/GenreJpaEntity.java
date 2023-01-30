@@ -3,6 +3,7 @@ package com.catalog.infrastructure.genre.persistence;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.genre.Genre;
 import com.catalog.domain.genre.GenreID;
+import com.catalog.domain.utils.InstantUtils;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -24,7 +25,7 @@ public class GenreJpaEntity {
     private Set<GenreCategoryJpaEntity> categories;
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant createdAt;
-    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME(6)")
+    @Column(name = "updated_at", columnDefinition = "DATETIME(6)")
     private Instant updatedAt;
     @Column(name = "deleted_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant deletedAt;
@@ -55,7 +56,7 @@ public class GenreJpaEntity {
                 aGenre.getName(),
                 aGenre.isActive(),
                 aGenre.getCreatedAt(),
-                aGenre.getUpdatedAt(),
+                aGenre.getUpdatedAt() != null ? aGenre.getUpdatedAt() : InstantUtils.now(),
                 aGenre.getDeletedAt()
         );
 
@@ -89,6 +90,7 @@ public class GenreJpaEntity {
                 .map(x -> CategoryID.from(x.getId().getCategoryId()))
                 .toList();
     }
+
     public String getId() {
         return id;
     }
