@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @MySQLGatewayTest
 public class CategoryMySQLGatewayTest {
 
@@ -176,6 +178,33 @@ public class CategoryMySQLGatewayTest {
         Assertions.assertEquals(expectedPerPage, actualResult.items().size());
         Assertions.assertEquals(documentario.getId(), actualResult.items().get(0).getId());
     }
+
+    @Test
+    public void givenPrePersistedCategories_whenCallsExistsByIds_shouldReturnIds() {
+        // given
+        final var expectedPage = 0;
+        final var expectedPerPage = 1;
+        final var expectedTotal = 3;
+
+        final var filmes = Category.newCategory("Filmes", null, true);
+        final var series = Category.newCategory("Séries", null, true);
+        final var documentario = Category.newCategory("Documentários", null, true);
+
+        Assertions.assertEquals(0, categoryRepository.count());
+
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(filmes));
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(series));
+        categoryRepository.saveAndFlush(CategoryJpaEntity.from(documentario));
+
+        Assertions.assertEquals(3, categoryRepository.count());
+        final var expectedIds = List.of(filmes.getId(), series.getId());
+        final var ids = List.of(series.getId(), filmes.getId(), CategoryID.from("123"));
+        // when
+        final var actualResult = categoryGateway.existsByIds(ids);
+        // then
+        Assertions.assertTrue(expectedIds.containsAll(actualResult));
+    }
+
 
     @Test
     public void givenEmptyCategoriesTable_whenCallsFindAll_shouldReturnEmptyPage() {
