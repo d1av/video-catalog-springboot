@@ -4,6 +4,7 @@ import com.catalog.application.genre.create.CreateGenreCommand;
 import com.catalog.application.genre.create.CreateGenreUseCase;
 import com.catalog.application.genre.delete.DeleteGenreUseCase;
 import com.catalog.application.genre.retrieve.get.GetGenreByIdUseCase;
+import com.catalog.application.genre.retrieve.list.ListGenreUseCase;
 import com.catalog.application.genre.update.UpdateGenreCommand;
 import com.catalog.application.genre.update.UpdateGenreUseCase;
 import com.catalog.domain.pagination.Pagination;
@@ -22,19 +23,20 @@ import java.net.URI;
 public class GenreController implements GenreAPI {
     private final CreateGenreUseCase createGenreUseCase;
     private final GetGenreByIdUseCase getGenreByIdUseCase;
-
     private final UpdateGenreUseCase updateGenreUseCase;
-
     private final DeleteGenreUseCase deleteGenreUseCase;
+    private final ListGenreUseCase listGenreUseCase;
 
     public GenreController(final CreateGenreUseCase createGenreUseCase,
                            final GetGenreByIdUseCase getGenreByIdUseCase,
                            final UpdateGenreUseCase updateGenreUseCase,
-                           final DeleteGenreUseCase deleteGenreUseCase) {
+                           final DeleteGenreUseCase deleteGenreUseCase,
+                           final ListGenreUseCase listGenreUseCase) {
         this.createGenreUseCase = createGenreUseCase;
         this.getGenreByIdUseCase = getGenreByIdUseCase;
         this.updateGenreUseCase = updateGenreUseCase;
         this.deleteGenreUseCase = deleteGenreUseCase;
+        this.listGenreUseCase = listGenreUseCase;
     }
 
     @Override
