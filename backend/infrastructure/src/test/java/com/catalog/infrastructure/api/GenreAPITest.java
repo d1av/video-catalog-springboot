@@ -32,8 +32,7 @@ import java.util.Objects;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -236,7 +235,7 @@ public class GenreAPITest {
                 .thenThrow(new NotificationException("Error", Notification.create(new Error(expectedErrorMessage))));
 
         // when
-        final var aRequest = put("/genres/{id}",expectedId)
+        final var aRequest = put("/genres/{id}", expectedId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.mapper.writeValueAsString(aCommand));
 
@@ -257,4 +256,42 @@ public class GenreAPITest {
         ));
     }
 
+    @Test
+    public void givenAValidId_whenCallsDeleteGenre_shouldBeOk() throws Exception {
+        // give
+        final var expectedId = "123";
+
+        doNothing()
+                .when(deleteGenreUseCase).execute(any());
+
+        // when
+        final var aRequest = delete("/genres/{id}", expectedId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        final var result = this.mvc.perform(aRequest)
+                .andDo(MockMvcResultHandlers.print());
+        // then
+        result.andExpect(status().isNoContent());
+
+        verify(deleteGenreUseCase).execute(expectedId);
+    }
+    @Test
+    public void givenAnInvalidId_whenCallsDeleteGenre_shouldBeOk() throws Exception {
+        // give
+        final var expectedId = "invalid-123";
+
+        doNothing()
+                .when(deleteGenreUseCase).execute(any());
+
+        // when
+        final var aRequest = delete("/genres/{id}", expectedId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        final var result = this.mvc.perform(aRequest)
+                .andDo(MockMvcResultHandlers.print());
+        // then
+        result.andExpect(status().isNoContent());
+
+        verify(deleteGenreUseCase).execute(expectedId);
+    }
 }
