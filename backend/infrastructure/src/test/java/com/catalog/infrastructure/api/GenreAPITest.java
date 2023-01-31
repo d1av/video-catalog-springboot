@@ -307,7 +307,7 @@ public class GenreAPITest {
         final var aGenre = Genre.newGenre("Ação", false);
 
         final var expectedPage = 0;
-        final var expectedPerPage = 0;
+        final var expectedPerPage = 10;
         final var expectedTerms = "ac";
         final var expectedSort = "name";
         final var expectedDirection = "asc";
@@ -332,23 +332,23 @@ public class GenreAPITest {
         final var result = this.mvc.perform(aRequest);
         // then
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.current_page", equalTo(expectedPage)))
-                .andExpect(jsonPath("$.per_page", equalTo(expectedPerPage)))
+                .andExpect(jsonPath("$.currentPage", equalTo(expectedPage)))
+                .andExpect(jsonPath("$.perPage", equalTo(expectedPerPage)))
                 .andExpect(jsonPath("$.total", equalTo(expectedTotal)))
                 .andExpect(jsonPath("$.items", hasSize(expectedItemsCount)))
                 .andExpect(jsonPath("$.items[0].id", equalTo(aGenre.getId().getValue())))
                 .andExpect(jsonPath("$.items[0].name", equalTo(aGenre.getName())))
                 .andExpect(jsonPath("$.items[0].is_active", equalTo(aGenre.isActive())))
-                .andExpect(jsonPath("$.items[0].created_at", equalTo(aGenre.getCreatedAt())))
-                .andExpect(jsonPath("$.items[0].deleted_at", equalTo(aGenre.getDeletedAt())))
+                .andExpect(jsonPath("$.items[0].created_at", equalTo(aGenre.getCreatedAt().toString())))
+                .andExpect(jsonPath("$.items[0].deleted_at", equalTo(aGenre.getDeletedAt().toString())))
         ;
 
         verify(listGenreUseCase).execute(argThat(query ->
                 Objects.equals(expectedPage, query.page())
                         && Objects.equals(expectedPerPage, query.perPage())
-                        && Objects.equals(expectedDirection, query.direction())
-                        && Objects.equals(expectedSort, query.sort())
                         && Objects.equals(expectedTerms, query.terms())
+                        && Objects.equals(expectedSort, query.sort())
+                        && Objects.equals(expectedDirection, query.direction())
         ));
     }
 }

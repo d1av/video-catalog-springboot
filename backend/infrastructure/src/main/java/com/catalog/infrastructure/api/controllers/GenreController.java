@@ -8,6 +8,7 @@ import com.catalog.application.genre.retrieve.list.ListGenreUseCase;
 import com.catalog.application.genre.update.UpdateGenreCommand;
 import com.catalog.application.genre.update.UpdateGenreUseCase;
 import com.catalog.domain.pagination.Pagination;
+import com.catalog.domain.pagination.SearchQuery;
 import com.catalog.infrastructure.api.GenreAPI;
 import com.catalog.infrastructure.genre.models.CreateGenreRequest;
 import com.catalog.infrastructure.genre.models.GenreListResponse;
@@ -57,7 +58,8 @@ public class GenreController implements GenreAPI {
                                               final int perPage,
                                               final String sort,
                                               final String direction) {
-        return null;
+        return this.listGenreUseCase.execute(new SearchQuery(page, perPage, search, sort, direction))
+                .map(GenreApiPresenter::present);
     }
 
     @Override
@@ -75,7 +77,6 @@ public class GenreController implements GenreAPI {
         );
 
         final var output = this.updateGenreUseCase.execute(aCommand);
-
         return ResponseEntity.created(URI.create("/genres/" + output.id())).body(output);
     }
 
