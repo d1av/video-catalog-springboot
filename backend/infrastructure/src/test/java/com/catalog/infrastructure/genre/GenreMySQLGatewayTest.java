@@ -367,7 +367,7 @@ public class GenreMySQLGatewayTest {
         final var expectedTotal = 0;
 
         final var aQuery =
-                new SearchQuery(expectedPage, expectedPerPage, expectedSort, expectedTerms, expectedDirection);
+                new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         // when
         final var actualPage = genreGateway.findAll(aQuery);
@@ -384,7 +384,7 @@ public class GenreMySQLGatewayTest {
             "aç,0,10,1,1,Ação",
             "dr,0,10,1,1,Drama",
             "com,0,10,1,1,Comédia romântica",
-            "cien,0,10,1,1,Ficção cientifica",
+            "cien,0,10,1,1,Ficção científica",
             "terr,0,10,1,1,Terror",
     })
     public void givenAValidTerm_whenCallFindAll_shouldReturnFiltered(
@@ -402,7 +402,7 @@ public class GenreMySQLGatewayTest {
 
 
         final var aQuery =
-                new SearchQuery(expectedPage, expectedPerPage, expectedSort, expectedTerms, expectedDirection);
+                new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         // when
         final var actualPage = genreGateway.findAll(aQuery);
@@ -420,7 +420,7 @@ public class GenreMySQLGatewayTest {
             "name,asc,0,10,5,5,Ação",
             "name,desc,0,10,5,5,Terror",
             "createdAt,asc,0,10,5,5,Comédia romântica",
-            "createdAt,desc,0,10,5,5,Ficção cientifica",
+            "createdAt,desc,0,10,5,5,Comédia romântica",
     })
     public void givenAValidSortAndDirection_whenCallFindAll_shouldReturnFiltered(
             final String expectedSort,
@@ -437,7 +437,7 @@ public class GenreMySQLGatewayTest {
 
 
         final var aQuery =
-                new SearchQuery(expectedPage, expectedPerPage, expectedSort, expectedTerms, expectedDirection);
+                new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         // when
         final var actualPage = genreGateway.findAll(aQuery);
@@ -471,7 +471,7 @@ public class GenreMySQLGatewayTest {
 
 
         final var aQuery =
-                new SearchQuery(expectedPage, expectedPerPage, expectedSort, expectedTerms, expectedDirection);
+                new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         // when
         final var actualPage = genreGateway.findAll(aQuery);
@@ -496,7 +496,7 @@ public class GenreMySQLGatewayTest {
                 GenreJpaEntity.from(Genre.newGenre("Ação", true)),
                 GenreJpaEntity.from(Genre.newGenre("Drama", true)),
                 GenreJpaEntity.from(Genre.newGenre("Terror", true)),
-                GenreJpaEntity.from(Genre.newGenre("Ficção cientifica", true))
+                GenreJpaEntity.from(Genre.newGenre("Ficção científica", true))
         ));
     }
 

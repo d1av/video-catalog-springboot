@@ -82,7 +82,7 @@ public class GenreJpaEntity implements Serializable {
                 getCategoriesIDs(),
                 getCreatedAt(),
                 getUpdatedAt(),
-                isActive() ? null : getDeletedAt()
+                getDeletedAt()
         );
     }
 
