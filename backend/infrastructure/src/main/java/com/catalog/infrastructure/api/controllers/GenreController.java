@@ -2,7 +2,10 @@ package com.catalog.infrastructure.api.controllers;
 
 import com.catalog.application.genre.create.CreateGenreCommand;
 import com.catalog.application.genre.create.CreateGenreUseCase;
+import com.catalog.application.genre.delete.DeleteGenreUseCase;
 import com.catalog.application.genre.retrieve.get.GetGenreByIdUseCase;
+import com.catalog.application.genre.update.UpdateGenreCommand;
+import com.catalog.application.genre.update.UpdateGenreUseCase;
 import com.catalog.domain.pagination.Pagination;
 import com.catalog.infrastructure.api.GenreAPI;
 import com.catalog.infrastructure.genre.models.CreateGenreRequest;
@@ -20,10 +23,18 @@ public class GenreController implements GenreAPI {
     private final CreateGenreUseCase createGenreUseCase;
     private final GetGenreByIdUseCase getGenreByIdUseCase;
 
+    private final UpdateGenreUseCase updateGenreUseCase;
+
+    private final DeleteGenreUseCase deleteGenreUseCase;
+
     public GenreController(final CreateGenreUseCase createGenreUseCase,
-                           final GetGenreByIdUseCase getGenreByIdUseCase) {
+                           final GetGenreByIdUseCase getGenreByIdUseCase,
+                           final UpdateGenreUseCase updateGenreUseCase,
+                           final DeleteGenreUseCase deleteGenreUseCase) {
         this.createGenreUseCase = createGenreUseCase;
         this.getGenreByIdUseCase = getGenreByIdUseCase;
+        this.updateGenreUseCase = updateGenreUseCase;
+        this.deleteGenreUseCase = deleteGenreUseCase;
     }
 
     @Override
@@ -54,7 +65,16 @@ public class GenreController implements GenreAPI {
 
     @Override
     public ResponseEntity<?> updateById(final String id, final UpdateGenreRequest input) {
-        return null;
+        final var aCommand = UpdateGenreCommand.with(
+                id,
+                input.name(),
+                input.isActive(),
+                input.categories()
+        );
+
+        final var output = this.updateGenreUseCase.execute(aCommand);
+
+        return ResponseEntity.created(URI.create("/genres/" + output.id())).body(output);
     }
 
     @Override

@@ -208,7 +208,7 @@ public class GenreAPITest {
                 .andDo(MockMvcResultHandlers.print());
 
         // then
-        aResponse.andExpect(MockMvcResultMatchers.status().isOk())
+        aResponse.andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.id", equalTo(expectedId)));
 
@@ -227,7 +227,7 @@ public class GenreAPITest {
         final var expectedIsActive = true;
         final var expectedErrorMessage = "'name' should not be null";
 
-        final var aGenre = Genre.newGenre(expectedName, expectedIsActive);
+        final var aGenre = Genre.newGenre("Terror", expectedIsActive);
         final var expectedId = aGenre.getId().getValue();
 
         final var aCommand = new UpdateGenreRequest(expectedName, expectedCategories, expectedIsActive);
