@@ -161,7 +161,7 @@ public class UpdateCategoryUseCaseTest extends UseCaseTest {
                 .findById(eq(expectedId));
 
         Mockito.verify(categoryGateway,
-                        Mockito.times(0))
+                        Mockito.times(1))
                 .update(ArgumentMatchers.argThat(
                         aUpdatedCategory ->
                         {
