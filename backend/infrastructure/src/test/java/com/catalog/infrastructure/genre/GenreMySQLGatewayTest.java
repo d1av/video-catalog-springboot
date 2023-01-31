@@ -318,7 +318,7 @@ public class GenreMySQLGatewayTest {
                 categoryGateway.create(Category.newCategory("Séries", null, true));
         final var expectedName = "Ação";
         final var expectedIsActive = true;
-        final var expectedCategories = List.<CategoryID>of(filmes.getId(), series.getId());
+        final var expectedCategories = List.<CategoryID>of(series.getId(),filmes.getId());
 
         final var aGenre = Genre.newGenre(expectedName, expectedIsActive);
         aGenre.addCategories(expectedCategories);
@@ -335,10 +335,10 @@ public class GenreMySQLGatewayTest {
         Assertions.assertEquals(expectedId, actualGenre.getId());
         Assertions.assertEquals(expectedName, actualGenre.getName());
         Assertions.assertEquals(expectedIsActive, actualGenre.isActive());
-        Assertions.assertEquals(expectedCategories, actualGenre.getCategories());
+        Assertions.assertEquals(sorted(expectedCategories), sorted(actualGenre.getCategories()));
         Assertions.assertEquals(aGenre.getCreatedAt(), actualGenre.getCreatedAt());
         Assertions.assertEquals(aGenre.getUpdatedAt(), actualGenre.getUpdatedAt());
-        Assertions.assertNotNull(actualGenre.getDeletedAt());
+        Assertions.assertNull(actualGenre.getDeletedAt());
     }
 
     @Test
@@ -348,7 +348,7 @@ public class GenreMySQLGatewayTest {
         // when
         final var actualGenre = genreGateway.findById(expectedId);
 
-        Assertions.assertEquals(1, genreRepository.count());
+        Assertions.assertEquals(0, genreRepository.count());
         // then
         Assertions.assertTrue(actualGenre.isEmpty());
     }
