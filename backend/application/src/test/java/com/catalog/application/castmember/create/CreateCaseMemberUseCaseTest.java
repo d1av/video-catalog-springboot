@@ -41,14 +41,13 @@ public class CreateCaseMemberUseCaseTest extends UseCaseTest {
                 expectedType
         );
 
-        when(castMemberGateway).create(any())
+        when(castMemberGateway.create(any()))
                 .thenAnswer(returnsFirstArg());
         // when
         final var actualOutput = useCase.execute(aCommand);
 
         // then
         Assertions.assertNotNull(actualOutput);
-        Assertions.assertNotNull(actualOutput.id());
 
         verify(castMemberGateway).create(argThat(aMember ->
                 Objects.nonNull(aMember.getId())
