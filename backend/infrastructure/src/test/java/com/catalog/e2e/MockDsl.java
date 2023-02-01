@@ -9,6 +9,7 @@ import com.catalog.infrastructure.category.models.UpdateCategoryRequest;
 import com.catalog.infrastructure.configuration.json.Json;
 import com.catalog.infrastructure.genre.models.CreateGenreRequest;
 import com.catalog.infrastructure.genre.models.GenreResponse;
+import com.catalog.infrastructure.genre.models.UpdateGenreRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -88,6 +89,14 @@ public interface MockDsl {
 
     default GenreResponse retrieveAGenre(Identifier anId) throws Exception {
         return this.retrieve("/genres/", anId, GenreResponse.class);
+    }
+
+    default ResultActions updateAGenre(Identifier anId, final UpdateGenreRequest aRequest) throws Exception {
+        return this.update("/genres/", anId, aRequest);
+    }
+
+    default ResultActions deleteAGenre(final Identifier anId) throws Exception {
+        return this.delete("/genres/", anId);
     }
     default <A, D> List<D> mapTo(final List<A> actual, final Function<A, D> mapper) {
         return actual.stream()
