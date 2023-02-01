@@ -8,6 +8,7 @@ import com.catalog.infrastructure.category.models.CreateCategoryRequest;
 import com.catalog.infrastructure.category.models.UpdateCategoryRequest;
 import com.catalog.infrastructure.configuration.json.Json;
 import com.catalog.infrastructure.genre.models.CreateGenreRequest;
+import com.catalog.infrastructure.genre.models.GenreResponse;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -85,7 +86,9 @@ public interface MockDsl {
         return listGenres(page, perPage, search, "", "");
     }
 
-
+    default GenreResponse retrieveAGenre(Identifier anId) throws Exception {
+        return this.retrieve("/genres/", anId, GenreResponse.class);
+    }
     default <A, D> List<D> mapTo(final List<A> actual, final Function<A, D> mapper) {
         return actual.stream()
                 .map(mapper)
@@ -127,8 +130,8 @@ public interface MockDsl {
 
     private <T> T retrieve(final String url, final Identifier anId, final Class<T> clazz) throws Exception {
         final var aRequest = get(url + anId.getValue())
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON);
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8);
 
         final var json = this.mvc().perform(aRequest)
                 .andExpect(status().isOk())
