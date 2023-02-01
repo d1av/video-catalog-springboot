@@ -24,7 +24,7 @@ public interface MockDsl {
     MockMvc mvc();
 
     default ResultActions deleteACategory(final Identifier anId) throws Exception {
-        return this.delete("/categories", anId);
+        return this.delete("/categories/", anId);
     }
 
     default CategoryID givenACategory(
