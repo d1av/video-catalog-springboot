@@ -38,9 +38,9 @@ public class CastMemberTest {
 
     @Test
     public void givenAInvalidEmptyName_whenCallsNewMember_shouldReceiveANotification() {
-        final String expectedName = "     ";
+        final String expectedName = "  ";
         final var expectedType = CastMemberType.ACTOR;
-        final var expectedErrorCount = 1;
+        final var expectedErrorCount = 2;
         final var expectedErrorMessage = "'name' should not be empty";
 
         final var actualException = Assertions.assertThrows(NotificationException.class,
@@ -60,7 +60,7 @@ public class CastMemberTest {
                 " de aprovar a manutenção das novas proposições.";
         final var expectedType = CastMemberType.ACTOR;
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'name' must be between 1 and 255 characters";
+        final var expectedErrorMessage = "'name' must be between 3 and 255 characters";
 
         final var actualException = Assertions.assertThrows(NotificationException.class,
                 () -> CastMember.newMember(expectedName, expectedType)

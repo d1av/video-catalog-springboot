@@ -26,8 +26,8 @@ public class CastMember extends AggregateRoot<CastMemberID> {
         this.type = aType;
         this.createdAt = aCreationDate;
         this.updatedAt = aUpdateDate;
-
         selfValidate();
+
     }
 
     public static CastMember newMember(final String aName, final CastMemberType aType) {
