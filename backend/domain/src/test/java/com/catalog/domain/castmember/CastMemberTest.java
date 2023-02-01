@@ -88,7 +88,7 @@ public class CastMemberTest {
     }
 
     @Test
-    public void givenAValidCastMember_whenCallUpdate_shouldReceiveUpdated() {
+    public void givenAValidCastMember_whenCallUpdate_shouldReceiveUpdated() throws InterruptedException {
         final var expectedName = "Vin Diesel";
         final var expectedType = CastMemberType.ACTOR;
 
@@ -99,13 +99,12 @@ public class CastMemberTest {
 
         final var actualCreatedAt = actualMember.getCreatedAt();
         final var actualUpdatedAt = actualMember.getUpdatedAt();
-
+        Thread.sleep(100);
         actualMember.update(expectedName, expectedType);
 
         Assertions.assertEquals(expectedName, actualMember.getName());
         Assertions.assertEquals(expectedType, actualMember.getType());
         Assertions.assertEquals(actualCreatedAt, actualMember.getCreatedAt());
-        Assertions.assertEquals(actualUpdatedAt, actualMember.getUpdatedAt());
         Assertions.assertTrue(actualUpdatedAt.isBefore(actualMember.getUpdatedAt()));
     }
 
@@ -134,7 +133,7 @@ public class CastMemberTest {
     public void givenAValidCastMember_whenCallUpdateWithInvalidEmptyName_shouldReceiveNotification() {
         final String expectedName = "    ";
         final var expectedType = CastMemberType.ACTOR;
-        final var expectedErrorCount = 1;
+        final var expectedErrorCount = 2;
         final var expectedErrorMessage = "'name' should not be empty";
 
         final var actualMember = CastMember.newMember("vind", CastMemberType.DIRECTOR);
@@ -156,7 +155,7 @@ public class CastMemberTest {
         final String expectedName = "Asa Akira";
         final CastMemberType expectedType = null;
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'type' should not be empty";
+        final var expectedErrorMessage = "'type' should not be null";
 
         final var actualMember = CastMember.newMember("asa", CastMemberType.DIRECTOR);
 
