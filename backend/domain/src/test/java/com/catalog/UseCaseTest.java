@@ -1,4 +1,4 @@
-package com.catalog.application;
+package com.catalog;
 
 import com.catalog.application.category.create.DefaultCreateCategoryUseCase;
 import org.junit.jupiter.api.Assertions;
