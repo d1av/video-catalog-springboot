@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 public class ListCastMemberUseCaseTest extends UseCaseTest {
     @InjectMocks
-    private DefaultListCastMemberUseCase useCase;
+    private DefaultListCastMembersUseCase useCase;
     @Mock
     private CastMemberGateway castMemberGateway;
 
@@ -46,9 +46,7 @@ public class ListCastMemberUseCaseTest extends UseCaseTest {
         final var expectedDirection = "asc";
         final var expectedTotal = 2;
 
-        final var expectedItems = members.stream()
-                .map(CastMemberListOutput::from)
-                .toList();
+        final var expectedItems = members.stream().toList();
 
         final var expectedPagination = new Pagination<>(
                 expectedPage,
@@ -67,10 +65,12 @@ public class ListCastMemberUseCaseTest extends UseCaseTest {
         final var actualOutput = useCase.execute(aQuery);
 
         // then
-        Assertions.assertEquals(expectedPage, actualOutput.page());
+        Assertions.assertEquals(expectedPage, actualOutput.currentPage());
         Assertions.assertEquals(expectedPerPage, actualOutput.perPage());
         Assertions.assertEquals(expectedTotal, actualOutput.total());
-        Assertions.assertEquals(expectedItems, actualOutput.items());
+        Assertions.assertEquals(expectedItems.stream()
+                .map(CastMemberListOutput::from)
+                .toList(), actualOutput.items());
 
         verify(castMemberGateway).findAll(eq(aQuery));
     }
@@ -85,7 +85,7 @@ public class ListCastMemberUseCaseTest extends UseCaseTest {
         final var expectedDirection = "asc";
         final var expectedTotal = 0;
 
-        final var expectedItems = List.<CastMemberListOutput>of();
+        final var expectedItems = List.<CastMember>of();
 
         final var expectedPagination = new Pagination<>(
                 expectedPage,
@@ -104,7 +104,7 @@ public class ListCastMemberUseCaseTest extends UseCaseTest {
         final var actualOutput = useCase.execute(aQuery);
 
         // then
-        Assertions.assertEquals(expectedPage, actualOutput.page());
+        Assertions.assertEquals(expectedPage, actualOutput.currentPage());
         Assertions.assertEquals(expectedPerPage, actualOutput.perPage());
         Assertions.assertEquals(expectedTotal, actualOutput.total());
         Assertions.assertEquals(expectedItems, actualOutput.items());
