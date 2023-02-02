@@ -10,7 +10,7 @@ public class CastMemberID extends Identifier {
     private final String value;
 
     private CastMemberID(final String anId) {
-        Objects.requireNonNull(anId);
+       Objects.requireNonNull(anId);
         this.value = anId;
     }
     public static CastMemberID unique() {
@@ -26,6 +26,6 @@ public class CastMemberID extends Identifier {
     }
     @Override
     public String getValue() {
-        return null;
+        return value;
     }
 }
