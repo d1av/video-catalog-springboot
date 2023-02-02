@@ -16,6 +16,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static com.catalog.Fixture.CastMember.type;
@@ -245,9 +246,9 @@ public class CastMemberMySQLGatewayTest {
     @ParameterizedTest
     @CsvSource({
             "name,asc,0,10,5,5,Jason Monoa",
-            "name,desc,10,5,5,Vin Diesel",
-            "createdAt,asc,10,5,5,Kit Harington",
-            "createdAt,desc,10,5,5,Martin Scorcese",
+            "name,desc,0,10,5,5,Vin Diesel",
+            "createdAt,asc,0,10,5,5,Kit Harington",
+            "createdAt,desc,0,10,5,5,Martin Scorcese",
     })
     public void givenAValidDirection_whenCallsFindAll_shouldReturnSorted(
             final String expectedSort,
@@ -278,16 +279,16 @@ public class CastMemberMySQLGatewayTest {
 
     @ParameterizedTest
     @CsvSource({
-            "0,2,5,2,Jason Monoa;Kit Harington",
-            "1,2,5,2,Martin Scorcese;Quentin Taranrino",
-            "2,2,5,1,Vin Diesel"
+            "0,2,2,5,Jason Monoa;Kit Harington",
+            "1,2,2,5,Martin Scorcese;Quentin Taranrino",
+            "2,2,1,5,Vin Diesel"
     })
     public void givenAValidPagination_whenCallsFindAll_shouldReturnPaginated(
             final int expectedPage,
             final int expectedPerPage,
             final int expectedItemsCount,
             final long expectedTotal,
-            final String expectedName
+            final String expectedNames
     ) {
         // given
         mockMembers();
@@ -306,11 +307,10 @@ public class CastMemberMySQLGatewayTest {
         Assertions.assertEquals(expectedPerPage, actualPage.perPage());
         Assertions.assertEquals(expectedTotal, actualPage.total());
         Assertions.assertEquals(expectedItemsCount, actualPage.items().size());
-        Assertions.assertEquals(expectedName, actualPage.items().get(0).getName());
-        int index = 0;
-        for (String name : expectedName.split(";")) {
-            Assertions.assertEquals(name, actualPage.items().get(index).getName());
-            index++;
+
+        final var splittedMembers = expectedNames.split(";");
+        for (int i = 0; i < splittedMembers.length; i++) {
+            Assertions.assertEquals(splittedMembers[i], actualPage.items().get(i).getName());
         }
     }
 
@@ -320,9 +320,9 @@ public class CastMemberMySQLGatewayTest {
                         CastMemberJpaEntity.from(CastMember.newMember("Kit Harington", CastMemberType.ACTOR)),
                         CastMemberJpaEntity.from(CastMember.newMember("Vin Diesel", CastMemberType.ACTOR)),
                         CastMemberJpaEntity.from(CastMember.newMember("Quentin Taranrino", CastMemberType.DIRECTOR)),
-                        CastMemberJpaEntity.from(CastMember.newMember("Jason Monoa", CastMemberType.ACTOR)),
-                        CastMemberJpaEntity.from(CastMember.newMember("Martin Scorcese", CastMemberType.ACTOR))
+                        CastMemberJpaEntity.from(CastMember.newMember("Jason Monoa", CastMemberType.ACTOR))
                 )
         );
+        castMemberRepository.save(CastMemberJpaEntity.from(CastMember.newMember("Martin Scorcese", CastMemberType.ACTOR)));
     }
 }

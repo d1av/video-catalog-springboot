@@ -7,6 +7,10 @@ import com.catalog.domain.pagination.Pagination;
 import com.catalog.domain.pagination.SearchQuery;
 import com.catalog.infrastructure.castmember.persistence.CastMemberJpaEntity;
 import com.catalog.infrastructure.castmember.persistence.CastMemberRepository;
+import com.catalog.infrastructure.utils.SpecificationUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -44,7 +48,29 @@ public class CastMemberMySQLGateway implements CastMemberGateway {
 
     @Override
     public Pagination<CastMember> findAll(SearchQuery aQuery) {
-        return null;
+        final var page = PageRequest.of(
+                aQuery.page(),
+                aQuery.perPage(),
+                Sort.by(Sort.Direction.fromString(aQuery.direction()), aQuery.sort())
+        );
+
+        final var where = Optional.ofNullable(aQuery.terms())
+                .filter(str -> !str.isBlank())
+                .map(this::assembleSpecification)
+                .orElse(null);
+
+        final var pageResult = this.castMemberRepository.findAll(where, page);
+
+        return new Pagination<>(
+                pageResult.getNumber(),
+                pageResult.getSize(),
+                pageResult.getTotalElements(),
+                pageResult.map(CastMemberJpaEntity::toAggregate).toList()
+        );
+    }
+
+    private Specification<CastMemberJpaEntity> assembleSpecification(final String terms) {
+        return SpecificationUtils.like("name", terms);
     }
 
     private CastMember save(CastMember aCastMember) {
