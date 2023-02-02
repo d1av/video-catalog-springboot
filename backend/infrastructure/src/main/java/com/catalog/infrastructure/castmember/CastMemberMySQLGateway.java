@@ -27,7 +27,8 @@ public class CastMemberMySQLGateway implements CastMemberGateway {
 
     @Override
     public void deleteById(CastMemberID anId) {
-
+        if (this.castMemberRepository.findById(anId.getValue()).isPresent())
+            this.castMemberRepository.deleteById(anId.getValue());
     }
 
     @Override
