@@ -14,11 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @IntegrationTest
 public class GetCastMemberByIdUseCaseIT {
@@ -53,6 +50,8 @@ public class GetCastMemberByIdUseCaseIT {
         Assertions.assertEquals(aMember.getUpdatedAt(), actualOutput.updatedAt());
 
         verify(castMemberGateway).findById(any());
+
+        Assertions.assertEquals(1, this.castMemberRepository.count());
     }
 
     @Test
