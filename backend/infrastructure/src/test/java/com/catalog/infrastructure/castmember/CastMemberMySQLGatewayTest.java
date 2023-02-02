@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @MySQLGatewayTest
 public class CastMemberMySQLGatewayTest {
-
     @Autowired
     private CastMemberMySQLGateway castMemberMySQLGateway;
     @Autowired
@@ -38,7 +37,7 @@ public class CastMemberMySQLGatewayTest {
 
         // then
         Assertions.assertEquals(1, castMemberRepository.count());
-        Assertions.assertEquals(expectedId, actualMember.getId());
+        Assertions.assertEquals(expectedId.getValue(), actualMember.getId().getValue());
         Assertions.assertEquals(expectedName, actualMember.getName());
         Assertions.assertEquals(expectedType, actualMember.getType());
         Assertions.assertEquals(aMember.getCreatedAt(), actualMember.getCreatedAt());
