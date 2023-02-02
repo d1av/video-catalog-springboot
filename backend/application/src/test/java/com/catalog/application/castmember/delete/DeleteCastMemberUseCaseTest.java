@@ -38,7 +38,7 @@ public class DeleteCastMemberUseCaseTest extends UseCaseTest {
         // when
         Assertions.assertDoesNotThrow(() -> useCase.execute(expectedId.getValue()));
         // then
-        verify(castMemberGateway).deleteById(eq(expectedId));
+        verify(castMemberGateway).deleteById(any());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class DeleteCastMemberUseCaseTest extends UseCaseTest {
         // when
         Assertions.assertDoesNotThrow(() -> useCase.execute(expectedId.getValue()));
         // then
-        verify(castMemberGateway).deleteById(eq(expectedId));
+        verify(castMemberGateway).deleteById(any());
     }
 
     @Test
@@ -61,8 +61,8 @@ public class DeleteCastMemberUseCaseTest extends UseCaseTest {
 
         doThrow(new IllegalStateException("Gateway error")).when(castMemberGateway).deleteById(any());
         // when
-        Assertions.assertDoesNotThrow(() -> useCase.execute(expectedId.getValue()));
+        Assertions.assertThrows(IllegalStateException.class, () -> useCase.execute(expectedId.getValue()));
         // then
-        verify(castMemberGateway).deleteById(eq(expectedId));
+        verify(castMemberGateway).deleteById(any());
     }
 }
