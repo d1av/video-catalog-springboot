@@ -60,9 +60,9 @@ public class CastMemberAPITest {
                 .thenReturn(CreateCastMemberOutput.from(expectedId));
 
         // when
-        final var aRequest = post("/cast_members")
-                .contentType(MediaType.APPLICATION_JSON)
-                .contentType(mapper.writeValueAsString(aCommand));
+        final var aRequest = post("/cast_members", aCommand)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(mapper.writeValueAsString(aCommand));
 
         final var response = this.mvc.perform(aRequest)
                 .andDo(print());
@@ -92,8 +92,8 @@ public class CastMemberAPITest {
                 .thenThrow(NotificationException.with(new Error(expectedErrorMessage)));
         // when
         final var aRequest = post("/cast_members")
-                .contentType(MediaType.APPLICATION_JSON)
-                .contentType(mapper.writeValueAsString(aCommand));
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(mapper.writeValueAsString(aCommand));
 
         final var response = this.mvc.perform(aRequest)
                 .andDo(print());
