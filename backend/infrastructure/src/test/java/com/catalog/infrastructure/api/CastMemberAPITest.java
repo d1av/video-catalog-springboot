@@ -3,28 +3,23 @@ package com.catalog.infrastructure.api;
 import com.catalog.ControllerTest;
 import com.catalog.Fixture;
 import com.catalog.application.castmember.create.CreateCastMemberOutput;
-import com.catalog.application.castmember.create.CreateCastMemberUseCase;
-import com.catalog.application.castmember.delete.DeleteCastMemberUseCase;
-import com.catalog.application.castmember.retrieve.get.GetCastMemberByIdUseCase;
-import com.catalog.application.castmember.retrieve.list.ListCastMembersUseCase;
-import com.catalog.application.castmember.update.UpdateCastMemberUseCase;
+import com.catalog.application.castmember.create.DefaultCreateCastMemberUseCase;
+import com.catalog.application.castmember.delete.DefaultDeleteCastMemberUseCase;
+import com.catalog.application.castmember.retrieve.get.DefaultGetCastMemberByIdUseCase;
+import com.catalog.application.castmember.retrieve.list.DefaultListCastMembersUseCase;
+import com.catalog.application.castmember.update.DefaultUpdateCastMemberUseCase;
 import com.catalog.domain.castmember.CastMemberID;
 import com.catalog.domain.exceptions.NotificationException;
 import com.catalog.domain.validation.Error;
-import com.catalog.domain.validation.handler.Notification;
+import com.catalog.infrastructure.castmember.models.CreateCastMemberRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.internal.hamcrest.HamcrestArgumentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultHandler;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Objects;
-import java.util.regex.Matcher;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -42,15 +37,15 @@ public class CastMemberAPITest {
     @Autowired
     private ObjectMapper mapper;
     @MockBean
-    private CreateCastMemberUseCase createCastMemberUseCase;
+    private DefaultCreateCastMemberUseCase createCastMemberUseCase;
     @MockBean
-    private DeleteCastMemberUseCase deleteCastMemberUseCase;
+    private DefaultDeleteCastMemberUseCase deleteCastMemberUseCase;
     @MockBean
-    private UpdateCastMemberUseCase updateCastMemberUseCase;
+    private DefaultUpdateCastMemberUseCase updateCastMemberUseCase;
     @MockBean
-    private GetCastMemberByIdUseCase getCastMemberByIdUseCase;
+    private DefaultGetCastMemberByIdUseCase getCastMemberByIdUseCase;
     @MockBean
-    private ListCastMembersUseCase listCastMembersUseCase;
+    private DefaultListCastMembersUseCase listCastMembersUseCase;
 
     @Test
     public void givenAValidCommand_whenCallsCreateCastMember_shouldReturnItsIdentifier() throws Exception {

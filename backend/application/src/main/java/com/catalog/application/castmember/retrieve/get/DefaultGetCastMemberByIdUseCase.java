@@ -5,7 +5,7 @@ import com.catalog.domain.castmember.CastMemberGateway;
 import com.catalog.domain.castmember.CastMemberID;
 import com.catalog.domain.exceptions.NotFoundException;
 
-public final class DefaultGetCastMemberByIdUseCase extends GetCastMemberByIdUseCase {
+public class DefaultGetCastMemberByIdUseCase extends GetCastMemberByIdUseCase {
     private final CastMemberGateway castMemberGateway;
 
     public DefaultGetCastMemberByIdUseCase(final CastMemberGateway castMemberGateway) {

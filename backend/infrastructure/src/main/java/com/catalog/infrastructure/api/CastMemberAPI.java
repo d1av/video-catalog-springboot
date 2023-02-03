@@ -1,5 +1,6 @@
 package com.catalog.infrastructure.api;
 
+import com.catalog.infrastructure.castmember.models.CreateCastMemberRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.net.URISyntaxException;
 
 @RequestMapping(value = "cast_members")
 @Tag(name = "Cast Member")
@@ -24,5 +27,5 @@ public interface CastMemberAPI {
             @ApiResponse(responseCode = "422",description = "A validation error was thrown"),
             @ApiResponse(responseCode = "201",description = "An internal server error was thrown")
     })
-    ResponseEntity<?> create(@RequestBody Object input);
+    ResponseEntity<?> create(@RequestBody CreateCastMemberRequest input) throws URISyntaxException;
 }

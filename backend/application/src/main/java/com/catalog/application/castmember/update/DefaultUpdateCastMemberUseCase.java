@@ -14,7 +14,7 @@ import java.rmi.NotBoundException;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public final class DefaultUpdateCastMemberUseCase extends UpdateCastMemberUseCase {
+public class DefaultUpdateCastMemberUseCase extends UpdateCastMemberUseCase {
 
     private final CastMemberGateway castMemberGateway;
 
