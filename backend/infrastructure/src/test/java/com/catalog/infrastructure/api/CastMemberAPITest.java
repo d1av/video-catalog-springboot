@@ -9,8 +9,10 @@ import com.catalog.application.castmember.retrieve.get.CastMemberOutput;
 import com.catalog.application.castmember.retrieve.get.DefaultGetCastMemberByIdUseCase;
 import com.catalog.application.castmember.retrieve.list.DefaultListCastMembersUseCase;
 import com.catalog.application.castmember.update.DefaultUpdateCastMemberUseCase;
+import com.catalog.application.castmember.update.UpdateCastMemberOutput;
 import com.catalog.domain.castmember.CastMember;
 import com.catalog.domain.castmember.CastMemberID;
+import com.catalog.domain.castmember.CastMemberType;
 import com.catalog.domain.exceptions.NotFoundException;
 import com.catalog.domain.exceptions.NotificationException;
 import com.catalog.domain.validation.Error;
@@ -30,8 +32,7 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -172,5 +173,113 @@ public class CastMemberAPITest {
         ;
 
         verify(getCastMemberByIdUseCase).execute(any());
+    }
+
+
+    @Test
+    public void givenAValidCommand_whenCallsUpdateCastMember_shouldReturnItsIdentifier() throws Exception {
+        // given
+        final var expectedName = Fixture.name();
+        final var expectedType = Fixture.CastMember.type();
+
+        final var aMember = CastMember.newMember(expectedName, expectedType);
+        final var expectedId = aMember.getId();
+
+        final var aCommand = new UpdateCastMemberRequest(expectedName, expectedType);
+
+        when(updateCastMemberUseCase.execute(any()))
+                .thenReturn(UpdateCastMemberOutput.from(expectedId));
+
+        // when
+        final var aRequest = post("/cast_members/{id}", expectedId.getValue())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(mapper.writeValueAsString(aCommand));
+
+        final var response = this.mvc.perform(aRequest)
+                .andDo(print());
+
+        // then
+        response.andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.id", equalTo(expectedId.getValue())));
+
+        verify(updateCastMemberUseCase).execute(argThat(actualCmd ->
+                Objects.equals(expectedName, actualCmd.name())
+                        && Objects.equals(expectedId.getValue(), actualCmd.id())
+                        && Objects.equals(expectedType, actualCmd.type())
+        ));
+    }
+
+    @Test
+    public void givenAValidName_whenCallsUpdateCastMember_shouldReturnNotification() throws Exception {
+        // given
+        final var aMember = CastMember.newMember("Vin Di", CastMemberType.DIRECTOR);
+        final var expectedId = aMember.getId();
+
+        final String expectedName = null;
+        final var expectedType = Fixture.CastMember.type();
+
+        final var expectedErrorMessage = "'name' should not be null";
+
+        final var aCommand = new UpdateCastMemberRequest(expectedName, expectedType);
+
+        when(updateCastMemberUseCase.execute(any()))
+                .thenThrow(NotificationException.with(new Error(expectedErrorMessage)));
+        // when
+        final var aRequest = put("/cast_members/{id}", expectedId.getValue())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(mapper.writeValueAsString(aCommand));
+
+        final var response = this.mvc.perform(aRequest)
+                .andDo(print());
+
+        // then
+        response.andExpect(status().isUnprocessableEntity())
+                .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.errors", hasSize(1)))
+                .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)))
+        ;
+
+        verify(updateCastMemberUseCase).execute(argThat(actualCmd ->
+                Objects.equals(expectedName, actualCmd.name())
+                        && Objects.equals(expectedId.getValue(), actualCmd.id())
+                        && Objects.equals(expectedType, actualCmd.type())
+        ));
+    }
+
+    @Test
+    public void givenAInvalidId_whenCallsUpdateCastMember_shouldReturnNotFound() throws Exception {
+        // given
+        final var expectedId = CastMemberID.from("123");
+
+        final String expectedName = Fixture.name();
+        final var expectedType = Fixture.CastMember.type();
+
+        final var expectedErrorMessage = "CastMember with ID 123 was not found";
+
+        final var aCommand = new UpdateCastMemberRequest(expectedName, expectedType);
+
+        when(updateCastMemberUseCase.execute(any()))
+                .thenThrow(NotFoundException.with(CastMember.class, expectedId));
+        // when
+        final var aRequest = put("/cast_members/{id}", expectedId.getValue())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(mapper.writeValueAsString(aCommand));
+
+        final var response = this.mvc.perform(aRequest)
+                .andDo(print());
+
+        // then
+        response.andExpect(status().isNotFound())
+                .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.errors", hasSize(1)))
+                .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)))
+        ;
+
+        verify(updateCastMemberUseCase).execute(argThat(actualCmd ->
+                Objects.equals(expectedName, actualCmd.name())
+                        && Objects.equals(expectedId.getValue(), actualCmd.id())
+                        && Objects.equals(expectedType, actualCmd.type())
+        ));
     }
 }
