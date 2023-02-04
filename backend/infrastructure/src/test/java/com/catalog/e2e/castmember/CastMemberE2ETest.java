@@ -2,20 +2,22 @@ package com.catalog.e2e.castmember;
 
 import com.catalog.E2ETest;
 import com.catalog.Fixture;
+import com.catalog.domain.castmember.CastMemberType;
 import com.catalog.e2e.MockDsl;
 import com.catalog.infrastructure.castmember.persistence.CastMemberRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @E2ETest
@@ -71,10 +73,99 @@ public class CastMemberE2ETest implements MockDsl {
 
         final String expectedName = null;
         final var expectedType = Fixture.CastMember.type();
+        final var expectedErrorMessage = "'name' should not be null";
 
 
         givenACastMemberResult(expectedName, expectedType)
                 .andExpect(status().isUnprocessableEntity())
-                        .andExpect(jsonPath("$.message", Matchers.equalTo("'name' should not be null")));
+                .andExpect(header().string("Location", nullValue()))
+                .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.errors", hasSize(1)))
+                .andExpect(jsonPath("$.errors[0].message", Matchers.equalTo(expectedErrorMessage)));
+    }
+
+    @Test
+    public void asACalogAdminIShouldBeAbleToNavigateToAllMembers() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, castMemberRepository.count());
+
+        givenACastMember("Vin Diesel", CastMemberType.ACTOR);
+        givenACastMember("Quentin Tarantino", CastMemberType.DIRECTOR);
+        givenACastMember("Jason Monoa", CastMemberType.ACTOR);
+
+        listCastMembers(0, 1)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.currentPage", equalTo(0)))
+                .andExpect(jsonPath("$.perPage", equalTo(1)))
+                .andExpect(jsonPath("$.total", equalTo(3)))
+                .andExpect(jsonPath("$.items", hasSize(1)))
+                .andExpect(jsonPath("$.items[0].name", equalTo("Jason Monoa")))
+        ;
+
+        listCastMembers(1, 1)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.currentPage", equalTo(1)))
+                .andExpect(jsonPath("$.perPage", equalTo(1)))
+                .andExpect(jsonPath("$.total", equalTo(3)))
+                .andExpect(jsonPath("$.items", hasSize(1)))
+                .andExpect(jsonPath("$.items[0].name", equalTo("Quentin Tarantino")))
+        ;
+
+        listCastMembers(2, 1)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.currentPage", equalTo(2)))
+                .andExpect(jsonPath("$.perPage", equalTo(1)))
+                .andExpect(jsonPath("$.total", equalTo(3)))
+                .andExpect(jsonPath("$.items", hasSize(1)))
+                .andExpect(jsonPath("$.items[0].name", equalTo("Vin Diesel")))
+        ;
+
+        listCastMembers(3, 1)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.currentPage", equalTo(3)))
+                .andExpect(jsonPath("$.perPage", equalTo(1)))
+                .andExpect(jsonPath("$.total", equalTo(3)))
+                .andExpect(jsonPath("$.items", hasSize(0)))
+        ;
+    }
+
+    @Test
+    public void asACalogAdminIShouldBeAbleToSearchToAllMembers() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, castMemberRepository.count());
+
+        givenACastMember("Vin Diesel", CastMemberType.ACTOR);
+        givenACastMember("Quentin Tarantino", CastMemberType.DIRECTOR);
+        givenACastMember("Jason Monoa", CastMemberType.ACTOR);
+
+        listCastMembers(0, 1,"vin")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.currentPage", equalTo(0)))
+                .andExpect(jsonPath("$.perPage", equalTo(1)))
+                .andExpect(jsonPath("$.total", equalTo(1)))
+                .andExpect(jsonPath("$.items", hasSize(1)))
+                .andExpect(jsonPath("$.items[0].name", equalTo("Vin Diesel")))
+        ;
+    }
+
+    @Test
+    public void asACalogAdminIShouldBeAbleToSortAllMembersDesc() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, castMemberRepository.count());
+
+        givenACastMember("Vin Diesel", CastMemberType.ACTOR);
+        givenACastMember("Quentin Tarantino", CastMemberType.DIRECTOR);
+        givenACastMember("Jason Monoa", CastMemberType.ACTOR);
+
+        listCastMembers(0, 3,"","name","desc")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.currentPage", equalTo(0)))
+                .andExpect(jsonPath("$.perPage", equalTo(3)))
+                .andExpect(jsonPath("$.total", equalTo(3)))
+                .andExpect(jsonPath("$.items", hasSize(3)))
+                .andExpect(jsonPath("$.items[0].name", equalTo("Vin Diesel")))
+                .andExpect(jsonPath("$.items[1].name", equalTo("Quentin Tarantino")))
+                .andExpect(jsonPath("$.items[2].name", equalTo("Jason Monoa")))
+        ;
     }
 }
