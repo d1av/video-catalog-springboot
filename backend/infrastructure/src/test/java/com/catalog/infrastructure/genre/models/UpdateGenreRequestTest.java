@@ -40,5 +40,4 @@ public class UpdateGenreRequestTest {
                 .hasFieldOrPropertyWithValue("categories", List.of(expectedCategory))
                 .hasFieldOrPropertyWithValue("active", expectedIsActive);
     }
-
 }
