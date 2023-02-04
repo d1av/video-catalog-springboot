@@ -1,4 +1,4 @@
-package com.catalog.e2e.castmember.delete;
+package com.catalog.application.castmember.delete;
 
 import com.catalog.Fixture;
 import com.catalog.IntegrationTest;

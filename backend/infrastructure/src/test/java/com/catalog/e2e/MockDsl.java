@@ -1,8 +1,11 @@
 package com.catalog.e2e;
 
 import com.catalog.domain.Identifier;
+import com.catalog.domain.castmember.CastMemberID;
+import com.catalog.domain.castmember.CastMemberType;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.genre.GenreID;
+import com.catalog.infrastructure.castmember.models.CreateCastMemberRequest;
 import com.catalog.infrastructure.category.models.CategoryResponse;
 import com.catalog.infrastructure.category.models.CreateCategoryRequest;
 import com.catalog.infrastructure.category.models.UpdateCategoryRequest;
@@ -24,6 +27,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public interface MockDsl {
 
     MockMvc mvc();
+
+    /*
+     * CAST MEMBER
+     */
+
+    default CastMemberID givenACastMember(
+            final String aName,
+            final CastMemberType aType) throws Exception {
+        final var aRequestBody = new CreateCastMemberRequest(aName, aType);
+        final var actualId = this.given("/cast_members", aRequestBody);
+        return CastMemberID.from(actualId);
+    }
+
+    /*
+     * CATEGORY
+     */
 
     default ResultActions deleteACategory(final Identifier anId) throws Exception {
         return this.delete("/categories/", anId);
@@ -63,6 +82,9 @@ public interface MockDsl {
         return this.update("/categories/", anId, aRequest);
     }
 
+    /*
+     * GENRE
+     */
 
     default GenreID givenAGenre(final String aName, final boolean isActive, final List<CategoryID> categories) throws Exception {
         final var aRequestBody = new CreateGenreRequest(aName, mapTo(categories, CategoryID::getValue), isActive);
@@ -98,6 +120,7 @@ public interface MockDsl {
     default ResultActions deleteAGenre(final Identifier anId) throws Exception {
         return this.delete("/genres/", anId);
     }
+
     default <A, D> List<D> mapTo(final List<A> actual, final Function<A, D> mapper) {
         return actual.stream()
                 .map(mapper)

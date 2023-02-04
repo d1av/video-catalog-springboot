@@ -1,4 +1,4 @@
-package com.catalog.e2e.castmember.retrieve.get;
+package com.catalog.application.castmember.retrieve.get;
 
 import com.catalog.Fixture;
 import com.catalog.IntegrationTest;

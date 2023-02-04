@@ -1,4 +1,4 @@
-package com.catalog.e2e.castmember.update;
+package com.catalog.application.castmember.update;
 
 import com.catalog.Fixture;
 import com.catalog.IntegrationTest;

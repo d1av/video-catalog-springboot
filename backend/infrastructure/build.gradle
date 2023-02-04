@@ -44,6 +44,7 @@ dependencies {
     implementation('com.fasterxml.jackson.module:jackson-module-afterburner')
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
     implementation('com.github.javafaker:javafaker:1.0.2')
+    testImplementation 'org.testng:testng:7.1.0'
 
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
