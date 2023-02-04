@@ -310,9 +310,9 @@ public class CastMemberAPITest {
         // given
         final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
 
-        final var exoectedPage = 0;
+        final var expectedPage = 0;
         final var expectedPerPage = 20;
-        final var expectedTerms = "alg";
+        final var expectedTerms = "algo";
         final var expectedSort = "type";
         final var expectedDirection = "desc";
 
@@ -322,12 +322,12 @@ public class CastMemberAPITest {
         final var expectedItems = List.of(CastMemberListOutput.from(aMember));
 
         when(listCastMembersUseCase.execute(any()))
-                .thenReturn(new Pagination<>(exoectedPage, expectedPerPage, expectedTotal, expectedItems));
+                .thenReturn(new Pagination<>(expectedPage, expectedPerPage, expectedTotal, expectedItems));
         // when
         final var aRequest = get("/cast_members")
-                .queryParam("page", String.valueOf(exoectedPage))
+                .queryParam("page", String.valueOf(expectedPage))
                 .queryParam("perPage", String.valueOf(expectedPerPage))
-                .queryParam("terms", expectedTerms)
+                .queryParam("search", expectedTerms)
                 .queryParam("sort", expectedSort)
                 .queryParam("dir", expectedDirection)
                 .accept(MediaType.APPLICATION_JSON);
@@ -336,21 +336,22 @@ public class CastMemberAPITest {
 
         // then
         response.andExpect(status().isOk())
-                .andExpect(jsonPath("$.current_page", equalTo(exoectedPage)))
-                .andExpect(jsonPath("$.per_page", equalTo(expectedPerPage)))
+                .andExpect(jsonPath("$.currentPage", equalTo(expectedPage)))
+                .andExpect(jsonPath("$.perPage", equalTo(expectedPerPage)))
                 .andExpect(jsonPath("$.total", equalTo(expectedTotal)))
                 .andExpect(jsonPath("$.items", hasSize(expectedItemsCount)))
                 .andExpect(jsonPath("$.items[0].id", equalTo(aMember.getId().getValue())))
                 .andExpect(jsonPath("$.items[0].name", equalTo(aMember.getName())))
-                .andExpect(jsonPath("$.items[0].type", equalTo(aMember.getType())))
-                .andExpect(jsonPath("$.items[0].createdAt", equalTo(aMember.getCreatedAt())))
+                .andExpect(jsonPath("$.items[0].type", equalTo(aMember.getType().toString())))
+                .andExpect(jsonPath("$.items[0].createdAt", equalTo(aMember.getCreatedAt().toString())))
         ;
 
         verify(listCastMembersUseCase).execute(argThat(aQuery ->
-                Objects.equals(exoectedPage,aQuery.page())
-                && Objects.equals(exoectedPage,aQuery.perPage())
-                && Objects.equals(expectedTerms,aQuery.terms())
-                && Objects.equals(expectedSort,aQuery.direction())
+                Objects.equals(expectedPage, aQuery.page())
+                        && Objects.equals(expectedPerPage, aQuery.perPage())
+                        && Objects.equals(expectedTerms, aQuery.terms())
+                        && Objects.equals(expectedSort, aQuery.sort())
+                        && Objects.equals(expectedDirection, aQuery.direction())
         ));
     }
 
@@ -359,7 +360,7 @@ public class CastMemberAPITest {
         // given
         final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
 
-        final var exoectedPage = 0;
+        final var expectedPage = 0;
         final var expectedPerPage = 10;
         final var expectedTerms = "";
         final var expectedSort = "name";
@@ -371,10 +372,10 @@ public class CastMemberAPITest {
         final var expectedItems = List.of(CastMemberListOutput.from(aMember));
 
         when(listCastMembersUseCase.execute(any()))
-                .thenReturn(new Pagination<>(exoectedPage, expectedPerPage, expectedTotal, expectedItems));
+                .thenReturn(new Pagination<>(expectedPage, expectedPerPage, expectedTotal, expectedItems));
         // when
         final var aRequest = get("/cast_members")
-                .queryParam("page", String.valueOf(exoectedPage))
+                .queryParam("page", String.valueOf(expectedPage))
                 .queryParam("perPage", String.valueOf(expectedPerPage))
                 .queryParam("terms", expectedTerms)
                 .queryParam("sort", expectedSort)
@@ -385,21 +386,22 @@ public class CastMemberAPITest {
 
         // then
         response.andExpect(status().isOk())
-                .andExpect(jsonPath("$.current_page", equalTo(exoectedPage)))
-                .andExpect(jsonPath("$.per_page", equalTo(expectedPerPage)))
+                .andExpect(jsonPath("$.currentPage", equalTo(expectedPage)))
+                .andExpect(jsonPath("$.perPage", equalTo(expectedPerPage)))
                 .andExpect(jsonPath("$.total", equalTo(expectedTotal)))
                 .andExpect(jsonPath("$.items", hasSize(expectedItemsCount)))
                 .andExpect(jsonPath("$.items[0].id", equalTo(aMember.getId().getValue())))
                 .andExpect(jsonPath("$.items[0].name", equalTo(aMember.getName())))
-                .andExpect(jsonPath("$.items[0].type", equalTo(aMember.getType())))
-                .andExpect(jsonPath("$.items[0].createdAt", equalTo(aMember.getCreatedAt())))
+                .andExpect(jsonPath("$.items[0].type", equalTo(aMember.getType().toString())))
+                .andExpect(jsonPath("$.items[0].createdAt", equalTo(aMember.getCreatedAt().toString())))
         ;
 
         verify(listCastMembersUseCase).execute(argThat(aQuery ->
-                Objects.equals(exoectedPage,aQuery.page())
-                        && Objects.equals(exoectedPage,aQuery.perPage())
-                        && Objects.equals(expectedTerms,aQuery.terms())
-                        && Objects.equals(expectedSort,aQuery.direction())
+                Objects.equals(expectedPage, aQuery.page())
+                        && Objects.equals(expectedPerPage, aQuery.perPage())
+                        && Objects.equals(expectedTerms, aQuery.terms())
+                        && Objects.equals(expectedSort, aQuery.sort())
+                        && Objects.equals(expectedDirection, aQuery.direction())
         ));
     }
 }

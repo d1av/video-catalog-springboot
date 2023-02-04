@@ -1,11 +1,16 @@
 package com.catalog.domain.pagination;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.function.Function;
 
 public record Pagination<T>(
+    //    @JsonProperty("current_page")
         int currentPage,
+  //      @JsonProperty("per_page")
         int perPage,
+  //      @JsonProperty("total")
         long total,
         List<T> items
 ) {
