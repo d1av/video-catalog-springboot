@@ -31,8 +31,7 @@ import java.util.Objects;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -282,5 +281,23 @@ public class CastMemberAPITest {
                         && Objects.equals(expectedId.getValue(), actualCmd.id())
                         && Objects.equals(expectedType, actualCmd.type())
         ));
+    }
+
+    @Test
+    public void givenAValidId_whenCAllsDeleteById_shouldDeleteIt() throws Exception {
+        // given
+        final var expectedId = "123";
+
+        doNothing().when(deleteCastMemberUseCase).execute(any());
+
+        // when
+        final var aRequest = delete("/cast_members/{id}", expectedId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        final var response = this.mvc.perform(aRequest);
+        // then
+        response.andExpect(status().isNoContent());
+
+        verify(deleteCastMemberUseCase).execute(expectedId);
     }
 }
