@@ -17,6 +17,7 @@ import com.catalog.domain.exceptions.NotFoundException;
 import com.catalog.domain.exceptions.NotificationException;
 import com.catalog.domain.validation.Error;
 import com.catalog.infrastructure.castmember.models.CreateCastMemberRequest;
+import com.catalog.infrastructure.castmember.models.UpdateCastMemberRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -191,7 +192,7 @@ public class CastMemberAPITest {
                 .thenReturn(UpdateCastMemberOutput.from(expectedId));
 
         // when
-        final var aRequest = post("/cast_members/{id}", expectedId.getValue())
+        final var aRequest = put("/cast_members/{id}", expectedId.getValue())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(mapper.writeValueAsString(aCommand));
 
