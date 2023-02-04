@@ -2,6 +2,7 @@ package com.catalog.e2e.castmember;
 
 import com.catalog.E2ETest;
 import com.catalog.Fixture;
+import com.catalog.domain.castmember.CastMemberID;
 import com.catalog.domain.castmember.CastMemberType;
 import com.catalog.e2e.MockDsl;
 import com.catalog.infrastructure.castmember.persistence.CastMemberRepository;
@@ -138,7 +139,7 @@ public class CastMemberE2ETest implements MockDsl {
         givenACastMember("Quentin Tarantino", CastMemberType.DIRECTOR);
         givenACastMember("Jason Monoa", CastMemberType.ACTOR);
 
-        listCastMembers(0, 1,"vin")
+        listCastMembers(0, 1, "vin")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.currentPage", equalTo(0)))
                 .andExpect(jsonPath("$.perPage", equalTo(1)))
@@ -157,7 +158,7 @@ public class CastMemberE2ETest implements MockDsl {
         givenACastMember("Quentin Tarantino", CastMemberType.DIRECTOR);
         givenACastMember("Jason Monoa", CastMemberType.ACTOR);
 
-        listCastMembers(0, 3,"","name","desc")
+        listCastMembers(0, 3, "", "name", "desc")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.currentPage", equalTo(0)))
                 .andExpect(jsonPath("$.perPage", equalTo(3)))
@@ -167,5 +168,39 @@ public class CastMemberE2ETest implements MockDsl {
                 .andExpect(jsonPath("$.items[1].name", equalTo("Quentin Tarantino")))
                 .andExpect(jsonPath("$.items[2].name", equalTo("Jason Monoa")))
         ;
+    }
+
+    @Test
+    public void asACalogAdminIShouldBeAbleToGetACastMemberByItsIdentifier() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, castMemberRepository.count());
+
+        final var expectedName = Fixture.name();
+        final var expectedType = Fixture.CastMember.type();
+
+        givenACastMember(Fixture.name(), Fixture.CastMember.type());
+        givenACastMember(Fixture.name(), Fixture.CastMember.type());
+        final var actualId = givenACastMember(expectedName, expectedType);
+
+        final var actualMember = retrieveACastMember(actualId);
+
+        Assertions.assertEquals(expectedName, actualMember.name());
+        Assertions.assertEquals(expectedType.name(), actualMember.type());
+        Assertions.assertNotNull(actualMember.createdAt());
+        Assertions.assertNotNull(actualMember.updatedAt());
+        Assertions.assertEquals(actualMember.createdAt(), actualMember.updatedAt());
+    }
+    @Test
+    public void asACalogAdminIShouldBeAbleToSeeATreatedErrorByGettingANotFoundCastMember() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, castMemberRepository.count());
+
+        givenACastMember(Fixture.name(), Fixture.CastMember.type());
+        givenACastMember(Fixture.name(), Fixture.CastMember.type());
+
+        retrieveACastMemberResult(CastMemberID.from("123"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message",equalTo("CastMember with ID 123 was not found")
+                ));
     }
 }
