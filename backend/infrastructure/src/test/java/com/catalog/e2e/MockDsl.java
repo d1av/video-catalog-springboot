@@ -13,6 +13,7 @@ import com.catalog.infrastructure.configuration.json.Json;
 import com.catalog.infrastructure.genre.models.CreateGenreRequest;
 import com.catalog.infrastructure.genre.models.GenreResponse;
 import com.catalog.infrastructure.genre.models.UpdateGenreRequest;
+import org.junit.experimental.results.ResultMatchers;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -38,6 +39,13 @@ public interface MockDsl {
         final var aRequestBody = new CreateCastMemberRequest(aName, aType);
         final var actualId = this.given("/cast_members", aRequestBody);
         return CastMemberID.from(actualId);
+    }
+
+    default ResultActions givenACastMemberResult(
+            final String aName,
+            final CastMemberType aType) throws Exception {
+        final var aRequestBody = new CreateCastMemberRequest(aName, aType);
+        return this.givenResult("/cast_members", aRequestBody);
     }
 
     /*
@@ -184,6 +192,14 @@ public interface MockDsl {
         final var aRequest = MockMvcRequestBuilders.put(url + anId.getValue())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Json.writeValueAsString(aRequestBody));
+
+        return this.mvc().perform(aRequest);
+    }
+
+    private ResultActions givenResult(final String url, final Object body) throws Exception {
+        final var aRequest = MockMvcRequestBuilders.post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Json.writeValueAsString(body));
 
         return this.mvc().perform(aRequest);
     }

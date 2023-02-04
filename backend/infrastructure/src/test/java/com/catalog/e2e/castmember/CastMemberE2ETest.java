@@ -4,15 +4,19 @@ import com.catalog.E2ETest;
 import com.catalog.Fixture;
 import com.catalog.e2e.MockDsl;
 import com.catalog.infrastructure.castmember.persistence.CastMemberRepository;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @E2ETest
 @Testcontainers
@@ -58,5 +62,19 @@ public class CastMemberE2ETest implements MockDsl {
         Assertions.assertNotNull(actualMember.getCreatedAt());
         Assertions.assertNotNull(actualMember.getUpdatedAt());
         Assertions.assertEquals(actualMember.getCreatedAt(), actualMember.getUpdatedAt());
+    }
+
+    @Test
+    public void asACatalogAdminIShouldBeAbleToSeeATreatedErrorByCreatingANewCastMemberWithInvalidValues() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, castMemberRepository.count());
+
+        final String expectedName = null;
+        final var expectedType = Fixture.CastMember.type();
+
+
+        givenACastMemberResult(expectedName, expectedType)
+                .andExpect(status().isUnprocessableEntity())
+                        .andExpect(jsonPath("$.message", Matchers.equalTo("'name' should not be null")));
     }
 }
