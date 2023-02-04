@@ -7,7 +7,9 @@ import com.catalog.application.castmember.create.DefaultCreateCastMemberUseCase;
 import com.catalog.application.castmember.delete.DefaultDeleteCastMemberUseCase;
 import com.catalog.application.castmember.retrieve.get.CastMemberOutput;
 import com.catalog.application.castmember.retrieve.get.DefaultGetCastMemberByIdUseCase;
+import com.catalog.application.castmember.retrieve.list.CastMemberListOutput;
 import com.catalog.application.castmember.retrieve.list.DefaultListCastMembersUseCase;
+import com.catalog.application.castmember.retrieve.list.ListCastMembersUseCase;
 import com.catalog.application.castmember.update.DefaultUpdateCastMemberUseCase;
 import com.catalog.application.castmember.update.UpdateCastMemberOutput;
 import com.catalog.domain.castmember.CastMember;
@@ -15,6 +17,7 @@ import com.catalog.domain.castmember.CastMemberID;
 import com.catalog.domain.castmember.CastMemberType;
 import com.catalog.domain.exceptions.NotFoundException;
 import com.catalog.domain.exceptions.NotificationException;
+import com.catalog.domain.pagination.Pagination;
 import com.catalog.domain.validation.Error;
 import com.catalog.infrastructure.castmember.models.CreateCastMemberRequest;
 import com.catalog.infrastructure.castmember.models.UpdateCastMemberRequest;
@@ -27,6 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.List;
 import java.util.Objects;
 
 import static org.hamcrest.Matchers.*;
@@ -299,5 +303,103 @@ public class CastMemberAPITest {
         response.andExpect(status().isNoContent());
 
         verify(deleteCastMemberUseCase).execute(expectedId);
+    }
+
+    @Test
+    public void givenValidParams_whenCallsListCastMembers_shouldReturnIt() throws Exception {
+        // given
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+
+        final var exoectedPage = 0;
+        final var expectedPerPage = 20;
+        final var expectedTerms = "alg";
+        final var expectedSort = "type";
+        final var expectedDirection = "desc";
+
+        final var expectedItemsCount = 1;
+        final var expectedTotal = 1;
+
+        final var expectedItems = List.of(CastMemberListOutput.from(aMember));
+
+        when(listCastMembersUseCase.execute(any()))
+                .thenReturn(new Pagination<>(exoectedPage, expectedPerPage, expectedTotal, expectedItems));
+        // when
+        final var aRequest = get("/cast_members")
+                .queryParam("page", String.valueOf(exoectedPage))
+                .queryParam("perPage", String.valueOf(expectedPerPage))
+                .queryParam("terms", expectedTerms)
+                .queryParam("sort", expectedSort)
+                .queryParam("dir", expectedDirection)
+                .accept(MediaType.APPLICATION_JSON);
+
+        final var response = this.mvc.perform(aRequest);
+
+        // then
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.current_page", equalTo(exoectedPage)))
+                .andExpect(jsonPath("$.per_page", equalTo(expectedPerPage)))
+                .andExpect(jsonPath("$.total", equalTo(expectedTotal)))
+                .andExpect(jsonPath("$.items", hasSize(expectedItemsCount)))
+                .andExpect(jsonPath("$.items[0].id", equalTo(aMember.getId().getValue())))
+                .andExpect(jsonPath("$.items[0].name", equalTo(aMember.getName())))
+                .andExpect(jsonPath("$.items[0].type", equalTo(aMember.getType())))
+                .andExpect(jsonPath("$.items[0].createdAt", equalTo(aMember.getCreatedAt())))
+        ;
+
+        verify(listCastMembersUseCase).execute(argThat(aQuery ->
+                Objects.equals(exoectedPage,aQuery.page())
+                && Objects.equals(exoectedPage,aQuery.perPage())
+                && Objects.equals(expectedTerms,aQuery.terms())
+                && Objects.equals(expectedSort,aQuery.direction())
+        ));
+    }
+
+    @Test
+    public void givenEmptyParams_whenCallsListCastMembers_shouldUseDefaultAndReturnIt() throws Exception {
+        // given
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+
+        final var exoectedPage = 0;
+        final var expectedPerPage = 10;
+        final var expectedTerms = "";
+        final var expectedSort = "name";
+        final var expectedDirection = "asc";
+
+        final var expectedItemsCount = 1;
+        final var expectedTotal = 1;
+
+        final var expectedItems = List.of(CastMemberListOutput.from(aMember));
+
+        when(listCastMembersUseCase.execute(any()))
+                .thenReturn(new Pagination<>(exoectedPage, expectedPerPage, expectedTotal, expectedItems));
+        // when
+        final var aRequest = get("/cast_members")
+                .queryParam("page", String.valueOf(exoectedPage))
+                .queryParam("perPage", String.valueOf(expectedPerPage))
+                .queryParam("terms", expectedTerms)
+                .queryParam("sort", expectedSort)
+                .queryParam("dir", expectedDirection)
+                .accept(MediaType.APPLICATION_JSON);
+
+        final var response = this.mvc.perform(aRequest);
+
+        // then
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.current_page", equalTo(exoectedPage)))
+                .andExpect(jsonPath("$.per_page", equalTo(expectedPerPage)))
+                .andExpect(jsonPath("$.total", equalTo(expectedTotal)))
+                .andExpect(jsonPath("$.items", hasSize(expectedItemsCount)))
+                .andExpect(jsonPath("$.items[0].id", equalTo(aMember.getId().getValue())))
+                .andExpect(jsonPath("$.items[0].name", equalTo(aMember.getName())))
+                .andExpect(jsonPath("$.items[0].type", equalTo(aMember.getType())))
+                .andExpect(jsonPath("$.items[0].createdAt", equalTo(aMember.getCreatedAt())))
+        ;
+
+        verify(listCastMembersUseCase).execute(argThat(aQuery ->
+                Objects.equals(exoectedPage,aQuery.page())
+                        && Objects.equals(exoectedPage,aQuery.perPage())
+                        && Objects.equals(expectedTerms,aQuery.terms())
+                        && Objects.equals(expectedSort,aQuery.direction())
+        ));
     }
 }
