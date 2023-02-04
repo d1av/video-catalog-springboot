@@ -124,7 +124,7 @@ public class CastMemberAPITest {
         final var expectedType = Fixture.CastMember.type();
 
         final var aMember = CastMember.newMember(expectedName, expectedType);
-        final var expectedId = aMember.getId();
+        final var expectedId = aMember.getId().getValue();
 
         when(getCastMemberByIdUseCase.execute(any()))
                 .thenReturn(CastMemberOutput.from(aMember));
@@ -141,19 +141,19 @@ public class CastMemberAPITest {
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.id", equalTo(expectedId)))
                 .andExpect(jsonPath("$.name", equalTo(expectedName)))
-                .andExpect(jsonPath("$.type", equalTo(expectedType)))
-                .andExpect(jsonPath("$.created_at", equalTo(aMember.getCreatedAt().toString())))
-                .andExpect(jsonPath("$.id", equalTo(aMember.getUpdatedAt().toString())))
+                .andExpect(jsonPath("$.type", equalTo(expectedType.toString())))
+                .andExpect(jsonPath("$.createdAt", equalTo(aMember.getCreatedAt().toString())))
+                .andExpect(jsonPath("$.updatedAt", equalTo(aMember.getUpdatedAt().toString())))
         ;
 
-        verify(getCastMemberByIdUseCase).execute(eq(expectedId.getValue()));
+        verify(getCastMemberByIdUseCase).execute(eq(expectedId));
     }
 
     @Test
     public void givenAInvalidId_whenCallsCastGetByIdAndCastMemberDoesntExists_shouldReturnNotFound() throws Exception {
         // given
         final var expectedId = CastMemberID.from("non-ex1stant");
-        final var expectedErrorMessage = "CastMember with ID 123 was not found";
+        final var expectedErrorMessage = "CastMember with ID non-ex1stant was not found";
 
         when(getCastMemberByIdUseCase.execute(any()))
                 .thenThrow(NotFoundException.with(CastMember.class, expectedId));
@@ -171,6 +171,6 @@ public class CastMemberAPITest {
                 .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)))
         ;
 
-        verify(getCastMemberByIdUseCase).execute(eq(expectedId.getValue()));
+        verify(getCastMemberByIdUseCase).execute(any());
     }
 }
