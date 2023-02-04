@@ -7,6 +7,7 @@ import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.genre.GenreID;
 import com.catalog.infrastructure.castmember.models.CastMemberResponse;
 import com.catalog.infrastructure.castmember.models.CreateCastMemberRequest;
+import com.catalog.infrastructure.castmember.models.UpdateCastMemberRequest;
 import com.catalog.infrastructure.category.models.CategoryResponse;
 import com.catalog.infrastructure.category.models.CreateCategoryRequest;
 import com.catalog.infrastructure.category.models.UpdateCategoryRequest;
@@ -72,6 +73,12 @@ public interface MockDsl {
 
     default ResultActions retrieveACastMemberResult(CastMemberID anId) throws Exception {
         return this.retrieveResult("/cast_members/", anId);
+    }
+
+    default ResultActions updateACastMember(CastMemberID anId,
+                                            final String aName,
+                                            final CastMemberType aType) throws Exception {
+        return this.update("/cast_members/", anId, new UpdateCastMemberRequest(aName, aType));
     }
 
     /*

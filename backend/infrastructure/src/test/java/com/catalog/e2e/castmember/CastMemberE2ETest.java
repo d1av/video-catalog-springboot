@@ -190,6 +190,7 @@ public class CastMemberE2ETest implements MockDsl {
         Assertions.assertNotNull(actualMember.updatedAt());
         Assertions.assertEquals(actualMember.createdAt(), actualMember.updatedAt());
     }
+
     @Test
     public void asACalogAdminIShouldBeAbleToSeeATreatedErrorByGettingANotFoundCastMember() throws Exception {
         Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
@@ -200,7 +201,52 @@ public class CastMemberE2ETest implements MockDsl {
 
         retrieveACastMemberResult(CastMemberID.from("123"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message",equalTo("CastMember with ID 123 was not found")
+                .andExpect(jsonPath("$.message", equalTo("CastMember with ID 123 was not found")
                 ));
+    }
+
+    @Test
+    public void asACalogAdminIShouldBeAbleToUpdateACastMemberByItsIdentifier() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, castMemberRepository.count());
+
+        final var expectedName = "Vin Diesel";
+        final var expectedType = CastMemberType.ACTOR;
+
+        givenACastMember(Fixture.name(), Fixture.CastMember.type());
+        givenACastMember(Fixture.name(), Fixture.CastMember.type());
+        final var actualId = givenACastMember("vin d", CastMemberType.DIRECTOR);
+
+        updateACastMember(actualId, expectedName, expectedType).
+                andExpect(status().isOk());
+
+        final var actualMember = retrieveACastMember(actualId);
+
+        Assertions.assertEquals(expectedName, actualMember.name());
+        Assertions.assertEquals(expectedType.name(), actualMember.type());
+        Assertions.assertNotNull(actualMember.createdAt());
+        Assertions.assertNotNull(actualMember.updatedAt());
+        Assertions.assertEquals(actualId.getValue(), actualMember.id());
+    }
+
+    @Test
+    public void asACalogAdminIShouldBeAbleToSeeATreatedErrorByUpdatingACastMemberWithInvalidValue() throws Exception {
+        Assertions.assertTrue(MY_SQL_CONTAINER.isRunning());
+        Assertions.assertEquals(0, castMemberRepository.count());
+
+        final var expectedName = "";
+        final var expectedType = CastMemberType.ACTOR;
+        final var expectedErrorMessage = "'name' should not be empty";
+
+        givenACastMember(Fixture.name(), Fixture.CastMember.type());
+        givenACastMember(Fixture.name(), Fixture.CastMember.type());
+        final var actualId = givenACastMember("vin d", CastMemberType.DIRECTOR);
+
+        updateACastMember(actualId, expectedName, expectedType).
+                andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.errors", hasSize(2)))
+                .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)))
+        ;
+
     }
 }
