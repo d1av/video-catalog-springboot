@@ -2,6 +2,7 @@ package com.catalog.infrastructure.api.controllers;
 
 import com.catalog.application.castmember.create.CreateCastMemberCommand;
 import com.catalog.application.castmember.create.CreateCastMemberUseCase;
+import com.catalog.application.castmember.delete.DeleteCastMemberUseCase;
 import com.catalog.application.castmember.retrieve.get.GetCastMemberByIdUseCase;
 import com.catalog.application.castmember.update.UpdateCastMemberCommand;
 import com.catalog.application.castmember.update.UpdateCastMemberUseCase;
@@ -22,13 +23,16 @@ public class CastMemberController implements CastMemberAPI {
     private final CreateCastMemberUseCase createCastMemberUseCase;
     private final GetCastMemberByIdUseCase getCastMemberByIdUseCase;
     private final UpdateCastMemberUseCase updateCastMemberUseCase;
+    private final DeleteCastMemberUseCase deleteCastMemberUseCase;
 
     public CastMemberController(final CreateCastMemberUseCase createCastMemberUseCase,
                                 final GetCastMemberByIdUseCase getCastMemberByIdUseCase,
-                                final UpdateCastMemberUseCase updateCastMemberUseCase) {
+                                final UpdateCastMemberUseCase updateCastMemberUseCase,
+                                final DeleteCastMemberUseCase deleteCastMemberUseCase) {
         this.createCastMemberUseCase = Objects.requireNonNull(createCastMemberUseCase);
         this.getCastMemberByIdUseCase = Objects.requireNonNull(getCastMemberByIdUseCase);
         this.updateCastMemberUseCase = Objects.requireNonNull(updateCastMemberUseCase);
+        this.deleteCastMemberUseCase = Objects.requireNonNull(deleteCastMemberUseCase);
     }
 
     @Override
@@ -52,5 +56,10 @@ public class CastMemberController implements CastMemberAPI {
         final var output = this.updateCastMemberUseCase.execute(aCommand);
 
         return ResponseEntity.ok(output);
+    }
+
+    @Override
+    public void deleteById(String id) {
+        this.deleteCastMemberUseCase.execute(id);
     }
 }
