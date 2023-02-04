@@ -56,5 +56,4 @@ class CreateGenreRequestTest {
                 .hasFieldOrPropertyWithValue("categories", List.of(expectedCategories))
                 .hasFieldOrPropertyWithValue("active", expectedIsActive);
     }
-
 }
