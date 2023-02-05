@@ -70,7 +70,7 @@ public class VideoTest {
     }
 
     @Test
-    public void givenValidVideo_whenCallsUpdate_shouldReturnUpdated() {
+    public void givenValidVideo_whenCallsUpdate_shouldReturnUpdated() throws InterruptedException {
 // given
         final var expectedTitle = Fixture.title();
         final var expectedDescription = Fixture.description(1000);
@@ -84,6 +84,22 @@ public class VideoTest {
         final var expectedGenres = Set.of(GenreID.unique());
         final var expectedMembers = Set.of(CastMemberID.unique());
         final var aVideo = Video.newVideo(
+                Fixture.title(),
+                Fixture.description(400),
+                Year.of(1888),
+                0.0,
+                true,
+                true,
+                Rating.AGE_12,
+                Set.of(),
+                Set.of(),
+                Set.of()
+
+        );
+
+        Thread.sleep(10);
+        // when
+        final var actualVideo = Video.with(aVideo).update(
                 expectedTitle,
                 expectedDescription,
                 expectedLauchedAt,
@@ -94,19 +110,6 @@ public class VideoTest {
                 expectedCategories,
                 expectedGenres,
                 expectedMembers
-        );
-        // when
-        final var actualVideo = Video.with(aVideo).update(
-                Fixture.title(),
-                Fixture.description(400),
-                Year.of(1888),
-                0.0,
-                true,
-                true,
-                10,
-                Set.of(),
-                Set.of(),
-                Set.of()
         );
 
         // then
@@ -136,7 +139,7 @@ public class VideoTest {
     }
 
     @Test
-    public void givenValidVideo_whenCallsSetVideo_shouldReturnUpdated() {
+    public void givenValidVideo_whenCallsSetVideo_shouldReturnUpdated() throws InterruptedException {
         // given
         final var expectedTitle = Fixture.title();
         final var expectedDescription = Fixture.description(1000);
@@ -163,13 +166,15 @@ public class VideoTest {
                 expectedMembers
         );
 
+        Thread.sleep(10);
+
         final var aVideoMedia =
                 AudioVideoMedia.with("abc",
                         "video.mp4",
                         "/123/videos", "",
                         MediaStatus.PENDING);
         // when
-        final var actualVideo = aVideo.with(aVideo).setVideo(aVideoMedia);
+        final Video actualVideo = Video.with(aVideo).setVideo(aVideoMedia);
 
         // then
         Assertions.assertNotNull(actualVideo);
@@ -188,7 +193,7 @@ public class VideoTest {
         Assertions.assertEquals(expectedCategories, actualVideo.getCategories());
         Assertions.assertEquals(expectedGenres, actualVideo.getGenres());
         Assertions.assertEquals(expectedMembers, actualVideo.getCastMembers());
-        Assertions.assertTrue(aVideoMedia, actualVideo.getVideo().get());
+        Assertions.assertEquals(aVideoMedia, actualVideo.getVideo().get());
         Assertions.assertTrue(actualVideo.getTrailer().isEmpty());
         Assertions.assertTrue(actualVideo.getBanner().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnail().isEmpty());
@@ -250,7 +255,7 @@ public class VideoTest {
         Assertions.assertEquals(expectedCategories, actualVideo.getCategories());
         Assertions.assertEquals(expectedGenres, actualVideo.getGenres());
         Assertions.assertEquals(expectedMembers, actualVideo.getCastMembers());
-        Assertions.assertTrue(aTrailerMedia, actualVideo.getTrailer().get());
+        Assertions.assertEquals(aTrailerMedia, actualVideo.getTrailer().get());
         Assertions.assertTrue(actualVideo.getVideo().isEmpty());
         Assertions.assertTrue(actualVideo.getBanner().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnail().isEmpty());
@@ -260,7 +265,7 @@ public class VideoTest {
     }
 
     @Test
-    public void givenValidVideo_whenCallsSetBanner_shouldReturnUpdated() {
+    public void givenValidVideo_whenCallsSetBanner_shouldReturnUpdated() throws InterruptedException {
         // given
         final var expectedTitle = Fixture.title();
         final var expectedDescription = Fixture.description(1000);
@@ -286,6 +291,8 @@ public class VideoTest {
                 expectedGenres,
                 expectedMembers
         );
+
+        Thread.sleep(10);
 
         final var aBannerMedia =
                 ImageMedia.with("abc",
@@ -311,9 +318,9 @@ public class VideoTest {
         Assertions.assertEquals(expectedCategories, actualVideo.getCategories());
         Assertions.assertEquals(expectedGenres, actualVideo.getGenres());
         Assertions.assertEquals(expectedMembers, actualVideo.getCastMembers());
-        Assertions.assertTrue(aBannerMedia, actualVideo.getBanner().get());
+        Assertions.assertEquals(aBannerMedia, actualVideo.getBanner().get());
         Assertions.assertTrue(actualVideo.getVideo().isEmpty());
-        Assertions.assertTrue(actualVideo.getTrailer.isEmpty());
+        Assertions.assertTrue(actualVideo.getTrailer().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnail().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnailHalf().isEmpty());
 
@@ -321,7 +328,7 @@ public class VideoTest {
     }
 
     @Test
-    public void givenValidVideo_whenCallsSetThumbnail_shouldReturnUpdated() {
+    public void givenValidVideo_whenCallsSetThumbnail_shouldReturnUpdated() throws InterruptedException {
         // given
         final var expectedTitle = Fixture.title();
         final var expectedDescription = Fixture.description(1000);
@@ -348,6 +355,8 @@ public class VideoTest {
                 expectedMembers
         );
 
+        Thread.sleep(10);
+
         final var aThumbMedia =
                 ImageMedia.with("abc",
                         "trailer.mp4",
@@ -372,9 +381,9 @@ public class VideoTest {
         Assertions.assertEquals(expectedCategories, actualVideo.getCategories());
         Assertions.assertEquals(expectedGenres, actualVideo.getGenres());
         Assertions.assertEquals(expectedMembers, actualVideo.getCastMembers());
-        Assertions.assertTrue(aThumbMedia, actualVideo.getThumbnail().get());
+        Assertions.assertEquals(aThumbMedia, actualVideo.getThumbnail().get());
         Assertions.assertTrue(actualVideo.getVideo().isEmpty());
-        Assertions.assertTrue(actualVideo.getTrailer.isEmpty());
+        Assertions.assertTrue(actualVideo.getTrailer().isEmpty());
         Assertions.assertTrue(actualVideo.getBanner().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnailHalf().isEmpty());
 
@@ -414,7 +423,7 @@ public class VideoTest {
                         "trailer.mp4",
                         "/123/videos");
         // when
-        final var actualVideo = aVideo.with(aVideo).setThumbnailOf(aBannerMedia);
+        final var actualVideo = aVideo.with(aVideo).setThumbnailHalf(aThumbMedia);
 
         // then
         Assertions.assertNotNull(actualVideo);
@@ -433,9 +442,9 @@ public class VideoTest {
         Assertions.assertEquals(expectedCategories, actualVideo.getCategories());
         Assertions.assertEquals(expectedGenres, actualVideo.getGenres());
         Assertions.assertEquals(expectedMembers, actualVideo.getCastMembers());
-        Assertions.assertTrue(aThumbMedia, actualVideo.getThumbnailHalf().get());
+        Assertions.assertEquals(aThumbMedia, actualVideo.getThumbnailHalf().get());
         Assertions.assertTrue(actualVideo.getVideo().isEmpty());
-        Assertions.assertTrue(actualVideo.getTrailer.isEmpty());
+        Assertions.assertTrue(actualVideo.getTrailer().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnail().isEmpty());
         Assertions.assertTrue(actualVideo.getBanner().isEmpty());
 

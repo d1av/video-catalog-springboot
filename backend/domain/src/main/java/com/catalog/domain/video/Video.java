@@ -144,145 +144,149 @@ public class Video extends AggregateRoot<VideoID> {
         );
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(final String title) {
-        this.title = title;
-    }
-
-    public VideoID getId() {
-        return id;
-    }
-
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    public Year getLaunchedAt() {
-        return launchedAt;
-    }
-
-    public void setLaunchedAt(final Year launchedAt) {
-        this.launchedAt = launchedAt;
-    }
-
-    public double getDuration() {
-        return duration;
-    }
-
-    public void setDuration(final double duration) {
-        this.duration = duration;
-    }
-
-    public Rating getRating() {
-        return rating;
-    }
-
-    public void setRating(final Rating rating) {
-        this.rating = rating;
-    }
-
-    public boolean isOpened() {
-        return opened;
-    }
-
-    public void setOpened(boolean opened) {
-        this.opened = opened;
-    }
-
-    public boolean isPublished() {
-        return published;
-    }
-
-    public void setPublished(boolean published) {
-        this.published = published;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(final Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(final Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Optional<ImageMedia> getBanner() {
-        return Optional.ofNullable(banner);
-    }
-
-    public void setBanner(final ImageMedia banner) {
-        this.banner = banner;
-    }
-
-    public Optional<ImageMedia> getThumbnail() {
-        return Optional.ofNullable(thumbnail);
-    }
-
-    public void setThumbnail(final ImageMedia thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public Optional<ImageMedia> getThumbnailHalf() {
-        return Optional.ofNullable(thumbnailHalf);
-    }
-
-    public void setThumbnailHald(final ImageMedia thumbnailHalf) {
-        this.thumbnailHalf = thumbnailHalf;
-    }
-
-    public Optional<AudioVideoMedia> getTrailer() {
-        return Optional.ofNullable(trailer);
-    }
-
-    public void setTrailer(final AudioVideoMedia trailer) {
-        this.trailer = trailer;
-    }
-
-    public Optional<AudioVideoMedia> getVideo() {
-        return Optional.ofNullable(video);
-    }
-
-    public void setVideo(AudioVideoMedia video) {
-        this.video = video;
-    }
-
-    public Set<CategoryID> getCategories() {
-        return categories != null ? Collections.unmodifiableSet(categories) : Collections.emptySet();
-    }
-
-    public Video setCategories(final Set<CategoryID> categories) {
-        this.categories = categories != null ? new HashSet<>(categories) : Collections.emptySet();
+    public Video update(
+            final String aTitle,
+            final String aDescription,
+            final Year aLauchYear,
+            final double aDuration,
+            final boolean wasOpened,
+            final boolean wasPublished,
+            final Rating aRating,
+            final Set<CategoryID> categories,
+            final Set<GenreID> genres,
+            final Set<CastMemberID> members
+    ) {
+        this.title = aTitle;
+        this.description = aDescription;
+        this.launchedAt = aLauchYear;
+        this.duration = aDuration;
+        this.opened = wasOpened;
+        this.published = wasPublished;
+        this.rating = aRating;
+        this.setCategories(categories);
+        this.setGenres(genres);
+        this.setCastMembers(members);
+        this.updatedAt = InstantUtils.now();
         return this;
+    }
+
+
+    public Set<CastMemberID> getCastMembers() {
+        return castMembers != null ? Collections.unmodifiableSet(castMembers) : Collections.emptySet();
     }
 
     public Set<GenreID> getGenres() {
         return genres != null ? Collections.unmodifiableSet(genres) : Collections.emptySet();
     }
 
-    public void setGenres(final Set<GenreID> genres) {
+    public Set<CategoryID> getCategories() {
+        return categories != null ? Collections.unmodifiableSet(categories) : Collections.emptySet();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Optional<ImageMedia> getBanner() {
+        return Optional.ofNullable(banner);
+    }
+
+    public Optional<ImageMedia> getThumbnail() {
+        return Optional.ofNullable(thumbnail);
+    }
+
+    public Optional<ImageMedia> getThumbnailHalf() {
+        return Optional.ofNullable(thumbnailHalf);
+    }
+
+    public Optional<AudioVideoMedia> getTrailer() {
+        return Optional.ofNullable(trailer);
+    }
+
+    public Optional<AudioVideoMedia> getVideo() {
+        return Optional.ofNullable(video);
+    }
+
+    public VideoID getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Year getLaunchedAt() {
+        return launchedAt;
+    }
+
+    public double getDuration() {
+        return duration;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public boolean isOpened() {
+        return opened;
+    }
+
+    public boolean isPublished() {
+        return published;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public Video setBanner(final ImageMedia banner) {
+        this.updatedAt = InstantUtils.now();
+        this.banner = banner;
+        return this;
+    }
+
+
+    public Video setThumbnail(final ImageMedia thumbnail) {
+        this.updatedAt = InstantUtils.now();
+        this.thumbnail = thumbnail;
+        return this;
+    }
+
+
+    public Video setThumbnailHalf(final ImageMedia thumbnailHalf) {
+        this.updatedAt = InstantUtils.now();
+        this.thumbnailHalf = thumbnailHalf;
+        return this;
+    }
+
+
+    public Video setTrailer(final AudioVideoMedia trailer) {
+        this.updatedAt = InstantUtils.now();
+        this.trailer = trailer;
+        return this;
+    }
+
+
+    public Video setVideo(AudioVideoMedia video) {
+        this.updatedAt = InstantUtils.now();
+        this.video = video;
+        return this;
+    }
+
+    private void setCategories(final Set<CategoryID> categories) {
+        this.categories = categories != null ? new HashSet<>(categories) : Collections.emptySet();
+    }
+
+    private void setGenres(final Set<GenreID> genres) {
         this.genres = genres != null ? Collections.unmodifiableSet(genres) : Collections.emptySet();
     }
 
-    public Set<CastMemberID> getCastMembers() {
-        return castMembers != null ? Collections.unmodifiableSet(castMembers) : Collections.emptySet();
-    }
 
-    public void setCastMembers(Set<CastMemberID> castMembers) {
+    private void setCastMembers(Set<CastMemberID> castMembers) {
         this.castMembers = castMembers != null ? Collections.unmodifiableSet(castMembers) : Collections.emptySet();
     }
 }
