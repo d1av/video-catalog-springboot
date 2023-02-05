@@ -30,7 +30,7 @@ public class Video extends AggregateRoot<VideoID> {
 
     private ImageMedia banner;
     private ImageMedia thumbnail;
-    private ImageMedia thumbnailOf;
+    private ImageMedia thumbnailHalf;
 
     private AudioVideoMedia trailer;
     private AudioVideoMedia video;
@@ -135,7 +135,7 @@ public class Video extends AggregateRoot<VideoID> {
                 aVideo.getUpdatedAt(),
                 aVideo.getBanner().orElse(null),
                 aVideo.getThumbnail().orElse(null),
-                aVideo.getThumbnailOf().orElse(null),
+                aVideo.getThumbnailHalf().orElse(null),
                 aVideo.getTrailer().orElse(null),
                 aVideo.getVideo().orElse(null),
                 new HashSet<>(aVideo.getCategories()),
@@ -237,12 +237,12 @@ public class Video extends AggregateRoot<VideoID> {
         this.thumbnail = thumbnail;
     }
 
-    public Optional<ImageMedia> getThumbnailOf() {
-        return Optional.ofNullable(thumbnailOf);
+    public Optional<ImageMedia> getThumbnailHalf() {
+        return Optional.ofNullable(thumbnailHalf);
     }
 
-    public void setThumbnailOf(final ImageMedia thumbnailOf) {
-        this.thumbnailOf = thumbnailOf;
+    public void setThumbnailHald(final ImageMedia thumbnailHalf) {
+        this.thumbnailHalf = thumbnailHalf;
     }
 
     public Optional<AudioVideoMedia> getTrailer() {
