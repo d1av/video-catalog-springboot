@@ -7,6 +7,11 @@ import net.datafaker.Faker;
 public final class Fixture {
     private static final Faker FAKER = new Faker();
 
+
+    public static String firstName() {
+        return FAKER.name().firstName();
+    }
+
     public static String description(Integer length) {
         length = Math.abs(length);
         if (length > 5000) length = 5000;
