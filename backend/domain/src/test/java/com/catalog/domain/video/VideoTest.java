@@ -22,7 +22,7 @@ public class VideoTest {
         final var expectedDuration = 120.0;
         final var expectedOpened = false;
         final var expectedPublished = false;
-        final var expectedRating = Rating.l;
+        final var expectedRating = Rating.L;
         final var expectedCategories = Set.of(CategoryID.unique());
         final var expectedGenres = Set.of(GenreID.unique());
         final var expectedMembers = Set.of(CastMemberID.unique());
@@ -46,20 +46,20 @@ public class VideoTest {
         Assertions.assertNotNull(actualVideo.getId());
         Assertions.assertEquals(expectedTitle, actualVideo.getTitle());
         Assertions.assertEquals(expectedDescription, actualVideo.getDescription());
-        Assertions.assertEquals(expectedLauchedAt, actualVideo.getLauchedAt());
+        Assertions.assertEquals(expectedLauchedAt, actualVideo.getLaunchedAt());
         Assertions.assertEquals(expectedDuration, actualVideo.getDuration());
-        Assertions.assertEquals(expectedOpened, actualVideo.getOpened());
-        Assertions.assertEquals(expectedPublished, actualVideo.getPublished());
+        Assertions.assertEquals(expectedOpened, actualVideo.isOpened());
+        Assertions.assertEquals(expectedPublished, actualVideo.isPublished());
         Assertions.assertEquals(expectedRating, actualVideo.getRating());
         Assertions.assertEquals(expectedCategories, actualVideo.getCategories());
         Assertions.assertEquals(expectedGenres, actualVideo.getGenres());
-        Assertions.assertEquals(expectedMembers, actualVideo.getMembers());
+        Assertions.assertEquals(expectedMembers, actualVideo.getCastMembers());
         Assertions.assertTrue(actualVideo.getVideo().isEmpty());
         Assertions.assertTrue(actualVideo.getTrailer().isEmpty());
         Assertions.assertTrue(actualVideo.getBanner().isEmpty());
         Assertions.assertTrue(actualVideo.getThumbnail().isEmpty());
-        Assertions.assertTrue(actualVideo.getThumbnailHalf().isEmpty());
+        Assertions.assertTrue(actualVideo.getThumbnailOf().isEmpty());
 
-        Assertions.assertDoesNotThrow(()-> actualVideo.validate(new ThrowsValidationHandler()));
+        Assertions.assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()));
     }
 }
