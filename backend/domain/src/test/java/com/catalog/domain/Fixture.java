@@ -9,16 +9,15 @@ public final class Fixture {
 
     public static String description(Integer length) {
         length = Math.abs(length);
-        if (length > 1000) length = 300;
+        if (length > 5000) length = 5000;
 
-        String description = "";
-        while (description.length() < length) {
-            String text1 = FAKER.massEffect().quote();
-            String text2 = FAKER.onePiece().quote();
-            String text3 = FAKER.fallout().quote();
-            description = text1.concat(text2.concat(text3));
+        StringBuilder builder = new StringBuilder();
+        while (builder.length() < length) {
+            builder.append(FAKER.massEffect().quote());
+            builder.append(FAKER.onePiece().quote());
+            builder.append(FAKER.fallout().quote());
         }
-        return description;
+        return builder.toString();
     }
 
     public static Integer year() {
