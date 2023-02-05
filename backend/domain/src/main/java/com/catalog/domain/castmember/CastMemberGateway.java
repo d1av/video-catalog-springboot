@@ -1,9 +1,11 @@
 package com.catalog.domain.castmember;
 
+import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.genre.Genre;
 import com.catalog.domain.pagination.Pagination;
 import com.catalog.domain.pagination.SearchQuery;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CastMemberGateway {
@@ -17,4 +19,5 @@ public interface CastMemberGateway {
 
     Pagination<CastMember> findAll(SearchQuery aQuery);
 
+    List<CastMemberID> existsByIds(Iterable<CastMemberID> ids);
 }

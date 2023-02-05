@@ -16,7 +16,7 @@ dependencies {
     implementation('io.vavr:vavr:0.10.4')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation('com.github.javafaker:javafaker:1.0.2')
+    implementation('net.datafaker:datafaker:1.7.0')
 
     implementation(project(":domain"))
     testImplementation project(path: ':domain')

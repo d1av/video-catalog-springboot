@@ -1,5 +1,6 @@
 package com.catalog.infrastructure.genre;
 
+import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.genre.Genre;
 import com.catalog.domain.genre.GenreGateway;
 import com.catalog.domain.genre.GenreID;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -73,6 +75,12 @@ public class GenreMySQLGateway implements GenreGateway {
                 pageResult.getTotalElements(),
                 pageResult.map(GenreJpaEntity::toAggregate).toList()
         );
+    }
+
+    @Override
+    public List<GenreID> existsByIds(Iterable<CategoryID> ids) {
+        //TODO: exist by id of genre
+        throw new UnsupportedOperationException();
     }
 
     private Specification<GenreJpaEntity> assembleSpecification(final String terms) {
