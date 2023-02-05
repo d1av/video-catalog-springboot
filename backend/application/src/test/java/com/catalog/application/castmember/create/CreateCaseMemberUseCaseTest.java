@@ -1,5 +1,6 @@
 package com.catalog.application.castmember.create;
 
+
 import com.catalog.application.Fixture;
 import com.catalog.application.UseCaseTest;
 import com.catalog.domain.castmember.CastMemberGateway;
@@ -33,7 +34,7 @@ public class CreateCaseMemberUseCaseTest extends UseCaseTest {
     public void givenAValidCommand_whenCreateCastMember_shouldReturnIt() {
         // given
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var aCommand = CreateCastMemberCommand.with(
                 expectedName,
@@ -61,7 +62,7 @@ public class CreateCaseMemberUseCaseTest extends UseCaseTest {
     public void givenAInvalidNullName_whenCallsCreateCastMember_shouldThrowNotificationException() {
         // given
         final String expectedName = null;
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'name' should not be null";

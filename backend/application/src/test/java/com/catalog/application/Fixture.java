@@ -5,11 +5,11 @@ import com.catalog.domain.castmember.CastMemberType;
 import com.catalog.domain.category.Category;
 import com.catalog.domain.genre.Genre;
 import com.catalog.domain.video.Rating;
-import io.vavr.API;
+import com.catalog.domain.video.Resource;
 import net.datafaker.Faker;
 
 import java.time.Year;
-import java.util.List;
+import java.util.Arrays;
 
 import static io.vavr.API.*;
 
@@ -104,13 +104,13 @@ public final class Fixture {
 
     public static final class Videos {
 
-        public static Rating resource(final Resource.Type type) {
+        public static Resource resource(final Resource.Type type) {
             final String contentType = Match(type).of(
-                    Case($(List.of(Type.VIDEO, Type.TRAILER)), "video/mp4"),
-                    Case($(List.of()), "image/jpg")
+                    Case($(List(Resource.Type.VIDEO, Resource.Type.TRAILER)::contains), "video/mp4"),
+                    Case($(), "image/jpg")
             );
             final byte[] content = "Conteudo".getBytes();
-            return Resource.of(content, contentType, type.name().toLowerCase(), type);
+            return Resource.with(content, contentType, type.name().toLowerCase(), type);
         }
 
         public static Rating rating() {
