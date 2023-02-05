@@ -17,7 +17,12 @@ public final class Fixture {
             builder.append(FAKER.onePiece().quote());
             builder.append(FAKER.fallout().quote());
         }
-        return builder.toString();
+
+        String correctLengthString = builder.toString();
+        if (correctLengthString.length() > length) {
+            correctLengthString = correctLengthString.substring(0, length);
+        }
+        return correctLengthString;
     }
 
     public static Integer year() {

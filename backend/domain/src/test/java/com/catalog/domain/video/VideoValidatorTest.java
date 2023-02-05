@@ -29,7 +29,7 @@ public class VideoValidatorTest {
         final var expectedGenres = Set.of(GenreID.unique());
         final var expectedMembers = Set.of(CastMemberID.unique());
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'name' should not be null";
+        final var expectedErrorMessage = "'title' should not be null";
 
         final var actualVideo = Video.newVideo(
                 expectedTitle,
@@ -44,7 +44,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(this, new ThrowsValidationHandler());
+        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
 
         //when
         final var actualError =
@@ -70,7 +70,7 @@ public class VideoValidatorTest {
         final var expectedGenres = Set.of(GenreID.unique());
         final var expectedMembers = Set.of(CastMemberID.unique());
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'name' should not be empty";
+        final var expectedErrorMessage = "'title' should not be empty";
 
         final var actualVideo = Video.newVideo(
                 expectedTitle,
@@ -85,7 +85,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(this, new ThrowsValidationHandler());
+        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
 
         //when
         final var actualError =
@@ -111,7 +111,7 @@ public class VideoValidatorTest {
         final var expectedGenres = Set.of(GenreID.unique());
         final var expectedMembers = Set.of(CastMemberID.unique());
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'name' must be between 1 and 255 characters";
+        final var expectedErrorMessage = "'title' must be between 1 and 255 characters";
 
         final var actualVideo = Video.newVideo(
                 expectedTitle,
@@ -126,7 +126,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(this, new ThrowsValidationHandler());
+        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
 
         //when
         final var actualError =
@@ -167,7 +167,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(this, new ThrowsValidationHandler());
+        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
 
         //when
         final var actualError =
@@ -193,7 +193,7 @@ public class VideoValidatorTest {
         final var expectedGenres = Set.of(GenreID.unique());
         final var expectedMembers = Set.of(CastMemberID.unique());
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'lauchedAt' should not be null";
+        final var expectedErrorMessage = "'description' must be between 1 and 4000 characters";
 
         final var actualVideo = Video.newVideo(
                 expectedTitle,
@@ -208,7 +208,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(this, new ThrowsValidationHandler());
+        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
 
         //when
         final var actualError =
@@ -234,7 +234,7 @@ public class VideoValidatorTest {
         final var expectedGenres = Set.of(GenreID.unique());
         final var expectedMembers = Set.of(CastMemberID.unique());
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'lauchedAt' should not be null";
+        final var expectedErrorMessage = "'launchedAt' should not be null";
 
         final var actualVideo = Video.newVideo(
                 expectedTitle,
@@ -249,7 +249,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(this, new ThrowsValidationHandler());
+        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
 
         //when
         final var actualError =
@@ -290,7 +290,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(this, new ThrowsValidationHandler());
+        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
 
         //when
         final var actualError =
