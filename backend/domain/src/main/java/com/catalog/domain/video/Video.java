@@ -57,7 +57,7 @@ public class Video extends AggregateRoot<VideoID> {
             final AudioVideoMedia aVideo,
             final Set<CategoryID> categories,
             final Set<GenreID> genres,
-            final Set<CastMemberID> members
+            final Set<CastMemberID> castMembers
     ) {
         super(anId);
         this.title = aTitle;
@@ -76,7 +76,7 @@ public class Video extends AggregateRoot<VideoID> {
         this.video = aVideo;
         this.categories = categories;
         this.genres = genres;
-        this.castMembers = members;
+        this.castMembers = castMembers;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class Video extends AggregateRoot<VideoID> {
             final Rating aRating,
             final Set<CategoryID> categories,
             final Set<GenreID> genres,
-            final Set<CastMemberID> members
+            final Set<CastMemberID> castMembers
     ) {
         final var now = InstantUtils.now();
         final var anId = VideoID.unique();
@@ -116,7 +116,7 @@ public class Video extends AggregateRoot<VideoID> {
                 null,
                 categories,
                 genres,
-                members
+                castMembers
         );
     }
 
@@ -166,7 +166,7 @@ public class Video extends AggregateRoot<VideoID> {
         this.rating = aRating;
         this.setCategories(categories);
         this.setGenres(genres);
-        this.setCastMembers(members);
+        this.setCastMembers(castMembers);
         this.updatedAt = InstantUtils.now();
         return this;
     }

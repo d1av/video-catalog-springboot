@@ -6,11 +6,14 @@ import com.catalog.domain.category.Category;
 import com.catalog.domain.genre.Genre;
 import com.catalog.domain.video.Rating;
 import com.catalog.domain.video.Resource;
+import com.catalog.domain.video.Video;
 import net.datafaker.Faker;
 
 import java.time.Year;
 import java.util.Arrays;
+import java.util.Set;
 
+import static com.catalog.application.Fixture.Videos.*;
 import static io.vavr.API.*;
 
 
@@ -103,6 +106,21 @@ public final class Fixture {
     }
 
     public static final class Videos {
+
+        public static Video systemDesign() {
+            return Video.newVideo(
+                    Fixture.title(),
+                    description(),
+                    Year.of(Fixture.year().getValue()),
+                    Fixture.duration(),
+                    Fixture.bool(),
+                    Fixture.bool(),
+                    rating(),
+                    Set.of(Categories.aulas().getId()),
+                    Set.of(Genres.tech().getId()),
+                    Set.of(CastMembers.wesley().getId(), CastMembers.mia().getId())
+            );
+        }
 
         public static Resource resource(final Resource.Type type) {
             final String contentType = Match(type).of(

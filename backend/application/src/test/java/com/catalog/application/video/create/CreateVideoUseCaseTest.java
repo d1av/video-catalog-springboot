@@ -107,6 +107,7 @@ public class CreateVideoUseCaseTest extends UseCaseTest {
                         && Objects.equals(expectedCategories, actualVideo.getCategories())
                         && Objects.equals(expectedRating, actualVideo.getRating())
                         && Objects.equals(expectedGenres, actualVideo.getGenres())
+                        && Objects.equals(expectedCastMembers, actualVideo.getCastMembers())
                         && Objects.equals(expectedVideo.name(), actualVideo.getVideo().get().name())
                         && Objects.equals(expectedTrailer.name(), actualVideo.getTrailer().get().name())
                         && Objects.equals(expectedBanner.name(), actualVideo.getBanner().get().name())
