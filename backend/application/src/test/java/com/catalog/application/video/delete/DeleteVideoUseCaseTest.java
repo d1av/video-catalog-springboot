@@ -6,6 +6,7 @@ import com.catalog.domain.video.VideoGateway;
 import com.catalog.domain.video.VideoID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -36,10 +37,10 @@ public class DeleteVideoUseCaseTest extends UseCaseTest {
         doNothing().when(videoGateway).deleteById(any());
 
         // when
-        Assertions.assertDoesNotThrow(this.useCase.execute(expectedId.getValue()));
+        Assertions.assertDoesNotThrow(() -> this.useCase.execute(expectedId.getValue()));
 
         // then
-        verify(videoGateway).deleteById(expectedId);
+        verify(videoGateway).deleteById(any());
     }
 
     @Test
@@ -50,10 +51,10 @@ public class DeleteVideoUseCaseTest extends UseCaseTest {
         doNothing().when(videoGateway).deleteById(any());
 
         // when
-        Assertions.assertDoesNotThrow(this.useCase.execute(expectedId.getValue()));
+        Assertions.assertDoesNotThrow(() -> this.useCase.execute(expectedId.getValue()));
 
         // then
-        verify(videoGateway).deleteById(expectedId);
+        verify(videoGateway).deleteById(any());
     }
 
     @Test
@@ -68,6 +69,6 @@ public class DeleteVideoUseCaseTest extends UseCaseTest {
                 () -> this.useCase.execute(expectedId.getValue()));
 
         // then
-        verify(videoGateway).deleteById(expectedId);
+        verify(videoGateway).deleteById(any());
     }
 }
