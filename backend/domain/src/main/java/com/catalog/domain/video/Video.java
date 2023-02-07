@@ -71,6 +71,7 @@ public class Video extends AggregateRoot<VideoID> {
         this.updatedAt = aUpdateDate;
         this.banner = aBanner;
         this.thumbnail = aThumb;
+        this.thumbnailHalf = aThumbHalf;
         this.trailer = aTrailer;
         this.video = aVideo;
         this.categories = categories;
