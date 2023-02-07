@@ -6,10 +6,10 @@ import com.catalog.domain.genre.GenreGateway;
 import com.catalog.domain.genre.GenreID;
 import com.catalog.domain.pagination.Pagination;
 import com.catalog.domain.pagination.SearchQuery;
-import com.catalog.infrastructure.category.persistence.CategoryJpaEntity;
 import com.catalog.infrastructure.genre.persistence.GenreJpaEntity;
 import com.catalog.infrastructure.genre.persistence.GenreRepository;
 import com.catalog.infrastructure.utils.SpecificationUtils;
+import jdk.jshell.spi.ExecutionControl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -78,8 +78,7 @@ public class GenreMySQLGateway implements GenreGateway {
     }
 
     @Override
-    public List<GenreID> existsByIds(Iterable<CategoryID> ids) {
-        //TODO: exist by id of genre
+    public List<GenreID> existsByIds(Iterable<GenreID> ids) {
         throw new UnsupportedOperationException();
     }
 

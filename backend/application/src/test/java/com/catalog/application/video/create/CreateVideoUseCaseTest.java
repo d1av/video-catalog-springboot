@@ -4,20 +4,14 @@ import com.catalog.application.Fixture;
 import com.catalog.application.UseCaseTest;
 import com.catalog.domain.castmember.CastMemberGateway;
 import com.catalog.domain.category.CategoryGateway;
-import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.genre.GenreGateway;
-import com.catalog.domain.video.Resource;
-import com.catalog.domain.video.VideoGateway;
+import com.catalog.domain.video.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.catalog.domain.video.Resource.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -31,17 +25,18 @@ public class CreateVideoUseCaseTest extends UseCaseTest {
     private DefaultCreateVideoUseCase useCase;
     @Mock
     private VideoGateway videoGateway;
-
     @Mock
     private CategoryGateway categoryGateway;
     @Mock
     private GenreGateway genreGateway;
     @Mock
     private CastMemberGateway castMemberGateway;
+    @Mock
+    private MediaResourceGateway mediaResourceGateway;
 
     @Override
     protected List<Object> getMocks() {
-        return null;
+        return List.of(videoGateway, categoryGateway, genreGateway, castMemberGateway, mediaResourceGateway);
     }
 
     @Test
@@ -87,6 +82,9 @@ public class CreateVideoUseCaseTest extends UseCaseTest {
         when(castMemberGateway.existsByIds(any())).thenReturn(new ArrayList<>(expectedCastMembers));
         when(videoGateway.create(any())).thenAnswer(returnsFirstArg());
 
+        mockImagemMedia();
+        mockAudioVideoMedia();
+
         // when
         final var actualResult = useCase.execute(aCommand);
 
@@ -95,21 +93,40 @@ public class CreateVideoUseCaseTest extends UseCaseTest {
         Assertions.assertNotNull(actualResult.id());
 
         verify(videoGateway).create(argThat(actualVideo ->
-                Objects.equals(expectedTitle, actualVideo.getTitle())
-                        && Objects.equals(expectedDescription, actualVideo.getDescription())
-                        && Objects.equals(expectedLaunchYear, actualVideo.getLaunchedAt())
-                        && Objects.equals(expectedDuration, actualVideo.getDuration())
-                        && Objects.equals(expectedOpened, actualVideo.isOpened())
-                        && Objects.equals(expectedPublished, actualVideo.isPublished())
-                        && Objects.equals(expectedRating, actualVideo.getRating())
-                        && Objects.equals(expectedCategories, actualVideo.getCategories())
-                        && Objects.equals(expectedGenres, actualVideo.getGenres())
-//                        && Objects.equals(expectedCastMembers, actualVideo.getCastMembers())
-//                        && Objects.equals(expectedVideo.name(), actualVideo.getVideo().get().name())
-//                        && Objects.equals(expectedTrailer.name(), actualVideo.getTrailer().get().name())
-//                        && Objects.equals(expectedBanner.name(), actualVideo.getBanner().get().name())
-//                        && Objects.equals(expectedThumb.name(), actualVideo.getThumbnail().get().name())
-//                        && Objects.equals(expectedThumbHelf.name(), actualVideo.getThumbnailHalf().get().name())
+                        Objects.equals(expectedTitle, actualVideo.getTitle())
+                                && Objects.equals(expectedDescription, actualVideo.getDescription())
+                                && Objects.equals(expectedLaunchYear, actualVideo.getLaunchedAt())
+                                && Objects.equals(expectedDuration, actualVideo.getDuration())
+                                && Objects.equals(expectedOpened, actualVideo.isOpened())
+                                && Objects.equals(expectedPublished, actualVideo.isPublished())
+                                && Objects.equals(expectedCategories, actualVideo.getCategories())
+                                && Objects.equals(expectedRating, actualVideo.getRating())
+                                && Objects.equals(expectedGenres, actualVideo.getGenres())
+                                && Objects.equals(expectedVideo.name(), actualVideo.getVideo().get().name())
+                                && Objects.equals(expectedTrailer.name(), actualVideo.getTrailer().get().name())
+                                && Objects.equals(expectedBanner.name(), actualVideo.getBanner().get().name())
+                                && Objects.equals(expectedThumb.name(), actualVideo.getThumbnail().get().name())
+                                && Objects.equals(expectedThumbHelf.name(), actualVideo.getThumbnailHalf().get().name())
         ));
+    }
+
+    private void mockImagemMedia() {
+        when(mediaResourceGateway.storeImage(any(), any())).thenAnswer(t -> {
+            final var resource = t.getArgument(1, Resource.class);
+            return ImageMedia.with(UUID.randomUUID().toString(), resource.name(), "/img");
+        });
+    }
+
+    private void mockAudioVideoMedia() {
+        when(mediaResourceGateway.storeAudioVideo(any(), any())).thenAnswer(t -> {
+            final var resource = t.getArgument(1, Resource.class);
+            return AudioVideoMedia.with(
+                    UUID.randomUUID().toString(),
+                    resource.name(),
+                    "/img",
+                    "null",
+                    MediaStatus.PENDING
+            );
+        });
     }
 }
