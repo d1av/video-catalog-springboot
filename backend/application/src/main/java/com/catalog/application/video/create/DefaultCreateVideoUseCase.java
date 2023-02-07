@@ -50,13 +50,14 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
 
     @Override
     public CreateVideoOutput execute(CreateVideoCommand aCommand) {
-        final var aRating = Rating.of(aCommand.rating()).orElseThrow(invalidRating(aCommand.rating()));
-        final var aLaunchYear = Year.of(aCommand.launchedAt());
+        final var notification = Notification.create();
+
+        final var aRating = Rating.of(aCommand.rating()).orElse(null);
+        final var aLaunchYear = aCommand.launchedAt() != null ? Year.of(aCommand.launchedAt()) : null;
         final var categories = toIdentifier(aCommand.categories(), CategoryID::from);
         final var genres = toIdentifier(aCommand.genres(), GenreID::from);
         final var members = toIdentifier(aCommand.members(), CastMemberID::from);
 
-        final var notification = Notification.create();
         notification.append(validateCategories(categories));
         notification.append(validateGenres(genres));
         notification.append(validateCastMembers(members));
