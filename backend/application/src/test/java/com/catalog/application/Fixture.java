@@ -24,6 +24,24 @@ public final class Fixture {
         return FAKER.name().firstName();
     }
 
+    private static final Video SYSTEM_DESIGN = Video.newVideo(
+            Fixture.title(),
+            description(500),
+            Year.of(Fixture.year().getValue()),
+            Fixture.duration(),
+            Fixture.bool(),
+            Fixture.bool(),
+            rating(),
+            Set.of(Categories.aulas().getId()),
+            Set.of(Genres.tech().getId()),
+            Set.of(CastMembers.wesley().getId(), CastMembers.mia().getId())
+    );
+
+    public static Video systemDesign() {
+        return Video.with(SYSTEM_DESIGN);
+    }
+
+
     public static String description(Integer length) {
         length = Math.abs(length);
         if (length > 5000) length = 5000;
@@ -107,20 +125,6 @@ public final class Fixture {
 
     public static final class Videos {
 
-        public static Video systemDesign() {
-            return Video.newVideo(
-                    Fixture.title(),
-                    description(),
-                    Year.of(Fixture.year().getValue()),
-                    Fixture.duration(),
-                    Fixture.bool(),
-                    Fixture.bool(),
-                    rating(),
-                    Set.of(Categories.aulas().getId()),
-                    Set.of(Genres.tech().getId()),
-                    Set.of(CastMembers.wesley().getId(), CastMembers.mia().getId())
-            );
-        }
 
         public static Resource resource(final Resource.Type type) {
             final String contentType = Match(type).of(
