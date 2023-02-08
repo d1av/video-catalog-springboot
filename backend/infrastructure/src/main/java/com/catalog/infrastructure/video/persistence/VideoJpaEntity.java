@@ -1,5 +1,6 @@
 package com.catalog.infrastructure.video.persistence;
 
+import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.video.Rating;
 import com.catalog.domain.video.Video;
 import com.catalog.domain.video.VideoID;
@@ -7,8 +8,11 @@ import jakarta.persistence.*;
 
 import java.time.Instant;
 import java.time.Year;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Table(name = "videos")
 @Entity(name = "Video")
@@ -49,26 +53,29 @@ public class VideoJpaEntity {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "thumbnail_half_id")
     private ImageMediaJpaEntity thumbnailHalf;
+    @OneToMany(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<VideoCategoryJpaEntity> categories;
 
 
     public VideoJpaEntity() {
+        this.categories = new HashSet<>(3);
     }
 
-    public VideoJpaEntity(final UUID id,
-                          final String title,
-                          final String description,
-                          final int yearLauched,
-                          final boolean opened,
-                          final boolean published,
-                          final Rating rating,
-                          final double duration,
-                          final Instant createdAt,
-                          final Instant updatedAt,
-                          final AudioVideoMediaJpaEntity video,
-                          final AudioVideoMediaJpaEntity trailer,
-                          final ImageMediaJpaEntity banner,
-                          final ImageMediaJpaEntity thumbnail,
-                          final ImageMediaJpaEntity thumbnailHalf) {
+    private VideoJpaEntity(final UUID id,
+                           final String title,
+                           final String description,
+                           final int yearLauched,
+                           final boolean opened,
+                           final boolean published,
+                           final Rating rating,
+                           final double duration,
+                           final Instant createdAt,
+                           final Instant updatedAt,
+                           final AudioVideoMediaJpaEntity video,
+                           final AudioVideoMediaJpaEntity trailer,
+                           final ImageMediaJpaEntity banner,
+                           final ImageMediaJpaEntity thumbnail,
+                           final ImageMediaJpaEntity thumbnailHalf) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -84,10 +91,11 @@ public class VideoJpaEntity {
         this.banner = banner;
         this.thumbnail = thumbnail;
         this.thumbnailHalf = thumbnailHalf;
+        this.categories = new HashSet<>(3);
     }
 
     public static VideoJpaEntity from(final Video aVideo) {
-        return new VideoJpaEntity(
+        final var entity = new VideoJpaEntity(
                 UUID.fromString(aVideo.getId().getValue()),
                 aVideo.getTitle(),
                 aVideo.getDescription(),
@@ -109,6 +117,13 @@ public class VideoJpaEntity {
                 aVideo.getThumbnailHalf().map(ImageMediaJpaEntity::from)
                         .orElse(null)
         );
+        aVideo.getCategories().forEach(entity::addCategory);
+
+        return entity;
+    }
+
+    private void addCategory(final CategoryID anId) {
+        this.categories.add(VideoCategoryJpaEntity.from(this, anId));
     }
 
     public Video toAggregate() {
@@ -138,10 +153,20 @@ public class VideoJpaEntity {
                 Optional.ofNullable(getVideo())
                         .map(AudioVideoMediaJpaEntity::toDomain)
                         .orElse(null),
-                null,
+                getCategories().stream()
+                        .map(it -> CategoryID.from(it.getId().getCategoryId()))
+                        .collect(Collectors.toSet()),
                 null,
                 null
         );
+    }
+
+    public Set<VideoCategoryJpaEntity> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<VideoCategoryJpaEntity> categories) {
+        this.categories = categories;
     }
 
     public ImageMediaJpaEntity getBanner() {
