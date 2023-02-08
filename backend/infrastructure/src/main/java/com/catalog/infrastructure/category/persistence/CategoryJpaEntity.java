@@ -12,11 +12,11 @@ import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 
 @Entity(name = "Category")
-@Table(name = "category")
+@Table(name = "categories")
 public class CategoryJpaEntity {
     @Id
+    @Column(name = "id", nullable = false)
     private String id;
-
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "description", length = 4000)
@@ -49,7 +49,7 @@ public class CategoryJpaEntity {
         this.deletedAt = deletedAt;
     }
 
-    public static CategoryJpaEntity from(final Category aCategory){
+    public static CategoryJpaEntity from(final Category aCategory) {
         return new CategoryJpaEntity(
                 aCategory.getId().getValue(),
                 aCategory.getName(),
@@ -81,7 +81,7 @@ public class CategoryJpaEntity {
             final Instant createdAt,
             final Instant updatedAt,
             final Instant deletedAt
-    ){
+    ) {
         return new Category(
                 anId,
                 name,
