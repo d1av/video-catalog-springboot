@@ -25,7 +25,6 @@ public class Video extends AggregateRoot<VideoID> {
     private boolean published;
     private Instant createdAt;
     private Instant updatedAt;
-
     private ImageMedia banner;
     private ImageMedia thumbnail;
     private ImageMedia thumbnailHalf;
@@ -165,6 +164,48 @@ public class Video extends AggregateRoot<VideoID> {
         this.setCastMembers(castMembers);
         this.updatedAt = InstantUtils.now();
         return this;
+    }
+
+    public static Video with(
+            final VideoID anId,
+            final String aTitle,
+            final String aDescription,
+            final Year aLauchYear,
+            final double aDuration,
+            final boolean wasOpened,
+            final boolean wasPublished,
+            final Rating aRating,
+            final Instant aCreationDate,
+            final Instant aUpdateDate,
+            final ImageMedia aBanner,
+            final ImageMedia aThumb,
+            final ImageMedia aThumbHalf,
+            final AudioVideoMedia aTrailer,
+            final AudioVideoMedia aVideo,
+            final Set<CategoryID> categories,
+            final Set<GenreID> genres,
+            final Set<CastMemberID> castMembers
+    ) {
+        return new Video(
+                anId,
+                aTitle,
+                aDescription,
+                aLauchYear,
+                aDuration,
+                wasOpened,
+                wasPublished,
+                aRating,
+                aCreationDate,
+                aUpdateDate,
+                aBanner,
+                aThumb,
+                aThumbHalf,
+                aTrailer,
+                aVideo,
+                categories,
+                genres,
+                castMembers
+        );
     }
 
 
