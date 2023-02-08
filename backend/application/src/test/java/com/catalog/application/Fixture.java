@@ -125,6 +125,20 @@ public final class Fixture {
 
     public static final class Videos {
 
+        public static Video systemDesign() {
+            return Video.newVideo(
+                    Fixture.title(),
+                    description(),
+                    Year.of(Fixture.year().getValue()),
+                    Fixture.duration(),
+                    Fixture.bool(),
+                    Fixture.bool(),
+                    rating(),
+                    Set.of(Categories.aulas().getId()),
+                    Set.of(Genres.tech().getId()),
+                    Set.of(CastMembers.wesley().getId(), CastMembers.mia().getId())
+            );
+        }
 
         public static Resource resource(final Resource.Type type) {
             final String contentType = Match(type).of(
