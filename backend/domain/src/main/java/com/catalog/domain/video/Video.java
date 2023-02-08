@@ -21,20 +21,16 @@ public class Video extends AggregateRoot<VideoID> {
     private Year launchedAt;
     private double duration;
     private Rating rating;
-
     private boolean opened;
     private boolean published;
-
     private Instant createdAt;
     private Instant updatedAt;
 
     private ImageMedia banner;
     private ImageMedia thumbnail;
     private ImageMedia thumbnailHalf;
-
     private AudioVideoMedia trailer;
     private AudioVideoMedia video;
-
     private Set<CategoryID> categories;
     private Set<GenreID> genres;
     private Set<CastMemberID> castMembers;
@@ -155,7 +151,7 @@ public class Video extends AggregateRoot<VideoID> {
             final Rating aRating,
             final Set<CategoryID> categories,
             final Set<GenreID> genres,
-            final Set<CastMemberID> members
+            final Set<CastMemberID> castMembers
     ) {
         this.title = aTitle;
         this.description = aDescription;

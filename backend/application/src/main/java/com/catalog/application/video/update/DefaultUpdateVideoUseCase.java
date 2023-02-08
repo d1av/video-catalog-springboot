@@ -1,4 +1,4 @@
-package com.catalog.application.video.create;
+package com.catalog.application.video.update;
 
 import com.catalog.domain.Identifier;
 import com.catalog.domain.castmember.CastMemberGateway;
@@ -7,16 +7,14 @@ import com.catalog.domain.category.CategoryGateway;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.exceptions.DomainException;
 import com.catalog.domain.exceptions.InternalErrorException;
+import com.catalog.domain.exceptions.NotFoundException;
 import com.catalog.domain.exceptions.NotificationException;
 import com.catalog.domain.genre.GenreGateway;
 import com.catalog.domain.genre.GenreID;
 import com.catalog.domain.validation.Error;
 import com.catalog.domain.validation.ValidationHandler;
 import com.catalog.domain.validation.handler.Notification;
-import com.catalog.domain.video.MediaResourceGateway;
-import com.catalog.domain.video.Rating;
-import com.catalog.domain.video.Video;
-import com.catalog.domain.video.VideoGateway;
+import com.catalog.domain.video.*;
 
 import java.time.Year;
 import java.util.ArrayList;
@@ -27,20 +25,18 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
-
+public class DefaultUpdateVideoUseCase extends UpdateVideoUseCase {
     private final CategoryGateway categoryGateway;
     private final GenreGateway genreGateway;
     private final CastMemberGateway castMemberGateway;
     private final VideoGateway videoGateway;
     private final MediaResourceGateway mediaResourceGateway;
 
-    public DefaultCreateVideoUseCase(
-            final CategoryGateway categoryGateway,
-            final GenreGateway genreGateway,
-            final CastMemberGateway castMemberGateway,
-            final VideoGateway videoGateway,
-            final MediaResourceGateway mediaResourceGateway) {
+    public DefaultUpdateVideoUseCase(final CategoryGateway categoryGateway,
+                                     final GenreGateway genreGateway,
+                                     final CastMemberGateway castMemberGateway,
+                                     final VideoGateway videoGateway,
+                                     final MediaResourceGateway mediaResourceGateway) {
         this.categoryGateway = Objects.requireNonNull(categoryGateway);
         this.genreGateway = Objects.requireNonNull(genreGateway);
         this.castMemberGateway = Objects.requireNonNull(castMemberGateway);
@@ -49,20 +45,23 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
     }
 
     @Override
-    public CreateVideoOutput execute(CreateVideoCommand aCommand) {
+    public UpdateVideoOutput execute(UpdateVideoCommand aCommand) {
         final var notification = Notification.create();
-
+        final var anId = VideoID.from(aCommand.id());
         final var aRating = Rating.of(aCommand.rating()).orElse(null);
         final var aLaunchYear = aCommand.launchedAt() != null ? Year.of(aCommand.launchedAt()) : null;
         final var categories = toIdentifier(aCommand.categories(), CategoryID::from);
         final var genres = toIdentifier(aCommand.genres(), GenreID::from);
         final var members = toIdentifier(aCommand.members(), CastMemberID::from);
 
+        final var aVideo = this.videoGateway.findById(anId).orElseThrow(notFoundException(anId));
+
+
         notification.append(validateCategories(categories));
         notification.append(validateGenres(genres));
         notification.append(validateCastMembers(members));
 
-        final var aVideo = Video.newVideo(
+        aVideo.update(
                 aCommand.title(),
                 aCommand.description(),
                 aLaunchYear,
@@ -78,13 +77,13 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
         aVideo.validate(notification);
 
         if (notification.hasError()) {
-            throw new NotificationException("Could not create Aggregate video", notification);
+            throw new NotificationException("Could not update Aggregate video", notification);
         }
 
-        return CreateVideoOutput.from(create(aCommand, aVideo));
+        return UpdateVideoOutput.from(update(aCommand, aVideo));
     }
 
-    private Video create(final CreateVideoCommand aCommand, final Video aVideo) {
+    private Video update(UpdateVideoCommand aCommand, Video aVideo) {
         final var anId = aVideo.getId();
 
         try {
@@ -108,20 +107,30 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
                     .map(it -> this.mediaResourceGateway.storeImage(anId, it))
                     .orElse(null);
 
+            final var savedVideo = aVideo
+                    .setVideo(aVideoMedia)
+                    .setTrailer(aTrailerMedia)
+                    .setBanner(aBannerMedia)
+                    .setThumbnail(aThumbnail)
+                    .setThumbnailHalf(aThumbnailHalf);
 
-            return this.videoGateway.create(
-                    aVideo
-                            .setVideo(aVideoMedia)
-                            .setTrailer(aTrailerMedia)
-                            .setBanner(aBannerMedia)
-                            .setThumbnail(aThumbnail)
-                            .setThumbnailHalf(aThumbnailHalf)
-            );
+            this.videoGateway.update(savedVideo);
+
+            return savedVideo;
         } catch (final Throwable t) {
-            this.mediaResourceGateway.clearResources(anId);
             throw InternalErrorException.with(
                     "An error on create video was observed  [videoId: %s]".formatted(anId.getValue()), t);
         }
+    }
+
+    private Supplier<DomainException> notFoundException(VideoID anId) {
+        return () -> NotFoundException.with(Video.class, anId);
+    }
+
+    private <T> Set<T> toIdentifier(Set<String> ids, final Function<String, T> mapper) {
+        return ids.stream()
+                .map(mapper)
+                .collect(Collectors.toSet());
     }
 
     private ValidationHandler validateCategories(final Set<CategoryID> ids) {
@@ -160,9 +169,4 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
         return notification;
     }
 
-    private <T> Set<T> toIdentifier(Set<String> ids, final Function<String, T> mapper) {
-        return ids.stream()
-                .map(mapper)
-                .collect(Collectors.toSet());
-    }
 }
