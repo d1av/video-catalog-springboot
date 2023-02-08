@@ -3,7 +3,6 @@ package com.catalog.application.video.retrieve.list;
 import com.catalog.domain.Identifier;
 import com.catalog.domain.castmember.CastMemberGateway;
 import com.catalog.domain.castmember.CastMemberID;
-import com.catalog.domain.category.Category;
 import com.catalog.domain.category.CategoryGateway;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.genre.GenreGateway;
@@ -41,14 +40,14 @@ public class DefaultListVideoUseCase extends ListVideoUseCase {
         final var names = search.items().stream()
                 .map(aVideo ->
                         VideoListOutput.newListWithNames(
-                                aVideo.getId().getValue(),
-                                aVideo.getTitle(),
-                                aVideo.getDescription(),
-                                aVideo.getCreatedAt(),
-                                aVideo.getUpdatedAt(),
-                                getNameFromSet(aVideo.getCategories(), "categoryGateway"),
-                                getNameFromSet(aVideo.getGenres(), "genreGateway"),
-                                getNameFromSet(aVideo.getCastMembers(), "castMemberGateway")
+                                aVideo.id(),
+                                aVideo.title(),
+                                aVideo.description(),
+                                aVideo.createdAt(),
+                                aVideo.updatedAt(),
+                                null,
+                                null,
+                                null
 
                         )
                 ).toList();
@@ -92,6 +91,7 @@ public class DefaultListVideoUseCase extends ListVideoUseCase {
                 "" : genreGateway.findById((GenreID) anId).get().getName();
 
     }
+
     private String getCastMembersName(Identifier anId) {
         return castMemberGateway.findById((CastMemberID) anId).isEmpty() ?
                 "" : castMemberGateway.findById((CastMemberID) anId).get().getName();

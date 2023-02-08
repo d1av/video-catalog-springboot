@@ -1,16 +1,13 @@
 package com.catalog.application.video.retrieve.get;
 
 import com.catalog.domain.Identifier;
-import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.utils.CollectionUtils;
 import com.catalog.domain.video.AudioVideoMedia;
 import com.catalog.domain.video.ImageMedia;
-import com.catalog.domain.video.Resource;
 import com.catalog.domain.video.Video;
 
 import java.time.Instant;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public record VideoOutput(
         String id,

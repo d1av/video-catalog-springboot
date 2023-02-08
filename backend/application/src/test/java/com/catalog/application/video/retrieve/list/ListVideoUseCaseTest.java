@@ -12,6 +12,7 @@ import com.catalog.domain.pagination.Pagination;
 import com.catalog.domain.pagination.SearchQuery;
 import com.catalog.domain.video.Video;
 import com.catalog.domain.video.VideoGateway;
+import com.catalog.domain.video.VideoPreview;
 import com.catalog.domain.video.VideoSearchQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -50,8 +52,8 @@ public class ListVideoUseCaseTest extends UseCaseTest {
     public void givenValidQuery_whenCallsListVideos_shouldReturnVideos() {
         // given
         final var videos = List.of(
-                Fixture.systemDesign(),
-                Fixture.systemDesign()
+                new VideoPreview(Fixture.systemDesign()),
+                new VideoPreview(Fixture.systemDesign())
         );
 
         final var expectedPage = 0;
@@ -61,9 +63,6 @@ public class ListVideoUseCaseTest extends UseCaseTest {
         final var expectedDirection = "asc";
         final var expectedTotal = 2;
 
-        final var expectedItems = videos.stream()
-                .map(VideoListOutput::from)
-                .toList();
         final var expectedPagination = new Pagination<>(
                 expectedPage, expectedPerPage, expectedTotal, videos
         );
@@ -71,12 +70,17 @@ public class ListVideoUseCaseTest extends UseCaseTest {
         when(videoGateway.findAll(any()))
                 .thenReturn(expectedPagination);
 
-        when(categoryGateway.findById(any()))
-                .thenReturn(Optional.of(Category.newCategory("Test", "desc", true)));
-
         final var aQuery =
-                new VideoSearchQuery(expectedPage, expectedPerPage, expectedTerms,
-                        expectedSort, expectedDirection);
+                new VideoSearchQuery(
+                        expectedPage,
+                        expectedPerPage,
+                        expectedTerms,
+                        expectedSort,
+                        expectedDirection,
+                        Set.of(),
+                        Set.of(),
+                        Set.of()
+                );
         // when
         final var actualOutput = useCase.execute(aQuery);
 
@@ -93,7 +97,7 @@ public class ListVideoUseCaseTest extends UseCaseTest {
     @Test
     public void givenAValidQuery_whenCallsListVideoAndResultIsEmpty_shouldReturnVideos() {
         // given
-        final var videos = List.<Video>of();
+        final var videos = List.<VideoPreview>of();
 
         final var expectedPage = 0;
         final var expectedPerPage = 10;
@@ -112,8 +116,16 @@ public class ListVideoUseCaseTest extends UseCaseTest {
                 .thenReturn(expectedPagination);
 
         final var aQuery =
-                new VideoSearchQuery(expectedPage, expectedPerPage, expectedTerms,
-                        expectedSort, expectedDirection);
+                new VideoSearchQuery(
+                        expectedPage,
+                        expectedPerPage,
+                        expectedTerms,
+                        expectedSort,
+                        expectedDirection,
+                        Set.of(),
+                        Set.of(),
+                        Set.of()
+                );
         // when
         final var actualOutput = useCase.execute(aQuery);
 
@@ -146,8 +158,16 @@ public class ListVideoUseCaseTest extends UseCaseTest {
                 .thenThrow(new IllegalStateException("Gateway error"));
 
         final var aQuery =
-                new VideoSearchQuery(expectedPage, expectedPerPage, expectedTerms,
-                        expectedSort, expectedDirection);
+                new VideoSearchQuery(
+                        expectedPage,
+                        expectedPerPage,
+                        expectedTerms,
+                        expectedSort,
+                        expectedDirection,
+                        Set.of(),
+                        Set.of(),
+                        Set.of()
+                );
         // when
         final var actualException = Assertions.assertThrows(IllegalStateException.class,
                 () -> useCase.execute(aQuery)
