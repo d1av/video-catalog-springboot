@@ -13,14 +13,13 @@ import java.time.Year;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Table(name = "videos")
 @Entity(name = "Video")
 public class VideoJpaEntity {
     @Id
-    private UUID id;
+    private String id;
     @Column(name = "title", nullable = false)
     private String title;
     @Column(name = "description", length = 4000)
@@ -69,7 +68,7 @@ public class VideoJpaEntity {
         this.castMembers = new HashSet<>(3);
     }
 
-    private VideoJpaEntity(final UUID id,
+    private VideoJpaEntity(final String id,
                            final String title,
                            final String description,
                            final int yearLauched,
@@ -106,7 +105,7 @@ public class VideoJpaEntity {
 
     public static VideoJpaEntity from(final Video aVideo) {
         final var entity = new VideoJpaEntity(
-                UUID.fromString(aVideo.getId().getValue()),
+                aVideo.getId().getValue(),
                 aVideo.getTitle(),
                 aVideo.getDescription(),
                 aVideo.getLaunchedAt().getValue(),
@@ -249,11 +248,11 @@ public class VideoJpaEntity {
         this.trailer = trailer;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

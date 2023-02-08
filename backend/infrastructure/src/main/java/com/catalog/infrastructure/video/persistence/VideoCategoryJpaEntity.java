@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 
 
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity(name = "VideoCategory")
 @Table(name = "videos_categories")
@@ -26,7 +25,7 @@ public class VideoCategoryJpaEntity {
 
     public static VideoCategoryJpaEntity from(final VideoJpaEntity video, CategoryID categoryID) {
         return new VideoCategoryJpaEntity(
-                VideoCategoryID.from(video.getId(), UUID.fromString(categoryID.getValue())),
+                VideoCategoryID.from(video.getId(), categoryID.getValue()),
                 video
         );
     }

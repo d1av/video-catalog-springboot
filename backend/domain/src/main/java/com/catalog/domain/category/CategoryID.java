@@ -1,9 +1,9 @@
 package com.catalog.domain.category;
 
 import com.catalog.domain.Identifier;
+import com.catalog.domain.utils.IdUtils;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class CategoryID extends Identifier {
 
@@ -14,16 +14,13 @@ public class CategoryID extends Identifier {
     }
 
     public static CategoryID unique() {
-        return new CategoryID(UUID.randomUUID().toString().toLowerCase());
+        return CategoryID.from(IdUtils.uuid());
     }
 
     public static CategoryID from(final String anId) {
         return new CategoryID(anId);
     }
 
-    public static CategoryID from(final UUID anId) {
-        return new CategoryID(anId.toString().toLowerCase());
-    }
 
     @Override
     public String getValue() {

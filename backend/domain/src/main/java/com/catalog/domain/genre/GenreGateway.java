@@ -1,9 +1,7 @@
 package com.catalog.domain.genre;
 
-import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.pagination.Pagination;
 import com.catalog.domain.pagination.SearchQuery;
-import net.datafaker.providers.base.Cat;
 
 import java.util.List;
 import java.util.Optional;

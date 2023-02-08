@@ -4,8 +4,6 @@ import com.catalog.domain.video.AudioVideoMedia;
 import com.catalog.domain.video.MediaStatus;
 import jakarta.persistence.*;
 
-import java.util.UUID;
-
 @Entity(name = "AudioMediaVideo")
 @Table(name = "videos_video_media")
 public class AudioVideoMediaJpaEntity {

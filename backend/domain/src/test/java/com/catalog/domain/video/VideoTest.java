@@ -203,7 +203,7 @@ public class VideoTest {
     }
 
     @Test
-    public void givenValidVideo_whenCallsSetTrailer_shouldReturnUpdated() {
+    public void givenValidVideo_whenCallsSetTrailer_shouldReturnUpdated() throws InterruptedException {
         // given
         final var expectedTitle = Fixture.title();
         final var expectedDescription = Fixture.description(1000);
@@ -236,6 +236,7 @@ public class VideoTest {
                         "/123/videos", "",
                         MediaStatus.PENDING);
         // when
+        Thread.sleep(100);
         final var actualVideo = aVideo.with(aVideo).setTrailer(aTrailerMedia);
 
         // then
@@ -391,7 +392,7 @@ public class VideoTest {
     }
 
     @Test
-    public void givenValidVideo_whenCallsSetThumbnailHalf_shouldReturnUpdated() {
+    public void givenValidVideo_whenCallsSetThumbnailHalf_shouldReturnUpdated() throws InterruptedException {
         // given
         final var expectedTitle = Fixture.title();
         final var expectedDescription = Fixture.description(1000);
@@ -423,6 +424,7 @@ public class VideoTest {
                         "trailer.mp4",
                         "/123/videos");
         // when
+        Thread.sleep(100);
         final var actualVideo = aVideo.with(aVideo).setThumbnailHalf(aThumbMedia);
 
         // then
