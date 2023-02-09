@@ -21,9 +21,9 @@ public interface VideoRepository extends JpaRepository<VideoJpaEntity, String> {
                         v.updatedAt as updatedAt
             )
             from Video v
-            left join v.castMembers members
-            left join v.categories categories
-            left join v.genres genres
+                left join v.castMembers members
+                left join v.categories categories
+                left join v.genres genres
             where
                 ( :terms is null or UPPER(v.title) like :terms )
             and
