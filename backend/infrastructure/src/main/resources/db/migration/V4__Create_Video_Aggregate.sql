@@ -1,7 +1,7 @@
 
 CREATE TABLE videos_video_media(
     id CHAR(32) NOT NULL PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     checksum VARCHAR(255) NOT NULL,
     file_path VARCHAR(255) NOT NULL,
     encoded_path VARCHAR(500) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE videos_video_media(
 
 CREATE TABLE videos_image_media(
     id CHAR(32) NOT NULL PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     checksum VARCHAR(255) NOT NULL,
     file_path VARCHAR(255) NOT NULL
 );

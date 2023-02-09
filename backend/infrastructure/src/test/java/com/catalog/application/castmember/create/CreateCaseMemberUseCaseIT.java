@@ -2,8 +2,6 @@ package com.catalog.application.castmember.create;
 
 import com.catalog.Fixture;
 import com.catalog.IntegrationTest;
-import com.catalog.application.castmember.create.CreateCastMemberCommand;
-import com.catalog.application.castmember.create.CreateCastMemberUseCase;
 import com.catalog.domain.castmember.CastMemberGateway;
 import com.catalog.domain.castmember.CastMemberType;
 import com.catalog.domain.exceptions.NotificationException;
@@ -13,12 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.util.Objects;
-
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static com.catalog.Fixture.CastMembers.type;
+import static com.catalog.Fixture.name;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @IntegrationTest
 public class CreateCaseMemberUseCaseIT {
@@ -32,8 +29,8 @@ public class CreateCaseMemberUseCaseIT {
     @Test
     public void givenAValidCommand_whenCreateCastMember_shouldReturnIt() {
         // given
-        final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedName = name();
+        final var expectedType = type();
 
         final var aCommand = CreateCastMemberCommand.with(
                 expectedName,
@@ -60,7 +57,7 @@ public class CreateCaseMemberUseCaseIT {
     public void givenAInvalidNullName_whenCallsCreateCastMember_shouldThrowNotificationException() {
         // given
         final String expectedName = null;
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'name' should not be null";
@@ -83,7 +80,7 @@ public class CreateCaseMemberUseCaseIT {
     @Test
     public void givenAInvalidType_whenCallsCreateCastMember_shouldThrowNotificationException() {
         // given
-        final String expectedName = Fixture.name();
+        final String expectedName = name();
         final CastMemberType expectedType = null;
 
         final var expectedErrorCount = 1;

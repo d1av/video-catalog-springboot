@@ -3,10 +3,12 @@ package com.catalog.infrastructure.video.persistence;
 import com.catalog.domain.castmember.CastMemberID;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.genre.GenreID;
+import com.catalog.domain.utils.CollectionUtils;
 import com.catalog.domain.video.Rating;
 import com.catalog.domain.video.Video;
 import com.catalog.domain.video.VideoID;
 import jakarta.persistence.*;
+import net.datafaker.providers.base.Cat;
 
 import java.time.Instant;
 import java.time.Year;
@@ -202,6 +204,18 @@ public class VideoJpaEntity {
 
     public Set<VideoCategoryJpaEntity> getCategories() {
         return categories;
+    }
+
+    public Set<CategoryID> getCategoriesID() {
+        return CollectionUtils.mapTo(getCategories(), it -> CategoryID.from(it.getId().getCategoryId()));
+    }
+
+    public Set<GenreID> getGenresID() {
+        return CollectionUtils.mapTo(getGenres(), it -> GenreID.from(it.getId().getGenreId()));
+    }
+
+    public Set<CastMemberID> getCastMembersID() {
+        return CollectionUtils.mapTo(getCastMembers(), it -> CastMemberID.from(it.getId().getCastMemberId()));
     }
 
     public void setCategories(Set<VideoCategoryJpaEntity> categories) {

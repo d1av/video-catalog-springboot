@@ -43,8 +43,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation:3.0.2")
     implementation('com.fasterxml.jackson.module:jackson-module-afterburner')
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
-    implementation('com.github.javafaker:javafaker:1.0.2')
+    implementation('net.datafaker:datafaker:1.7.0')
     testImplementation 'org.testng:testng:7.1.0'
+    testImplementation project(path: ':application')
+    testImplementation project(path: ':domain')
+    testImplementation project(path: ':application')
+    testImplementation project(path: ':domain')
 
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'

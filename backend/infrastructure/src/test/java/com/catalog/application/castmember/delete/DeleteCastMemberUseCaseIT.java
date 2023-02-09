@@ -34,8 +34,8 @@ public class DeleteCastMemberUseCaseIT {
     @Test
     public void givenAValidId_whenCallsDeleteCastMember_shouldDeleteIt() {
         // given
-        final var aMember1 = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
-        final var aMember2 = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember1 = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
+        final var aMember2 = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
         castMemberRepository.saveAllAndFlush(List.of(
                 CastMemberJpaEntity.from(aMember1),
                 CastMemberJpaEntity.from(aMember2)
@@ -56,7 +56,7 @@ public class DeleteCastMemberUseCaseIT {
     @Test
     public void givenAnInvalidId_whenCallsDeleteCastMember_shouldDeleteIt() {
         // given
-        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
         final var actualMember = castMemberRepository.saveAndFlush(CastMemberJpaEntity.from(aMember));
 
         Assertions.assertEquals(1, castMemberRepository.count());
@@ -75,7 +75,7 @@ public class DeleteCastMemberUseCaseIT {
     @Test
     public void givenAValidId_whenCallsDeleteCastMemberAndGatewayThrowsException_shouldReceiveException() {
         // given
-        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
         final var actualMember = castMemberRepository.saveAndFlush(CastMemberJpaEntity.from(aMember));
         final var expectedErrorMessage = "Gateway error";
 

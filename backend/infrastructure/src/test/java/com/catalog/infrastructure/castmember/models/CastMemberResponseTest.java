@@ -20,7 +20,7 @@ public class CastMemberResponseTest {
     public void testMarshall() throws Exception {
         final var expectedId = "123";
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type().name();
+        final var expectedType = Fixture.CastMembers.type().name();
         final var expectedCreatedAt = Instant.now().toString();
         final var expectedUpdatedAt = Instant.now().toString();
 

@@ -1,6 +1,7 @@
 package com.catalog.application.castmember.retrieve.list;
 
 import com.catalog.Fixture;
+import com.catalog.Fixture.CastMembers;
 import com.catalog.IntegrationTest;
 import com.catalog.application.castmember.retrieve.list.CastMemberListOutput;
 import com.catalog.application.castmember.retrieve.list.DefaultListCastMembersUseCase;
@@ -21,6 +22,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.List;
 
+import static com.catalog.Fixture.CastMembers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -38,8 +40,8 @@ public class ListCastMemberUseCaseIT {
     public void givenAValidQuery_whenCallsListCastMember_shouldReturnAll() {
         // given
         final var members = List.of(
-                CastMember.newMember(Fixture.name(), Fixture.CastMember.type()),
-                CastMember.newMember(Fixture.name(), Fixture.CastMember.type())
+                CastMember.newMember(Fixture.name(), type()),
+                CastMember.newMember(Fixture.name(), type())
         );
 
         this.castMemberRepository.saveAllAndFlush(

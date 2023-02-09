@@ -1,21 +1,25 @@
 package com.catalog.domain.video;
 
 import com.catalog.domain.ValueObject;
+import com.catalog.domain.utils.IdUtils;
 
 import java.util.Objects;
 
 public class AudioVideoMedia extends ValueObject {
+    private final String id;
     private final String checksum;
     private final String name;
     private final String rawLocation;
     private final String encodedLocation;
     private final MediaStatus status;
 
-    public AudioVideoMedia(final String checksum,
+    public AudioVideoMedia(final String id,
+                           final String checksum,
                            final String name,
                            final String rawLocation,
                            final String encodedLocation,
                            final MediaStatus status) {
+        this.id = Objects.requireNonNull(id);
         this.checksum = Objects.requireNonNull(checksum);
         this.name = Objects.requireNonNull(name);
         this.rawLocation = Objects.requireNonNull(rawLocation);
@@ -26,13 +30,25 @@ public class AudioVideoMedia extends ValueObject {
     public static AudioVideoMedia with(
             final String checksum,
             final String name,
+            final String rawLocation
+    ) {
+        return new AudioVideoMedia(IdUtils.uuid(), checksum, name, rawLocation, "", MediaStatus.PENDING);
+    }
+
+    public static AudioVideoMedia with(
+            final String id,
+            final String checksum,
+            final String name,
             final String rawLocation,
             final String encodedLocation,
             final MediaStatus status
     ) {
-        return new AudioVideoMedia(checksum, name, rawLocation, encodedLocation, status);
+        return new AudioVideoMedia(id, checksum, name, rawLocation, encodedLocation, status);
     }
 
+    public String id() {
+        return id;
+    }
     public String checksum() {
         return checksum;
     }

@@ -9,6 +9,9 @@ import jakarta.persistence.*;
 public class AudioVideoMediaJpaEntity {
     @Id
     private String id;
+
+    @Column(name = "checksum", nullable = false)
+    private String checksum;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "file_path", nullable = false)
@@ -23,11 +26,12 @@ public class AudioVideoMediaJpaEntity {
     }
 
     private AudioVideoMediaJpaEntity(final String id,
-                                    final String name,
-                                    final String filePath,
-                                    final String encodedPath,
-                                    final MediaStatus status) {
+                                     String checksum, final String name,
+                                     final String filePath,
+                                     final String encodedPath,
+                                     final MediaStatus status) {
         this.id = id;
+        this.checksum = checksum;
         this.name = name;
         this.filePath = filePath;
         this.encodedPath = encodedPath;
@@ -36,6 +40,7 @@ public class AudioVideoMediaJpaEntity {
 
     public static AudioVideoMediaJpaEntity from(final AudioVideoMedia aMedia) {
         return new AudioVideoMediaJpaEntity(
+                aMedia.id(),
                 aMedia.checksum(),
                 aMedia.name(),
                 aMedia.rawLocation(),
@@ -47,11 +52,16 @@ public class AudioVideoMediaJpaEntity {
     public AudioVideoMedia toDomain() {
         return AudioVideoMedia.with(
                 getId(),
+                getChecksum(),
                 getName(),
                 getFilePath(),
                 getEncodedPath(),
                 getStatus()
         );
+    }
+
+    public String getChecksum() {
+        return checksum;
     }
 
     public String getId() {

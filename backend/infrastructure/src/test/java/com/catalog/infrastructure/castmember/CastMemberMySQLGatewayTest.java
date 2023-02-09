@@ -1,6 +1,7 @@
 package com.catalog.infrastructure.castmember;
 
 import com.catalog.Fixture;
+import com.catalog.Fixture.CastMembers;
 import com.catalog.MySQLGatewayTest;
 import com.catalog.domain.castmember.CastMember;
 import com.catalog.domain.castmember.CastMemberID;
@@ -19,7 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static com.catalog.Fixture.CastMember.type;
+
+import static com.catalog.Fixture.CastMembers.*;
 import static com.catalog.Fixture.name;
 
 @MySQLGatewayTest

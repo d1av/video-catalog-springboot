@@ -7,6 +7,7 @@ import com.catalog.domain.validation.ValidationHandler;
 import com.catalog.domain.validation.handler.Notification;
 
 import java.time.Instant;
+import java.util.Objects;
 
 public class CastMember extends AggregateRoot<CastMemberID> {
     private String name;
@@ -76,6 +77,19 @@ public class CastMember extends AggregateRoot<CastMemberID> {
         if (notification.hasError()) {
             throw new NotificationException("Failed to create a Aggregate CastMember", notification);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CastMember that)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(getName(), that.getName()) && getType() == that.getType() && Objects.equals(getCreatedAt(), that.getCreatedAt()) && Objects.equals(getUpdatedAt(), that.getUpdatedAt());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getName(), getType(), getCreatedAt(), getUpdatedAt());
     }
 
     public CastMemberID getId() {
