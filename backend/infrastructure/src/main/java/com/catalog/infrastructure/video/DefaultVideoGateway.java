@@ -7,6 +7,7 @@ import com.catalog.domain.video.*;
 import com.catalog.infrastructure.utils.SqlUtils;
 import com.catalog.infrastructure.video.persistence.VideoJpaEntity;
 import com.catalog.infrastructure.video.persistence.VideoRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
@@ -71,7 +72,7 @@ public class DefaultVideoGateway implements VideoGateway {
                 page
         );
 
-        return new Pagination(
+        return new Pagination<>(
                 actualPage.getNumber(),
                 actualPage.getSize(),
                 actualPage.getTotalElements(),

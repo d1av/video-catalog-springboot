@@ -456,7 +456,7 @@ public class GenreMySQLGatewayTest {
             "1,2,2,5,Drama;Ficção científica",
             "2,2,1,5,Terror",
     })
-    public void givenAValidSortAndDirection_whenCallFindAll_shouldReturnFiltered(
+    public void givenAValidPaging_whenCallFindAll_shouldReturnFiltered(
             final int expectedPage,
             final int expectedPerPage,
             final int expectedItemsCount,

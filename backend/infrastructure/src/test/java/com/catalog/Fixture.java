@@ -117,14 +117,23 @@ public final class Fixture {
         public static Category aulas() {
             return AULAS.clone();
         }
+
+        public static Category lives() {
+            return Category.newCategory(name(), description(100), bool()).clone();
+        }
     }
 
     public static final class Genres {
 
         private static final Genre TECH = Genre.newGenre("Tecnology", true);
+        private static final Genre BUSINESS = Genre.newGenre(firstName(), bool());
 
         public static Genre tech() {
             return Genre.with(TECH);
+        }
+
+        public static Genre business() {
+            return Genre.with(BUSINESS);
         }
     }
 
