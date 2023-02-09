@@ -17,6 +17,10 @@ public final class Fixture {
         return FAKER.name().firstName();
     }
 
+    public static String checksum() {
+        return FAKER.fullMetalAlchemist().character();
+    }
+
     public static String description(Integer length) {
         length = Math.abs(length);
         if (length > 5000) length = 5000;

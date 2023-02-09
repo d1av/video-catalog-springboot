@@ -178,6 +178,7 @@ public class UpdateGenreUseCaseTest extends UseCaseTest {
     public void givenAValidCommandWithInactiveGenre_whenCallsUpdateGenre_shouldReturnGenreId() throws InterruptedException {
         // given
         final var aGenre = Genre.newGenre("acao", true);
+        Thread.sleep(100);
 
         final var expectedId = aGenre.getId();
         final var expectedName = "Acão";

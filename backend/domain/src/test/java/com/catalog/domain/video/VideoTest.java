@@ -4,6 +4,7 @@ import com.catalog.domain.Fixture;
 import com.catalog.domain.castmember.CastMemberID;
 import com.catalog.domain.category.CategoryID;
 import com.catalog.domain.genre.GenreID;
+import com.catalog.domain.utils.IdUtils;
 import com.catalog.domain.validation.handler.ThrowsValidationHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -169,7 +170,9 @@ public class VideoTest {
         Thread.sleep(10);
 
         final var aVideoMedia =
-                AudioVideoMedia.with("abc",
+                AudioVideoMedia.with(
+                        IdUtils.uuid(),
+                        "abc",
                         "video.mp4",
                         "/123/videos", "",
                         MediaStatus.PENDING);
@@ -231,7 +234,9 @@ public class VideoTest {
         );
 
         final var aTrailerMedia =
-                AudioVideoMedia.with("abc",
+                AudioVideoMedia.with(
+                        IdUtils.uuid(),
+                        Fixture.checksum(),
                         "trailer.mp4",
                         "/123/videos", "",
                         MediaStatus.PENDING);

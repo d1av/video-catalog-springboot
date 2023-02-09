@@ -12,6 +12,7 @@ import com.catalog.domain.exceptions.NotFoundException;
 import com.catalog.domain.exceptions.NotificationException;
 import com.catalog.domain.genre.GenreGateway;
 import com.catalog.domain.genre.GenreID;
+import com.catalog.domain.utils.IdUtils;
 import com.catalog.domain.video.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -1052,6 +1053,7 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
         when(mediaResourceGateway.storeAudioVideo(any(), any())).thenAnswer(t -> {
             final var resource = t.getArgument(1, Resource.class);
             return AudioVideoMedia.with(
+                    IdUtils.uuid(),
                     UUID.randomUUID().toString(),
                     resource.name(),
                     "/img",

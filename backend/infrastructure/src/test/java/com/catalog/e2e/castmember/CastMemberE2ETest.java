@@ -202,7 +202,7 @@ public class CastMemberE2ETest implements MockDsl {
 
         retrieveACastMemberResult(CastMemberID.from("123"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", equalTo("CastMembers with ID 123 was not found")
+                .andExpect(jsonPath("$.message", equalTo("CastMember with ID 123 was not found")
                 ));
     }
 
