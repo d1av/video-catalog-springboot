@@ -83,7 +83,7 @@ public class Video extends AggregateRoot<VideoID> {
             final String aTitle,
             final String aDescription,
             final Year aLauchYear,
-            final double aDuration,
+            final Double aDuration,
             final boolean wasOpened,
             final boolean wasPublished,
             final Rating aRating,
