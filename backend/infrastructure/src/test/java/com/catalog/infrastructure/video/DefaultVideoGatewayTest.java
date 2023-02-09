@@ -13,6 +13,8 @@ import com.catalog.domain.genre.GenreID;
 import com.catalog.domain.video.AudioVideoMedia;
 import com.catalog.domain.video.ImageMedia;
 import com.catalog.domain.video.Video;
+import com.catalog.domain.video.VideoID;
+import com.catalog.infrastructure.video.persistence.VideoJpaEntity;
 import com.catalog.infrastructure.video.persistence.VideoRepository;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
@@ -323,6 +325,65 @@ public class DefaultVideoGatewayTest {
         Assertions.assertEquals(expectedThumb.name(), persistedVideo.getThumbnail().getName());
         Assertions.assertEquals(expectedThumbHalf.name(), persistedVideo.getThumbnailHalf().getName());
     }
+
+    @Test
+    public void givenAValidVideoId_whenCallsDeleteById_shouldDeleteIt() throws InterruptedException {
+        // given
+        final var aVideo = Video.newVideo(
+                Fixture.title(),
+                Fixture.Videos.description(),
+                Fixture.year(),
+                Fixture.duration(),
+                Fixture.bool(),
+                Fixture.bool(),
+                Fixture.Videos.rating(),
+                Set.of(),
+                Set.of(),
+                Set.of()
+        );
+
+        videoRepository.saveAndFlush(VideoJpaEntity.from(aVideo));
+
+        Assertions.assertEquals(1, videoRepository.count());
+
+        final var anId = aVideo.getId();
+
+        // when
+        videoGateway.deleteById(anId);
+
+        // then
+        Assertions.assertEquals(0, videoRepository.count());
+    }
+
+    @Test
+    public void givenAnInvalidVideoId_whenCallsDeleteById_shouldDeleteIt() throws InterruptedException {
+        // given
+        final var aVideo = Video.newVideo(
+                Fixture.title(),
+                Fixture.Videos.description(),
+                Fixture.year(),
+                Fixture.duration(),
+                Fixture.bool(),
+                Fixture.bool(),
+                Fixture.Videos.rating(),
+                Set.of(),
+                Set.of(),
+                Set.of()
+        );
+
+        videoRepository.saveAndFlush(VideoJpaEntity.from(aVideo));
+
+        Assertions.assertEquals(1, videoRepository.count());
+
+        final var anInvalidId = VideoID.unique();
+
+        // when
+        videoGateway.deleteById(anInvalidId);
+
+        // then
+        Assertions.assertEquals(1, videoRepository.count());
+    }
+
 
     @NotNull
     private static Set<String> getIdString(Set<? extends Identifier> list) {
